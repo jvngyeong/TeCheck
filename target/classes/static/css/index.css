@@ -1,0 +1,134 @@
+/* Reset 기본값 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* 헤더 스타일 */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0066cc;
+  color: white;
+  padding: 15px 20px;
+}
+
+.main-header .logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.main-header .main-nav ul {
+  list-style: none;
+  display: flex;
+}
+
+.main-header .main-nav ul li {
+  margin-left: 20px;
+}
+
+.main-header .main-nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.main-header .main-nav ul li a:hover {
+  color: #ffcc00;
+}
+
+.search-bar {
+  display: flex;
+}
+
+.search-bar input {
+  padding: 8px;
+  border: none;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+}
+
+.search-bar button {
+  padding: 8px 15px;
+  background-color: #ffcc00;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-bar button:hover {
+  background-color: #ff9900;
+}
+
+/* 배너 스타일 */
+.banner {
+  background: url('banner.jpg') no-repeat center center/cover;
+  color: white;
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.banner h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+/* 제품 리스트 */
+.product-list {
+  padding: 20px;
+}
+
+.product-list h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.products {
+  display: flex;
+  gap: 15px;
+}
+
+.product-card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 30%;
+}
+
+.product-card img {
+  max-width: 100%;
+  border-bottom: 1px solid #ddd;
+}
+
+.product-card h3 {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.product-card p {
+  font-size: 1rem;
+  color: #0066cc;
+  margin-bottom: 10px;
+}
+
+/* 푸터 스타일 */
+.main-footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 15px 20px;
+  margin-top: 20px;
+}
