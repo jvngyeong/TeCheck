@@ -11,9 +11,9 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-target/m2e-wtp/*
-target/maven-status/*
-target/surefire-reports/*
+target/m2e-wtp/**
+target/maven-status/**
+target/surefire-reports/**
 
 # Compiled class file
 *.class
