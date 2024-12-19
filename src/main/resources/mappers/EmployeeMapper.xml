@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="DDL.mapper.EmployeeMapper">
+    <sql id="employeeColumns">
+            EMP_NUM, EMP_ID, EMP_PW, EMP_NAME, EMP_ADDR, EMP_ADDR_DETAIL, EMP_POST, EMP_PHONE, EMP_IMAGE, EMP_STORE_IMAGE, EMP_HIRE_DATE, DEPARTMENT_NUM, EMP_EMAIL
+    </sql>
+    <insert id="employeeWrite" parameterType="employeeDTO">
+        insert into employees(<include refid="employeeColumns"></include>)
+        values(#{empNum}, #{empId}, #{empPw}, #{empName}, #{empAddr}, #{empAddrDetail},
+                #{empPost}, #{empPhone}, #{empImage}, #{empStoreImage}, sysdate, 1, #{empEmail}) 
+    </insert>
+    
+    <select id="employeeListSelect">
+        select <include refid="employeeColumns"></include> from employees
+    </select>
+    
+    <select id="employeeSelectOne">
+        select <include refid="employeeColumns"></include> from employees where emp_num = #{empNum}
+    </select>
+    
+    <update id="employeeUpdate">
+        update employees set emp_id = #{empId}, emp_pw = #{empPw}, emp_name = #{empName}, emp_addr = #{empAddr},
+        emp_addr_detail = #{empAddrDetail}, emp_post = #{empPost}, emp_phone = #{empPhone}, emp_image = #{empImage},
+        emp_store_image = '22', emp_hire_date = #{empHireDate}, emp_email = #{empEmail}
+    </update>
+    
+    <delete id="employeeDelete">
+        delete from employees where emp_num = #{empNum}
+    </delete>
+</mapper>
