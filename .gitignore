@@ -7,6 +7,7 @@ tmp/
 *.swp
 *~.nib
 *~.lst
+*~.MF
 local.properties
 .settings/
 .loadpath
@@ -14,6 +15,7 @@ local.properties
 target/m2e-wtp/**
 target/maven-status/**
 target/surefire-reports/**
+
 
 # Compiled class file
 *.class
