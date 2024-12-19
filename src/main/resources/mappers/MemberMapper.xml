@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DDL.mapper.MemberMapper">
+	<sql id="memberBaseColumns">
+		MEMBER_NUM, MEMBER_ID, MEMBER_PW, MEMBER_NAME, MEMBER_PHONE, MEMBER_AGE, MEMBER_ADDR
+		, MEMBER_ADDR_DETAIL, MEMBER_POST, MEMBER_BIRTH, MEMBER_REGIST, GENDER, MEMBER_EMAIL
+	</sql>
+	
+	<insert id="memberInsert" parameterType="memberDTO">
+		insert into members(<include refid="memberBaseColumns"/>)
+		values((select concat('mem_', nvl(substr(max(member_num),5), 100000) + 1) from members)
+		, #{memberId}, #{memberPw}, #{memberName}, #{memberPhone}
+		, (SELECT FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE('2001/02/02', 'yyyy-MM-dd')) / 12) FROM dual), #{memberAddr}, #{memberAddrDetail}, #{memberPost}
+		, #{memberBirth}, sysdate, #{gender}, #{memberEmail})
+	</insert>
+	
+	<select id="memberSelectAll" resultType="memberDTO">
+		select <include refid="memberBaseColumns"/> from members
+	</select>
+	
+	<select id="memberSelectOne" resultType="memberDTO" parameterType="string">
+		select <include refid="memberBaseColumns"/> from members
+		where member_num = #{memberNum}
+	</select>
+	
+	<update id="memberUpdate" parameterType="memberDTO">
+		update members set
+		MEMBER_NUM = #{memberNum}
+		, MEMBER_ID = #{memberId}
+		, MEMBER_NAME = #{memberName}
+		, MEMBER_PHONE = #{memberPhone}
+		, MEMBER_ADDR = #{memberAddr}
+		, MEMBER_ADDR_DETAIL = #{memberAddrDetail}
+		, MEMBER_POST = #{memberPost}
+		, MEMBER_BIRTH = #{memberBirth}
+		, GENDER = #{gender}
+		, MEMBER_EMAIL = #{memberEmail}
+		where MEMBER_NUM = #{memberNum}
+	</update>
+	
+	<delete id="memberDelete" parameterType="string">
+		delete from members
+		where member_num = #{memberNum}
+	</delete>
+</mapper>
