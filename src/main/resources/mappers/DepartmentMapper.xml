@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="DDL.mapper.DepartmentMapper">
+	<sql id="departmentColumns">
+		DEPARTMENT_NUM, DEPARTMENT_NAME, DEPARTMENT_ADDR, DEPARTMENT_TEL
+	</sql>
+	
+	<insert id="departmentWrite">
+		insert into department(<include refid="departmentColumns"></include>)
+		values('dep_101', #{departmentName}, #{departmentAddr}, #{departmentTel})
+	</insert>
+	
+	<select id="departmentSelectList" resultType = "departmentDTO">
+		select <include refid="departmentColumns"></include> from department
+	</select>
+	
+	<select id="departmentSelectOne">
+		select <include refid="departmentColumns"></include> from department where department_num = #{departmentNum}
+	</select>
+	
+	<update id="departmentUpdate">
+		update department set department_name = #{departmentName}, department_addr = #{departmentAddr},
+		department_tel = #{departmentTel} where department_num = #{departmentNum}
+	</update>
+	
+	<delete id="departmentDelete">
+		delete from department where department_num = #{departmentNum}
+	</delete>
+</mapper>

@@ -42,6 +42,7 @@
 		<div class="spinner-grow text-primary" role="status"></div>
 	</div>
 	<!-- Spinner End -->
+	
 	<!-- Navbar start -->
 	<div class="container-fluid fixed-top">
 		<div class="container px-0">
@@ -121,12 +122,12 @@
 
 	<!-- Single Page Header start -->
 	<div class="container-fluid page-header py-5">
-		<h1 class="text-center text-white display-6">직원 상세정보</h1>
+		<h1 class="text-center text-white display-6">부서 상세정보</h1>
 		<ol class="breadcrumb justify-content-center mb-0">
 			<li class="breadcrumb-item"><a href="/">홈</a></li>
-			<li class="breadcrumb-item"><a href="/employee/employeeList">직원
+			<li class="breadcrumb-item"><a href="/department/departmentList">부서
 					리스트</a></li>
-			<li class="breadcrumb-item active text-white">직원 상세보기</li>
+			<li class="breadcrumb-item active text-white">부서 상세보기</li>
 		</ol>
 	</div>
 	<!-- Single Page Header End -->
@@ -139,30 +140,21 @@
 				<div class="col-lg-8 col-xl-9">
 					<div class="row g-4">
 						<div class="col-lg-6">
-							<div class="border rounded">
-								<a href="#"> <img src="/static/img/single-item.jpg"
-									class="img-fluid rounded" alt="Image">
-								</a>
+							<div class="border rounded" style = " text-align : center;">
+								<i class="fa-solid fa-building" style="font-size : 300px;"></i>
 							</div>
 						</div>
 						<div class="col-lg-6">
-							<h4 class="fw-bold mb-3">[[${employeeDTO.empName}]]</h4>
-							<p class="mb-3">[[${employeeDTO.departmentNum}]]</p>
-							<p class="mb-4">직원번호 : [[${employeeDTO.empNum}]]</p>
-							<p class="mb-4">아이디 : [[${employeeDTO.empId}]]</p>
-							<p class="mb-4">주소 : [[${employeeDTO.empAddr}]]</p>
-							<p class="mb-4">상세주소 : [[${employeeDTO.empAddrDetail}]]</p>
-							<p class="mb-4">우편번호 : [[${employeeDTO.empPost}]]</p>
-							<p class="mb-4">전화번호 : [[${employeeDTO.empPhone}]]</p>
-							<p class="mb-4">입사일 :
-								[[${#dates.format(employeeDTO.empHireDate, 'yyyy-MM-dd')}]]</p>
-							<p class="mb-4">이메일 : [[${employeeDTO.empEmail}]]</p>
+							<h4 class="fw-bold mb-3">[[${departmentDTO.departmentName}]]</h4>
+							<p class="mb-4">부서번호 : [[${departmentDTO.departmentNum}]]</p>
+							<p class="mb-4">주소 : [[${departmentDTO.departmentAddr}]]</p>
+							<p class="mb-4">전화번호 : [[${departmentDTO.departmentTel}]]</p>
 							<a
-								th:href="|/employee/employeeModify?empNum=${employeeDTO.empNum}|"
+								th:href="|/department/departmentModify?departmentNum=${departmentDTO.departmentNum}|"
 								class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
 								<i class="fa-solid fa-pen" style="margin-right: 10px;"></i>수정하기
 							</a> <a
-								th:href="|/employee/employeeDelete?empNum=${employeeDTO.empNum}|"
+								th:href="|/department/departmentDelete?departmentNum=${departmentDTO.departmentNum}|"
 								class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
 								<i class="fa-solid fa-circle-xmark" style="margin-right: 10px;"></i>삭제하기
 							</a>

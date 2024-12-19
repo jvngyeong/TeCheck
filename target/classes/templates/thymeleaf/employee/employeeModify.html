@@ -36,13 +36,18 @@
 <link href="/static/css/style.css" rel="stylesheet">
 </head>
 <body>
+	<!-- Spinner Start -->
+	<div id="spinner"
+		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+		<div class="spinner-grow text-primary" role="status"></div>
+	</div>
+	<!-- Spinner End -->
 	<!-- Navbar start -->
 	<div class="container-fluid fixed-top">
 		<div class="container px-0">
 			<nav class="navbar navbar-light bg-white navbar-expand-xl">
-				<a href="/" class="navbar-brand">
-					<h1 class="text-primary display-6" style="margin-top: 8px">TeCheck</h1>
-				</a>
+				<a href="/" class="navbar-brand"><h1
+						class="text-primary display-6" style="margin-top: 8px">TeCheck</h1></a>
 				<button class="navbar-toggler py-2 px-3" type="button"
 					data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
 					<span class="fa fa-bars text-primary"></span>
@@ -65,7 +70,9 @@
 						<a href="contact.html" class="nav-item nav-link">Contact</a> <a
 							href="contact.html" class="nav-item nav-link">회원 관리</a> <a
 							href="/employee/employeeList" class="nav-item nav-link">직원 관리</a>
-						<a href="contact.html" class="nav-item nav-link">상품 관리</a>
+						<a href="contact.html" class="nav-item nav-link">상품 관리</a> <a
+							href="/department/departmentList" class="nav-item nav-link">부서
+							관리</a>
 					</div>
 					<div class="d-flex m-3 me-0">
 						<button
@@ -88,88 +95,102 @@
 
 	<!-- Single Page Header start -->
 	<div class="container-fluid page-header py-5">
-		<h1 class="text-center text-white display-6">직원 상세정보</h1>
+		<h1 class="text-center text-white display-6">직원 정보 수정</h1>
 		<ol class="breadcrumb justify-content-center mb-0">
 			<li class="breadcrumb-item"><a href="/">홈</a></li>
-			<li class="breadcrumb-item"><a href="/employee/employeeList">직원 리스트</a></li>
-			<li class="breadcrumb-item"><a th:href="|/employee/employeeDetail?empNum=${employeeDTO.empNum}|">직원 상세보기</a></li>
+			<li class="breadcrumb-item"><a href="/employee/employeeList">직원
+					리스트</a></li>
+			<li class="breadcrumb-item"><a
+				th:href="|/employee/employeeDetail?empNum=${employeeDTO.empNum}|">직원
+					상세보기</a></li>
 			<li class="breadcrumb-item active text-white">직원 정보 수정</li>
 		</ol>
 	</div>
 	<!-- Single Page Header End -->
 
 
-	<div class="container" style = "margin-top : 3rem;">
-		<form action = "/employee/employeeModify" method = "post">
+	<div class="container" style="margin-top: 3rem;">
+		<form action="/employee/employeeModify" method="post">
 			<div class="row">
 				<h4>기본 정보</h4>
 				<div class="input-group input-group-icon">
-					<input th:value = "${employeeDTO.empNum}" name = "empNum" type="text" placeholder="직원 번호" readonly="readonly"/>
+					<input th:value="${employeeDTO.empNum}" name="empNum" type="text"
+						placeholder="직원 번호" readonly="readonly" />
 					<div class="input-icon icon-center">
 						<i class="fa-solid fa-id-card"></i>
 					</div>
 				</div>
 				<div class="input-group input-group-icon">
-					<input th:value = "${employeeDTO.empId}" name = "empId" type="text" placeholder="아이디" />
+					<input th:value="${employeeDTO.empId}" name="empId" type="text"
+						placeholder="아이디" />
 					<div class="input-icon icon-center">
 						<i class="fa fa-user"></i>
 					</div>
 				</div>
 				<div class="input-group input-group-icon">
-					<input name = "empPw" type="password" placeholder="비밀번호" />
+					<input name="empPw" type="password" placeholder="비밀번호" />
 					<div class="input-icon icon-center">
 						<i class="fa fa-key"></i>
 					</div>
 				</div>
 				<div class="input-group input-group-icon">
-					<input th:value = "${employeeDTO.empName}"  name = "empName" type="text" placeholder="이름" />
+					<input th:value="${employeeDTO.empName}" name="empName" type="text"
+						placeholder="이름" />
 					<div class="input-icon icon-center">
 						<i class="fa fa-user"></i>
 					</div>
 				</div>
 				<div class="input-group input-group-icon">
-					<input th:value = "${employeeDTO.empEmail}" name = "empEmail" type="email" placeholder="이메일" />
+					<input th:value="${employeeDTO.empEmail}" name="empEmail"
+						type="email" placeholder="이메일" />
 					<div class="input-icon icon-center">
 						<i class="fa fa-envelope"></i>
 					</div>
 				</div>
 				<div class="input-group input-group-icon">
-					<input th:value = "${employeeDTO.empAddr}" name = "empAddr" type="text" placeholder="주소" />
+					<input th:value="${employeeDTO.empAddr}" name="empAddr" type="text"
+						placeholder="주소" />
 					<div class="input-icon icon-center">
 						<i class="fa fa-location-dot"></i>
 					</div>
 				</div>
 				<div class="input-group input-group-icon">
-					<input th:value = "${employeeDTO.empAddrDetail}" name = "empAddrDetail" type="text" placeholder="상세주소" />
+					<input th:value="${employeeDTO.empAddrDetail}" name="empAddrDetail"
+						type="text" placeholder="상세주소" />
 					<div class="input-icon icon-center">
 						<i class="fa-solid fa-house"></i>
 					</div>
 				</div>
 				<div class="input-group input-group-icon">
-					<input th:value = "${employeeDTO.empPost}" name = "empPost" type="text" placeholder="우편번호" />
+					<input th:value="${employeeDTO.empPost}" name="empPost" type="text"
+						placeholder="우편번호" />
 					<div class="input-icon icon-center">
 						<i class="fa-solid fa-signs-post"></i>
 					</div>
 				</div>
 				<div class="input-group input-group-icon">
-					<input th:value = "${employeeDTO.empPhone}"  name = "empPhone" type="text" placeholder="전화번호" />
+					<input th:value="${employeeDTO.empPhone}" name="empPhone"
+						type="text" placeholder="전화번호" />
 					<div class="input-icon icon-center">
 						<i class="fa-solid fa-phone"></i>
 					</div>
 				</div>
 			</div>
 			<div class="row">
-					<h4>직원 사진</h4>
-					<div class="input-group">
-						<input th:value = "${employeeDTO.empImage}" name = "empImage" type="file"/>
-					</div>
-					<h4>직원 가입일</h4>
-					<div class="input-group">
-						<input th:value = "${#dates.format(employeeDTO.empHireDate, 'yyyy-MM-dd')}" name = "empHireDate" type="date"/>
-					</div>
+				<h4>직원 사진</h4>
+				<div class="input-group">
+					<input th:value="${employeeDTO.empImage}" name="empImage"
+						type="file" />
+				</div>
+				<h4>직원 가입일</h4>
+				<div class="input-group">
+					<input
+						th:value="${#dates.format(employeeDTO.empHireDate, 'yyyy-MM-dd')}"
+						name="empHireDate" type="date" />
+				</div>
 			</div>
 			<div class="wrap">
-			  <input type = "submit" value = "수정하기" class="button">
+				<input type="submit" value="수정하기" class="button">
 			</div>
 		</form>
 	</div>

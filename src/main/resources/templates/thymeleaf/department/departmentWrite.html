@@ -93,87 +93,50 @@
 	</div>
 	<!-- Navbar End -->
 
-
-	<!-- Modal Search Start -->
-	<div class="modal fade" id="searchModal" tabindex="-1"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-fullscreen">
-			<div class="modal-content rounded-0">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Search by
-						keyword</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body d-flex align-items-center">
-					<div class="input-group w-75 mx-auto d-flex">
-						<input type="search" class="form-control p-3"
-							placeholder="keywords" aria-describedby="search-icon-1">
-						<span id="search-icon-1" class="input-group-text p-3"><i
-							class="fa fa-search"></i></span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Modal Search End -->
-
-
-	<!-- Single Page Header start -->
-	<div class="container-fluid page-header py-5">
-		<h1 class="text-center text-white display-6">직원 상세정보</h1>
-		<ol class="breadcrumb justify-content-center mb-0">
-			<li class="breadcrumb-item"><a href="/">홈</a></li>
-			<li class="breadcrumb-item"><a href="/employee/employeeList">직원
-					리스트</a></li>
-			<li class="breadcrumb-item active text-white">직원 상세보기</li>
-		</ol>
-	</div>
-	<!-- Single Page Header End -->
-
-
-	<!-- Single Product Start -->
-	<div class="container-fluid py-5 mt-5">
+	<!-- Fruits Shop Start-->
+	<div class="container-fluid fruite py-5"
+		style="padding-top: 7rem !important;">
 		<div class="container py-5">
-			<div class="row g-4 mb-5 justify-content-center">
-				<div class="col-lg-8 col-xl-9">
-					<div class="row g-4">
-						<div class="col-lg-6">
-							<div class="border rounded">
-								<a href="#"> <img src="/static/img/single-item.jpg"
-									class="img-fluid rounded" alt="Image">
-								</a>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<h4 class="fw-bold mb-3">[[${employeeDTO.empName}]]</h4>
-							<p class="mb-3">[[${employeeDTO.departmentNum}]]</p>
-							<p class="mb-4">직원번호 : [[${employeeDTO.empNum}]]</p>
-							<p class="mb-4">아이디 : [[${employeeDTO.empId}]]</p>
-							<p class="mb-4">주소 : [[${employeeDTO.empAddr}]]</p>
-							<p class="mb-4">상세주소 : [[${employeeDTO.empAddrDetail}]]</p>
-							<p class="mb-4">우편번호 : [[${employeeDTO.empPost}]]</p>
-							<p class="mb-4">전화번호 : [[${employeeDTO.empPhone}]]</p>
-							<p class="mb-4">입사일 :
-								[[${#dates.format(employeeDTO.empHireDate, 'yyyy-MM-dd')}]]</p>
-							<p class="mb-4">이메일 : [[${employeeDTO.empEmail}]]</p>
-							<a
-								th:href="|/employee/employeeModify?empNum=${employeeDTO.empNum}|"
-								class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
-								<i class="fa-solid fa-pen" style="margin-right: 10px;"></i>수정하기
-							</a> <a
-								th:href="|/employee/employeeDelete?empNum=${employeeDTO.empNum}|"
-								class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
-								<i class="fa-solid fa-circle-xmark" style="margin-right: 10px;"></i>삭제하기
-							</a>
-						</div>
+			<div class="tab-class text-center">
+				<div class="row g-4">
+					<div class="col-lg-4 text-start">
+						<h1 style="display: inline-block">부서 추가</h1>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- Single Product End -->
+	<!-- Fruits Shop End-->
 
+
+	<div class="container">
+		<form action="/department/departmentWrite" method="post">
+			<div class="row">
+				<h4>부서 정보</h4>
+				<div class="input-group input-group-icon">
+					<input name="departmentName" type="text" placeholder="부서 이름" />
+					<div class="input-icon icon-center">
+						<i class="fa-solid fa-building"></i>
+					</div>
+				</div>
+				<div class="input-group input-group-icon">
+					<input name="departmentAddr" type="text" placeholder="부서 주소" />
+					<div class="input-icon icon-center">
+						<i class="fa fa-location-dot"></i>
+					</div>
+				</div>
+				<div class="input-group input-group-icon">
+					<input name="departmentTel" type="text" placeholder="전화번호" />
+					<div class="input-icon icon-center">
+						<i class="fa-solid fa-phone"></i>
+					</div>
+				</div>
+			</div>
+			<div class="wrap">
+				<input type="submit" value="추가하기" class="button">
+			</div>
+		</form>
+	</div>
 
 	<!-- Footer Start -->
 	<div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
@@ -279,8 +242,6 @@
 		</div>
 	</div>
 	<!-- Copyright End -->
-
-
 
 	<!-- Back to Top -->
 	<a href="#"
