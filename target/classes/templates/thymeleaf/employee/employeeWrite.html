@@ -68,9 +68,9 @@
 							</div>
 						</div>
 						<a href="contact.html" class="nav-item nav-link">Contact</a> <a
-							href="contact.html" class="nav-item nav-link">회원 관리</a> <a
+							href="/member/memberList" class="nav-item nav-link">회원 관리</a> <a
 							href="/employee/employeeList" class="nav-item nav-link">직원 관리</a>
-						<a href="contact.html" class="nav-item nav-link">상품 관리</a> <a
+						<a href="/goods/goodsList" class="nav-item nav-link">상품 관리</a> <a
 							href="/department/departmentList" class="nav-item nav-link">부서
 							관리</a>
 					</div>
@@ -113,6 +113,17 @@
 		<form action="/employee/employeeWrite" method="post">
 			<div class="row">
 				<h4>기본 정보</h4>
+				<div class="input-group input-group-icon">
+					<select name="empId">
+						<option value = "" disabled hidden selected>부서를 선택해주세요.</option>
+						<th:block th:each = "departmentDTO : ${departmentList}">
+							<option th:value="${departmentDTO.departmentNum}">[[${departmentDTO.departmentName}]]</option>
+						</th:block>
+					</select>
+					<div class="input-icon icon-center">
+						<i class="fa-solid fa-building"></i>
+					</div>
+				</div>
 				<div class="input-group input-group-icon">
 					<input name="empId" type="text" placeholder="아이디" />
 					<div class="input-icon icon-center">

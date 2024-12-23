@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import DDL.command.EmployeeCommand;
+import DDL.service.department.DepartmentListService;
 import DDL.service.employee.EmployeeDeleteService;
 import DDL.service.employee.EmployeeDetailService;
 import DDL.service.employee.EmployeeListService;
@@ -31,6 +32,10 @@ public class EmployeeController {
 	
 	@Autowired
 	EmployeeDeleteService employeeDeleteService;
+	
+	@Autowired
+	DepartmentListService departmentListService;
+	
 	@GetMapping("employeeList")
 	public String employeeList(Model model) {
 		employeeListService.execute(model);
@@ -38,7 +43,8 @@ public class EmployeeController {
 	}
 	
 	@GetMapping("employeeWrite")
-	public String employeeWrite() {
+	public String employeeWrite(Model model) {
+		departmentListService.execute(model);
 		return "thymeleaf/employee/employeeWrite";
 	}
 	
