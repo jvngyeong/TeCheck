@@ -93,8 +93,23 @@
 								<i class="fas fa-user fa-2x"></i>
 							</a>
 							<div class="dropdown-menu m-0 bg-secondary rounded-0">
-								<a href="/login/loginForm" class="dropdown-item">로그인</a> <a
-									href="/regist/registForm" class="dropdown-item">회원가입</a>
+								<th:block th:if="${session.auth == null}">
+								<a href="/login/loginForm" class="dropdown-item">로그인</a>
+								<a href="/regist/registForm" class="dropdown-item">회원가입</a>
+								</th:block>
+								<th:block th:if="${session.auth != null}">
+									<th:block th:if="${session.auth.grade == 'mem'}">
+									<a href="#" class="dropdown-item">회원 로그인 성공</a>
+									<a href="/myPage/memberMyPage" class="dropdown-item">마이페이지</a>
+									</th:block>
+									<th:block th:if="${session.auth.grade == 'emp'}">
+									<a href="#" class="dropdown-item">직원 로그인 성공</a>
+									<a href="/myPage/empMyPage" class="dropdown-item">마이페이지</a>
+									</th:block>
+									<a href="/login/logout" class="dropdown-item">로그아웃</a>
+								</th:block>
+									
+								
 							</div>
 						</div>
 
