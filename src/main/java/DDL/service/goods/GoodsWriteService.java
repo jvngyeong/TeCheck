@@ -16,16 +16,10 @@ public class GoodsWriteService {
         GoodsDTO goodsDTO = new GoodsDTO();
         BeanUtils.copyProperties(goodsCommand, goodsDTO);
         goodsDTO.setGoodsNum("goods_100001");
-        goodsDTO.setGoodsName("a");
-        goodsDTO.setGoodsPrice(11);
-        goodsDTO.setGoodsContents("11");
-        goodsDTO.setVisitCount(11);
         goodsDTO.setGoodsMainImage("11");
         goodsDTO.setGoodsDetailImage("11");
         goodsDTO.setGoodsMainStoreImage("11");
         goodsDTO.setGoodsDetailStoreImage("11");
-        goodsDTO.setGoodsRegist("");
-        goodsDTO.setGoodsUpdateDate("");
         goodsMapper.goodsWrite(goodsDTO);
     }
 }

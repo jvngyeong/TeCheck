@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import DDL.command.GoodsCommand;
@@ -31,24 +32,41 @@ public class GoodsController {
     @Autowired
     GoodsDeleteService goodsDeleteService;
 	@GetMapping("goodsList")
-	public String List() {
+	public String List(Model model) {
+		goodsListService.execute(model);
 		return "thymeleaf/goods/goodsList";
 	}
-	@GetMapping("goodsForm")
-	public String form() {
+
+	
+	@GetMapping("goodsWrite")
+	public String goodsWrite() {
 		return "thymeleaf/goods/goodsWrite";
 	}
-	@GetMapping("goodsWrite")
-	public String goodsForm(Model model) {
-		GoodsCommand goodsCommand = new GoodsCommand();
-		model.addAttribute("goodsCommand", goodsCommand);
-		return "thymeleaf/goods/goodsForm";
+	
+	@PostMapping("goodsWrite")
+	public String goodsWrite(Model model, GoodsCommand goodsCommand) {
+		goodsWriteService.execute(goodsCommand);
+		return "redirect:/goods/goodsList";
 	}
 	
-	@GetMapping("goodsInfo")
-	public String Info() {
-		return "thymeleaf/goods/goodsInfo";
+	@GetMapping("goodsDetail")
+	public String goodsDetail(String goodsNum, Model model) {
+		goodsDetailService.execute(goodsNum, model);
+		return "thymeleaf/goods/goodsDetail";
 	}
-	
-	
+	@GetMapping("goodsModify")
+	public String goodsModify(String goodsNum, Model model) {
+		goodsDetailService.execute(goodsNum, model);
+		return "thymeleaf/goods/goodsModify";
+	}
+	@PostMapping("goodsModify")
+	public String goodsModify(GoodsCommand goodsCommand) {
+		goodsUpdateService.execute(goodsCommand);
+		return "redirect:/goods/goodsDetail?goodsNum="+goodsCommand.getGoodsNum();
+	}
+	@GetMapping("goodsDelete")
+	public String goodsDelete(String goodsNum) {
+		goodsDeleteService.execute(goodsNum);
+		return "redirect:/goods/goodsList";
+	}
 }
