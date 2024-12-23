@@ -64,14 +64,24 @@
                             <a href="contact.html" class="nav-item nav-link">상품 관리</a>
                             <a href="/department/departmentList" class="nav-item nav-link">부서 관리</a>
                         </div>
-                        <div class="d-flex m-3 me-0">
-                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                        <div class="d-flex m-3 me-0" style = "align-content: stretch;">
+                            <button style="margin-left: 8px;margin-top: 3px;" class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
                             <a href="#" class="position-relative me-4 my-auto">
                                 <i class="fa fa-shopping-bag fa-2x"></i>
                                 <span class="cartBtn position-absolute rounded-circle d-flex align-items-center justify-content-center text-white px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
                             </a>
+                            <div class="nav-item dropdown">
+                                <a  style = "display:block; padding-left: 4px;" href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+									<i class="fas fa-user fa-2x"></i>
+								</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="/login/loginForm" class="dropdown-item">로그인</a>
+                                    <a href="/regist/registForm" class="dropdown-item">회원가입</a>
+                                </div>
+                            </div>
+                            
                             <a href="#" class="my-auto">
-                                <i class="fas fa-user fa-2x"></i>
+                                
                             </a>
                         </div>
                     </div>

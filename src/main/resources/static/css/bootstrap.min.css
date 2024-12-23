@@ -3635,10 +3635,6 @@ fieldset:disabled .btn {
     transition: none;
   }
 }
-.nav-link:hover,
-.nav-link:focus {
-  color: #679d06;
-}
 .nav-link.disabled {
   color: #6c757d;
   pointer-events: none;
