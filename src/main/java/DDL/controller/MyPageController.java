@@ -12,6 +12,8 @@ import DDL.service.myPage.EmpMyPageService;
 import DDL.service.myPage.MemberMyPageService;
 import DDL.service.myPage.MyPagePwConService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @Controller
@@ -48,11 +50,14 @@ public class MyPageController {
 		}
 	}
 	
-	
 	@GetMapping("memberModify")
 	public String memberModify(HttpSession session, Model model) {
 		memberMyPageService.execute(session, model);
 		return "thymeleaf/myPage/memberModify";
 	}
-	
+	@PostMapping("memberUpdate")
+	public String memberUpdate() {
+		
+		return "redirect:memberMyPage";
+	}
 }
