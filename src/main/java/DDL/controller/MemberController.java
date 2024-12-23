@@ -13,13 +13,6 @@ import DDL.service.members.MemberDetailService;
 import DDL.service.members.MemberListService;
 import DDL.service.members.MemberUpdateService;
 import DDL.service.members.MemberWriteService;
-
-
-
-
-
-
-
 @Controller
 @RequestMapping("member")
 public class MemberController {
