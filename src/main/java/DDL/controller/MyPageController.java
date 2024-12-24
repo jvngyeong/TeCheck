@@ -7,12 +7,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import DDL.command.LoginCommand;
+import DDL.command.EmployeeCommand;
+import DDL.command.MemberCommand;
 import DDL.service.myPage.EmpMyPageService;
+import DDL.service.myPage.EmpMyUpdateService;
+import DDL.service.myPage.MemberMyDropService;
 import DDL.service.myPage.MemberMyPageService;
+import DDL.service.myPage.MemberMyUpdateService;
 import DDL.service.myPage.MyPagePwConService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.RequestBody;
+
+
 
 
 
@@ -25,11 +30,12 @@ public class MyPageController {
 	MemberMyPageService memberMyPageService;
 	@Autowired
 	MyPagePwConService myPagePwConService;
-	@GetMapping("empMyPage")
-	public String empMyPage(HttpSession session, Model model) {
-		empMyPageService.execute(session, model);
-		return "thymeleaf/myPage/empMyPage";
-	}
+	@Autowired
+	MemberMyUpdateService memberMyUpdateService;
+	@Autowired
+	MemberMyDropService memberMyDropService;
+	@Autowired
+	EmpMyUpdateService empMyUpdateService;
 	@GetMapping("memberMyPage")
 	public String memberMyPage(HttpSession session, Model model) {
 		memberMyPageService.execute(session, model);
@@ -56,8 +62,31 @@ public class MyPageController {
 		return "thymeleaf/myPage/memberModify";
 	}
 	@PostMapping("memberUpdate")
-	public String memberUpdate() {
-		
+	public String memberUpdate(HttpSession session, MemberCommand memberCommand) {
+		memberMyUpdateService.execute(session, memberCommand);
 		return "redirect:memberMyPage";
 	}
+	@GetMapping("memberDelete")
+	public String memberDelete(HttpSession session) {
+		memberMyDropService.execute(session);
+		return "redirect:/";
+	}
+	
+	
+	@GetMapping("empMyPage")
+	public String empMyPage(HttpSession session, Model model) {
+		empMyPageService.execute(session, model);
+		return "thymeleaf/myPage/empMyPage";
+	}
+	@GetMapping("empModify")
+	public String empModify(HttpSession session, Model model) {
+		empMyPageService.execute(session, model);
+		return "thymeleaf/myPage/empModify";
+	}
+	@PostMapping("empUpdate")
+	public String empUpdate(HttpSession session, EmployeeCommand employeeCommand) {
+		empMyUpdateService.execute(session, employeeCommand);
+		return "redirect:empMyPage";
+	}
+	
 }

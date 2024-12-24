@@ -25,6 +25,7 @@
 <!-- Libraries Stylesheet -->
 <link href="/static/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
 <link href="/static/css/form.css" rel="stylesheet">
+<link href="/static/css/table.css" rel="stylesheet">
 <link href="/static/lib/owlcarousel/assets/owl.carousel.min.css"
 	rel="stylesheet">
 
@@ -54,9 +55,9 @@
 				</button>
 				<div class="collapse navbar-collapse bg-white" id="navbarCollapse">
 					<div class="navbar-nav mx-auto">
-						<a href="/" class="nav-item nav-link active">Home</a> 
-						<a href="/store/storeList" class="nav-item nav-link">상점</a> 
-						<a href="shop-detail.html" class="nav-item nav-link">Shop Detail</a>
+						<a href="/" class="nav-item nav-link active">Home</a> <a
+							href="shop.html" class="nav-item nav-link">Shop</a> <a
+							href="shop-detail.html" class="nav-item nav-link">Shop Detail</a>
 						<div class="nav-item dropdown">
 							<a style="display: block" href="#"
 								class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
@@ -68,7 +69,7 @@
 							</div>
 						</div>
 						<a href="contact.html" class="nav-item nav-link">Contact</a> <a
-							href="/member/memberList" class="nav-item nav-link">회원 관리</a> <a
+							href="contact.html" class="nav-item nav-link">회원 관리</a> <a
 							href="/employee/employeeList" class="nav-item nav-link">직원 관리</a>
 						<a href="/goods/goodsList" class="nav-item nav-link">상품 관리</a> <a
 							href="/department/departmentList" class="nav-item nav-link">부서
@@ -93,99 +94,81 @@
 	</div>
 	<!-- Navbar End -->
 
-	<!-- Fruits Shop Start-->
-	<div class="container-fluid fruite py-5"
-		style="padding-top: 7rem !important;">
-		<div class="container py-5">
-			<div class="tab-class text-center">
-				<div class="row g-4">
-					<div class="col-lg-4 text-start">
-						<h1 style="display: inline-block">직원 가입</h1>
+
+	<!-- Modal Search Start -->
+	<div class="modal fade" id="searchModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-fullscreen">
+			<div class="modal-content rounded-0">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Search by
+						keyword</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body d-flex align-items-center">
+					<div class="input-group w-75 mx-auto d-flex">
+						<input type="search" class="form-control p-3"
+							placeholder="keywords" aria-describedby="search-icon-1">
+						<span id="search-icon-1" class="input-group-text p-3"><i
+							class="fa fa-search"></i></span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- Fruits Shop End-->
+	<!-- Modal Search End -->
 
 
-	<div class="container">
-		<form action="/employee/employeeWrite" method="post">
-			<div class="row">
-				<h4>기본 정보</h4>
-				<div class="input-group input-group-icon">
-					<select name="departmentNum">
-						<option value = "" disabled hidden selected>부서를 선택해주세요.</option>
-						<th:block th:each = "departmentDTO : ${departmentList}">
-							<option th:value="${departmentDTO.departmentNum}">[[${departmentDTO.departmentName}]]</option>
-						</th:block>
-					</select>
-					<div class="input-icon icon-center">
-						<i class="fa-solid fa-building"></i>
-					</div>
-				</div>
-				<div class="input-group input-group-icon">
-					<input name="empId" type="text" placeholder="아이디" />
-					<div class="input-icon icon-center">
-						<i class="fa fa-user"></i>
-					</div>
-				</div>
-				<div class="input-group input-group-icon">
-					<input name="empPw" type="password" placeholder="비밀번호" />
-					<div class="input-icon icon-center">
-						<i class="fa fa-key"></i>
-					</div>
-				</div>
-				<div class="input-group input-group-icon">
-					<input name="empName" type="text" placeholder="이름" />
-					<div class="input-icon icon-center">
-						<i class="fa fa-user"></i>
-					</div>
-				</div>
-				<div class="input-group input-group-icon">
-					<input name="empEmail" type="email" placeholder="이메일" />
-					<div class="input-icon icon-center">
-						<i class="fa fa-envelope"></i>
-					</div>
-				</div>
-				<div class="input-group input-group-icon">
-					<input name="empAddr" type="text" placeholder="주소" />
-					<div class="input-icon icon-center">
-						<i class="fa fa-location-dot"></i>
-					</div>
-				</div>
-				<div class="input-group input-group-icon">
-					<input name="empAddrDetail" type="text" placeholder="상세주소" />
-					<div class="input-icon icon-center">
-						<i class="fa-solid fa-house"></i>
-					</div>
-				</div>
-				<div class="input-group input-group-icon">
-					<input name="empPost" type="text" placeholder="우편번호" />
-					<div class="input-icon icon-center">
-						<i class="fa-solid fa-signs-post"></i>
-					</div>
-				</div>
-				<div class="input-group input-group-icon">
-					<input name="empPhone" type="text" placeholder="전화번호" />
-					<div class="input-icon icon-center">
-						<i class="fa-solid fa-phone"></i>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-half">
-					<h4>직원 사진</h4>
-					<div class="input-group">
-						<input name="empImage" type="file" />
-					</div>
-				</div>
-			</div>
-			<div class="wrap">
-				<input type="submit" value="가입하기" class="button">
-			</div>
-		</form>
+	<!-- Single Page Header start -->
+	<div class="container-fluid page-header py-5">
+		<h1 class="text-center text-white display-6">상품 입고관리</h1>
+		<ol class="breadcrumb justify-content-center mb-0">
+			<li class="breadcrumb-item"><a href="/">홈</a></li>
+			<li class="breadcrumb-item"><a href="/goods/goodsList">상품 리스트</a></li>
+			<li class="breadcrumb-item active text-white">상품 입고관리</li>
+		</ol>
 	</div>
+	<!-- Single Page Header End -->
+	
+	<!-- Single Product Start -->
+	
+	<div class="container">
+	  <table class="responsive-table">
+	    <caption style="caption-side: top;">상품 입고 현황</caption>
+	    <caption style="caption-side: top; text-align: right !important"><a href="/goods/goodsIpgo"
+							class="btn border border-secondary rounded-pill px-3 text-primary">상품 입고</a></caption>
+	    <thead>
+	      <tr>
+	        <th scope="col">번호</th>
+	        <th scope="col">입고 번호</th>
+	        <th scope="col">상품 번호</th>
+	        <th scope="col">수량</th>
+	        <th scope="col">입고일</th>
+	        <th scope="col">가격</th>
+	      </tr>
+	    </thead>
+	    <tfoot>
+	      <tr>
+	        <td colspan="6">Sources: <a href="http://en.wikipedia.org/wiki/List_of_highest-grossing_animated_films" rel="external">Wikipedia</a> &amp; <a href="http://www.boxofficemojo.com/genres/chart/?id=animation.htm" rel="external">Box Office Mojo</a>. Data is current as of March 31, 2021.</td>
+	      </tr>
+	    </tfoot>
+	    <tbody>
+	       <tr th:each="dto , idx : ${list}" >
+				<td><a th:href="|goodsIpgoDetail?ipgoNum=${dto.ipgoNum}&goodsNum=${dto.goodsNum}|">[[${idx.count}]]</a></td>
+				<td><a th:href="@{goodsIpgoDetail(ipgoNum=${dto.ipgoNum},goodsNum=${dto.goodsNum})}">[[${dto.ipgoNum}]]</a></td>
+				<td>[[${dto.goodsNum}]]</td>
+				<td>[[${dto.ipgoQty}]]</td>
+				<td>[[${#numbers.formatCurrency(dto.ipgoPrice) + "원" }]]</td>
+				<th>[[${#dates.format(dto.ipgoDate,'yyyy-MM-dd')}]]</th>
+			</tr>
+	      
+	    </tbody>
+	  </table>
+	</div>
+	
+	<!-- Single Product End -->
+
 
 	<!-- Footer Start -->
 	<div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
@@ -291,6 +274,8 @@
 		</div>
 	</div>
 	<!-- Copyright End -->
+
+
 
 	<!-- Back to Top -->
 	<a href="#"
