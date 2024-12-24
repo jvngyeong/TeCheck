@@ -38,16 +38,109 @@
 <link href="/static/css/style.css" rel="stylesheet">
 
 <script type="text/javascript">
+	function directPurchase(){
+		var goodsNum = $("#goodsNum").val();
+		var cartQty = $("#cartQty").val();
+		var memberNum = $("#memberNum").val();
+		var goodsPrice = $("#goodsPrice").val();
+		var goodsName = $("#goodsName").val();
+		if(memberNum == "" || memberNum == null){
+			alert("로그인이 필요한 서비스입니다.");
+		}
+		else{
+		location.href = "/purchase/purchaseList?goodsNum="+goodsNum+"&cartQty="+cartQty+"&memberNum="+memberNum+"&goodsPrice="+goodsPrice+"&goodsName="+goodsName;
+		}
+	}
+
+	function cartInsert(){
+		$.ajax({
+			url : "/cart/cartInsert",
+			data : {"goodsNum" : '[[${goodsDTO.goodsNum}]]', "memberNum" : '[[${memberNum}]]', "cartQty" : $("#cartQty").val()},
+			success : function(result){
+				if(result == "200"){
+					con = confirm("상품을 담았습니다. 장바구니로 이동하시겠습니까?");
+					if(con){
+						location.href = "/cart/cart";
+					}
+				}
+				else if(result == "000"){
+					alert("로그인이 필요한 서비스입니다.");
+				}
+			},
+			error : function(result){
+				alert("오류가 발생했습니다.");
+			}
+		});
+	}
+	function wishCheck(){
+		$.ajax({
+			url : "/wish/wishCheck",
+			data : {"goodsNum" : '[[${goodsDTO.goodsNum}]]', "memberNum" : '[[${memberNum}]]'},
+			success : function(result){
+				if(result == "200"){
+					if(document.querySelector("#wishIcon i[class]").className == 'fa-regular fa-heart'){
+						var icon = '<i style = "color : red; margin : 0 0.5rem 0 0.5rem" class="fa fa-heart"></i>';
+					}
+					else{
+						var icon = '<i style = "margin : 0 0.5rem 0 0.5rem" class="fa-regular fa-heart"></i>';
+					}
+				$("#wishIcon").html(icon);
+				}
+			},
+			error : function(result){
+				alert("오류가 발생했습니다.");
+			}
+		});
+	}
 	$(function(){
+		wishCheck();
 		$("#wishBtn").click(function(){
-			alert("찜 버튼 클릭!");
+			$.ajax({
+				url : "/wish/wishMerge",
+				data : {"goodsNum" : '[[${goodsDTO.goodsNum}]]', "memberNum" : '[[${memberNum}]]'},
+				success : function(result){
+					if(result == "200"){
+						if(document.querySelector("#wishIcon i[class]").className == 'fa-regular fa-heart'){
+							var icon = '<i style = "color : red; margin : 0 0.5rem 0 0.5rem" class="fa fa-heart"></i>';
+						}
+						else{
+							var icon = '<i style = "margin : 0 0.5rem 0 0.5rem" class="fa-regular fa-heart"></i>';
+						}
+					$("#wishIcon").html(icon);
+					}
+					else if(result == "000"){
+						alert("로그인이 필요한 서비스입니다.");
+					}
+					else if(resullt = "900"){
+						alert("직원은 이용할 수 없는 서비스입니다.");
+					}
+				},
+				error : function(result){
+					alert("오류가 발생했습니다.");
+				}
+			});
 		})
+		 $('.quantity button').on('click', function () {
+			 var button = $(this);
+			 var oldValue = button.parent().parent().find('input').val();
+			 if (button.hasClass('btn-plus')) {
+				 var newVal = parseFloat(oldValue) + 1;
+			 } 
+			 else {
+				 if (oldValue > 1) {
+					 var newVal = parseFloat(oldValue) - 1;
+					 } 
+				 else {
+					 newVal = 1;
+					 }
+		        }
+			 button.parent().parent().find('input').val(newVal);
+			 });
 	})
+	
 </script>
 </head>
-
     <body>
-
     <!-- Spinner Start -->
 	<div id="spinner"
 		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
@@ -166,6 +259,10 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
+                            	<input type = "hidden" id = "goodsNum" th:value = "${goodsDTO.goodsNum}" />
+                            	<input type = "hidden" id = "goodsPrice" th:value = "${goodsDTO.goodsPrice}" />
+                            	<input type = "hidden" id = "goodsName" th:value = "${goodsDTO.goodsName}" />
+                            	<input type = "hidden" id = "memberNum" th:value = "${memberNum}" />
                                 <h4 class="fw-bold mb-3">[[${goodsDTO.goodsName}]]</h4>
                                 <h5 class="fw-bold mb-3">[[${#numbers.formatCurrency(goodsDTO.goodsPrice)}]]</h5>
                                 <div class="d-flex mb-4">
@@ -182,16 +279,22 @@
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0" value="1">
+                                    <input type="text" id = "cartQty" class="form-control form-control-sm text-center border-0" value="1">
                                     <div class="input-group-btn">
                                         <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <a id = "wishBtn" style = "padding: 0.5rem !important" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i id = "wishIcon" style = "margin : 0 0.5rem 0 0.5rem" class="fa-regular fa-heart"></i></a>
-                                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> 장바구니</a>
-                                <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-solid fa-cart-shopping me-2 text-primary"></i> 구매하기</a>
+                                
+                                <a id = "wishBtn" style = "padding: 0.5rem !important" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+                                	<div id = "wishIcon">
+                                		<i style = "margin : 0 0.5rem 0 0.5rem" class="fa-regular fa-heart">
+                               			</i>
+                                	</div>
+                                </a>
+                                <a onclick="cartInsert();" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> 장바구니</a>
+                                <a onclick="directPurchase();" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-solid fa-cart-shopping me-2 text-primary"></i> 구매하기</a>
                             </div>
                             <div class="col-lg-12">
                                 <nav>
@@ -742,7 +845,6 @@
     <script src="/static/lib/easing/easing.min.js"></script>
     <script src="/static/lib/waypoints/waypoints.min.js"></script>
     <script src="/static/lib/lightbox/js/lightbox.min.js"></script>
-    <script src="/static/lib/owlcarousel/owl.carousel.min.js"></script>
 
     <!-- Template Javascript -->
     <script src="/static/js/main.js"></script>

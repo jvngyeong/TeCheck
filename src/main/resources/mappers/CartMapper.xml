@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+   
+<mapper namespace="DDL.mapper.CartMapper">
+
+	<resultMap type="goodsCartDTO" id="goodsCartDTO">
+	    <association property="goodsDTO" javaType="goodsDTO">
+	        <id column="goods_num" property="goodsNum" javaType="String" jdbcType="VARCHAR"/>
+	        <result column="goods_name" property="goodsName" javaType="String" jdbcType="VARCHAR"/>
+	        <result column="goods_price" property="goodsPrice" javaType="Integer" jdbcType="INTEGER"/>
+	        <result column="goods_main_image" property="goodsMainImage" javaType="String" jdbcType="VARCHAR"/>
+	        <result column="goods_main_store_image" property="goodsMainStoreImage" javaType="String" jdbcType="VARCHAR"/>
+	    </association>
+	    <association property="cartDTO" javaType="cartDTO">
+	        <id column="goods_num" property="goodsNum" javaType="String" jdbcType="VARCHAR"/>
+	        <result column="member_num" property="memberNum" javaType="String" jdbcType="VARCHAR"/>
+	        <result column="cart_qty" property="cartQty" javaType="String" jdbcType="VARCHAR"/>
+	    </association>
+	</resultMap>
+
+	<update id="cartMerge">
+		merge into cart c
+			using (select goods_num from goods where goods_num = #{goodsNum}) g
+			on (c.goods_num = g.goods_num and c.member_num = #{memberNum})
+		when matched then
+			update set c.cart_qty = c.cart_qty + #{cartQty}, c.cart_date = sysdate where member_num = #{memberNum} and goods_num = #{goodsNum}
+		when not matched then
+			insert (goods_num, member_num, cart_date, cart_qty)
+			values (#{goodsNum}, #{memberNum}, sysdate, #{cartQty})
+	</update>
+	
+	<select id="cartSelect" resultMap="goodsCartDTO">
+		select c.goods_num, c.cart_qty, c.member_num,
+			   g.goods_main_image, g.goods_main_store_image, g.goods_name, g.goods_price
+		from cart c join goods g on c.goods_num = g.goods_num
+		where c.member_num = #{memberNum}
+	</select>
+	
+	<delete id="cartDelete">
+		delete from cart where goods_num = #{goodsNum} and member_num = #{memberNum}
+	</delete>
+	
+	<update id="cartUpdate">
+		update cart set cart_qty = #{cartQty} where goods_num = #{goodsNum} and member_num = #{memberNum}
+	</update>
+</mapper>

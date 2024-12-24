@@ -44,4 +44,8 @@
 		delete from members
 		where member_num = #{memberNum}
 	</delete>
+	
+	<select id="getMemberNum">
+		select member_num from members where member_id = #{memberId}
+	</select>
 </mapper>
