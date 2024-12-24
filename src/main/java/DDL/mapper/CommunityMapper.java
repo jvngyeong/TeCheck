@@ -11,4 +11,10 @@ public interface CommunityMapper {
 	void communityWrite(CommunityDTO communityDTO);
 
 	List<CommunityDTO> communityListSelect();
+
+	CommunityDTO communitySelectOne(String commNum);
+
+	void communityUpdate(CommunityDTO communityDTO);
+
+	void communityDelete(String commNum);
 }

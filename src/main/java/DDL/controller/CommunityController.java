@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import DDL.command.CommunityCommand;
+import DDL.service.community.CommunityDeleteService;
+import DDL.service.community.CommunityDetailService;
 import DDL.service.community.CommunityListService;
+import DDL.service.community.CommunityUpdateService;
 import DDL.service.community.CommunityWriteService;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("community")
@@ -18,18 +22,44 @@ public class CommunityController {
 	CommunityListService communityListService;
 	@Autowired
 	CommunityWriteService communityWriteService;
+	@Autowired
+	CommunityDetailService communityDetailService;
+	@Autowired
+	CommunityUpdateService communityUpdateService;
+	@Autowired
+	CommunityDeleteService communityDeleteService;
 	@GetMapping("communityList")
-	public String communitylist(Model model) {
-		communityListService.execute(model);
+	public String communityList(Model model, HttpSession session) {
+		communityListService.execute(model, session);
 		return "thymeleaf/community/communityList";
 	}
 	@GetMapping("communityWrite")
-	public String communitywrite() {
+	public String communityWrite(Model model) {
 		return "thymeleaf/community/communityWrite";
 	}
 	@PostMapping("communityWrite")
-	public String communitywrite(Model model, CommunityCommand communityCommand) {
-		communityWriteService.execute(communityCommand);
+	public String communityWrite(CommunityCommand communityCommand, HttpSession session) {
+		communityWriteService.execute(communityCommand, session);
+		return "redirect:/community/communityList";
+	}
+	@GetMapping("communityDetail")
+	public String communityDetail(String commNum, Model model) {
+		communityDetailService.execute(commNum, model);
+		return "thymeleaf/community/communityDetail";
+	}
+	@GetMapping("communityModify")
+	public String communityModify(String commNum, Model model) {
+		communityDetailService.execute(commNum, model);
+		return "thymeleaf/community/communityModify";
+	}
+	@PostMapping("communityModify")
+	public String communityModify(CommunityCommand communityCommand) {
+		communityUpdateService.execute(communityCommand);
+		return "redirect:/community/communityDetail?commNum="+communityCommand.getCommNum();
+	}
+	@GetMapping("communityDelete")
+	public String communityDelete(String commNum) {
+		communityDeleteService.execute(commNum);
 		return "redirect:/community/communityList";
 	}
 }

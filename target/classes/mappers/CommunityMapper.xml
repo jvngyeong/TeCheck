@@ -2,4 +2,25 @@
 <!DOCTYPE mapper PUBLIC
    "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="DDL.mapper.CommunityMapper"></mapper>
+<mapper namespace="DDL.mapper.CommunityMapper">
+	<sql id="communityColumns">
+			COMM_NUM, MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_CONTENTS
+	</sql>
+	<insert id="communityWrite" parameterType="communityDTO">
+			insert into community(<include refid="communityColumns"></include>)
+			values(#{commNum}, #{memberNum}, sysdate, #{commTitle}, #{commContents}) 
+	</insert>
+	<select id = "communityListSelect">
+			select rownum, <include refid="communityColumns"></include> from community order by comm_date
+	</select>
+	
+	<select id = "communitySelectOne">
+			select <include refid="communityColumns"></include> from community where comm_num = #{commNum}
+	</select>
+	<update id = "communityUpdate">
+			update community set COMM_TITLE = #{commTitle}, COMM_CONTENTS = #{commContents} where COMM_NUM = #{commNum}
+	</update>
+	<delete id = "communityDelete">
+			delete from community where COMM_NUM =#{commNum}
+	</delete>
+</mapper>

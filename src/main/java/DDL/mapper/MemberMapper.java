@@ -8,9 +8,10 @@ import DDL.domain.MemberDTO;
 
 @Mapper
 public interface MemberMapper {
-	public Integer memberInsert(MemberDTO dto);
-	public List<MemberDTO> memberSelectAll();
-	public MemberDTO memberSelectOne(String memberNum);
-	public Integer memberUpdate(MemberDTO dto);
-	public Integer memberDelete(String memberNum);
+   public Integer memberInsert(MemberDTO dto);
+   public List<MemberDTO> memberSelectAll();
+   public MemberDTO memberSelectOne(String memberNum);
+   public Integer memberUpdate(MemberDTO dto);
+   public Integer memberDelete(String memberNum);
+   public String getMemberNum(String memberId);
 }
