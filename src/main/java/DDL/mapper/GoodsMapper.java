@@ -8,13 +8,13 @@ import DDL.domain.GoodsDTO;
 @Mapper
 public interface GoodsMapper {
 
-    void goodsWrite(GoodsDTO goodsDTO);
+    Integer goodsWrite(GoodsDTO goodsDTO);
 
     List<GoodsDTO> goodsListSelect();
 
     GoodsDTO goodsSelectOne(String goodsNum);
 
-    void goodsUpdate(GoodsDTO goodsDTO);
+    Integer goodsUpdate(GoodsDTO goodsDTO);
 
-    void goodsDelete(String goodsNum);
+    Integer goodsDelete(String goodsNum);
 }

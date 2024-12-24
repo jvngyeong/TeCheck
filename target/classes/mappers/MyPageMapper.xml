@@ -9,4 +9,51 @@
 		from members
 		where MEMBER_ID = #{userId}
 	</select>
+	
+	<update id="memberUpdate" parameterType="memberDTO">
+		update members set
+		MEMBER_NUM = #{memberNum}
+		, MEMBER_ID = #{memberId}
+		, MEMBER_NAME = #{memberName}
+		, MEMBER_EMAIL = #{memberEmail}
+		, MEMBER_ADDR = #{memberAddr}
+		, MEMBER_ADDR_DETAIL = #{memberAddrDetail}
+		, MEMBER_POST = #{memberPost}
+		, MEMBER_PHONE = #{memberPhone}
+		, MEMBER_BIRTH = #{memberBirth}
+		, GENDER = #{gender}
+		where MEMBER_ID = #{memberId}
+	</update>
+	
+	<delete id="memberDelete" parameterType="string">
+		delete from members
+		where MEMBER_ID = #{memberId}
+	</delete>
+	
+	<select id="departmentSelect" resultType="string" parameterType="string">
+		select DEPARTMENT_NAME from department
+		where DEPARTMENT_NUM = #{departmentNum}
+	</select>
+	
+	<select id="empSelectOne" parameterType="string" resultType="employeeDTO">
+		select EMP_NUM, EMP_ID, EMP_NAME, EMP_ADDR, EMP_ADDR_DETAIL, EMP_POST, EMP_PHONE
+		, EMP_IMAGE, EMP_STORE_IMAGE, EMP_HIRE_DATE, DEPARTMENT_NUM, EMP_EMAIL
+		from employees
+		where EMP_ID = #{userId}
+	</select>
+	
+	<update id="empUpdate" parameterType="employeeDTO">
+		update employees set
+		EMP_NUM = #{empNum}
+		, EMP_ID = #{empId}
+		, EMP_NAME = #{empName}
+		, EMP_EMAIL = #{empEmail}
+		, EMP_ADDR = #{empAddr}
+		, EMP_ADDR_DETAIL = #{empAddrDetail}
+		, EMP_POST = #{empPost}
+		, EMP_PHONE = #{empPhone}
+		, EMP_IMAGE = #{empImage}
+		, EMP_HIRE_DATE = #{empHireDate}
+		where EMP_ID = #{empId}
+	</update>
 </mapper>

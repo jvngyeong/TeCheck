@@ -140,21 +140,17 @@
 					<div class="row g-4">
 						<div class="col-lg-6">
 							<div class="border rounded">
-								<a href="#"> <img src="/static/img/single-item.jpg"
+								<a href="#"> <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|"
 									class="img-fluid rounded" alt="Image">
 								</a>
 							</div>
 						</div>
 						<div class="col-lg-6">
-							<h4 class="fw-bold mb-3">상품번호 : [[${goodsDTO.goodsNum}]]</h4>
-							<p class="mb-3">상품이름 : [[${goodsDTO.goodsName}]]</p>
+							<h4 class="fw-bold mb-3">[[${goodsDTO.goodsName}]]</h4>
+							<p class="mb-3">상품번호 : [[${goodsDTO.goodsNum}]]</p>
 							<p class="mb-4">상품가격 : [[${goodsDTO.goodsPrice}]]</p>
 							<p class="mb-4">상품설명 : [[${goodsDTO.goodsContents}]]</p>
 							<p class="mb-4">방문자수 : [[${goodsDTO.visitCount}]]</p>
-							<p class="mb-4">상품메인이미지 : [[${goodsDTO.goodsMainImage}]]</p>
-							<p class="mb-4">상품상세이미지 : [[${goodsDTO.goodsDetailImage}]]</p>
-							<p class="mb-4">상점상품메인이미지 : [[${goodsDTO.goodsMainStoreImage}]]</p>
-							<p class="mb-4">상점상품상세이미지 : [[${goodsDTO.goodsDetailStoreImage}]]</p>
 							<p class="mb-4">상품등록일 :
 								[[${#dates.format(goodsDTO.goodsRegist, 'yyyy-MM-dd')}]]</p>
 							<p class="mb-4">상품수정일 : 
@@ -170,10 +166,19 @@
 							</a>
 						</div>
 					</div>
+					
 				</div>
+				
 			</div>
+			<div style="align-content: center;">
+					<th:block th:each="image : ${#strings.arraySplit(goodsDTO.goodsDetailStoreImage,'[`/]')}">
+						<img th:src="|/static/upload/${image}|" width="500px" alt="Image"/><br /><br />
+					</th:block>
+				</div>
 		</div>
+		
 	</div>
+	
 	<!-- Single Product End -->
 
 

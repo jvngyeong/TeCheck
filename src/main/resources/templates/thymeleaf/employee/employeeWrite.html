@@ -114,7 +114,7 @@
 			<div class="row">
 				<h4>기본 정보</h4>
 				<div class="input-group input-group-icon">
-					<select name="empId">
+					<select name="departmentNum">
 						<option value = "" disabled hidden selected>부서를 선택해주세요.</option>
 						<th:block th:each = "departmentDTO : ${departmentList}">
 							<option th:value="${departmentDTO.departmentNum}">[[${departmentDTO.departmentName}]]</option>

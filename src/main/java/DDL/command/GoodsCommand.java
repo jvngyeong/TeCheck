@@ -17,18 +17,10 @@ public class GoodsCommand {
 	Integer goodsPrice;
 	@NotEmpty(message = "설명을 입력하세요")
 	String goodsContents;
-	Integer visitCount;
-	String goodsMainImage;
-	String goodsDetailImage[];
-	String goodsMainStoreImage;
-	String goodsDetailStoreImage[];
 	
-//	MultipartFile goodsMainImage;
-//	MultipartFile goodsDetailImage[];
-//    MultipartFile goodsMainStoreImage;
-//	MultipartFile goodsDetailStoreImage[];
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	Date goodsRegist;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	Date goodsUpdateDate;
+	
+	MultipartFile goodsMainImage;
+	MultipartFile goodsDetailImage[];
 }
