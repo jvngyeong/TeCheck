@@ -1,19 +1,19 @@
 package DDL.service.goodsIpgo;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import DDL.domain.GoodsIpgoDTO;
+import DDL.domain.GoodsIpgoNameDTO;
 import DDL.mapper.GoodsIpgoMapper;
+
 @Service
-public class GoodsIpgoListService {
+public class IpgoDetailService {
 	@Autowired
 	GoodsIpgoMapper goodsIpgoMapper;
-	public void execute(Model model) {
-		List<GoodsIpgoDTO> list = goodsIpgoMapper.goodsIpgoList();
-		model.addAttribute("list", list);
+	public GoodsIpgoNameDTO execute(String ipgoNum,String goodsNum,Model model) {
+		GoodsIpgoNameDTO dto = goodsIpgoMapper.ipgoSelectOne(ipgoNum, goodsNum) ;
+		model.addAttribute("dto", dto);
+		return dto;
 	}
 }

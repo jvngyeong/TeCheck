@@ -134,6 +134,7 @@ html {
 }
 .responsive-table tbody th[scope=row] {
   background-color: lightgray;
+  border: 1px solid lightgray;
   color: white;
 }
 @media (min-width: 30em) {
@@ -145,6 +146,7 @@ html {
 @media (min-width: 48em) {
   .responsive-table tbody th[scope=row] {
     background-color: transparent;
+    border: 1px solid lightgray;
     color: #000001;
     text-align: left;
   }

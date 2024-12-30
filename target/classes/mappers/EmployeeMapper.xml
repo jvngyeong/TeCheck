@@ -30,4 +30,9 @@
 	<delete id="employeeDelete">
 		delete from employees where emp_num = #{empNum}
 	</delete>
+	
+	<select id="getEmpNum" resultType="string" parameterType="string">
+		select EMP_NUM from employees 
+		where EMP_ID = #{empId}
+	</select>
 </mapper>
