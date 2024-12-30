@@ -3,15 +3,6 @@
 <head>
 <meta charset="utf-8">
 <title>테크체크 - 실시간 주식 데이터 기반 제품 구매 추천 서비스</title>
-<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-<script type="text/javascript">
-$(function(){
-	$("#btn").click(function(){
-		window.open("goodsItem","상품검색"
-				,"width=620,height=500,left=30, top=500" );
-	});
-});
-</script>
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <meta content="" name="keywords">
 <meta content="" name="description">
@@ -64,25 +55,28 @@ $(function(){
 				</button>
 				<div class="collapse navbar-collapse bg-white" id="navbarCollapse">
 					<div class="navbar-nav mx-auto">
-						<a href="/" class="nav-item nav-link active">Home</a> <a
-							href="shop.html" class="nav-item nav-link">Shop</a> <a
-							href="shop-detail.html" class="nav-item nav-link">Shop Detail</a>
+						<a href="/" class="nav-item nav-link active">홈</a> 
+						<a href="/shop/shopList" class="nav-item nav-link">상점</a>  
+						<a href="/cart/cart"  class="nav-item nav-link">장바구니</a>
 						<div class="nav-item dropdown">
 							<a style="display: block" href="#"
 								class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
 							<div class="dropdown-menu m-0 bg-secondary rounded-0">
-								<a href="cart.html" class="dropdown-item">Cart</a> <a
-									href="chackout.html" class="dropdown-item">Chackout</a> <a
-									href="testimonial.html" class="dropdown-item">Testimonial</a> <a
-									href="404.html" class="dropdown-item">404 Page</a>
+								<a href="chackout.html" class="dropdown-item">Chackout</a>
+								<a href="testimonial.html" class="dropdown-item">Testimonial</a>
+								<a href="404.html" class="dropdown-item">404 Page</a>
 							</div>
 						</div>
-						<a href="contact.html" class="nav-item nav-link">Contact</a> <a
-							href="contact.html" class="nav-item nav-link">회원 관리</a> <a
-							href="/employee/employeeList" class="nav-item nav-link">직원 관리</a>
-						<a href="/goods/goodsList" class="nav-item nav-link">상품 관리</a> <a
-							href="/department/departmentList" class="nav-item nav-link">부서
-							관리</a>
+						<a href="/community/communityList" class="nav-item nav-link">커뮤니티</a> 
+						<a href="contact.html" class="nav-item nav-link">Contact</a>
+						<th:block th:if="${session.auth != null}">
+							<th:block th:if="${session.auth.grade == 'emp'}">
+								<a href="/member/memberList" class="nav-item nav-link">회원 관리</a> 
+								<a href="/employee/employeeList" class="nav-item nav-link">직원 관리</a>
+								<a href="/goods/goodsList" class="nav-item nav-link">상품 관리</a> 
+								<a href="/department/departmentList" class="nav-item nav-link">부서 관리</a>
+							</th:block>
+						</th:block>
 					</div>
 					<div class="d-flex m-3 me-0">
 						<button
@@ -136,7 +130,7 @@ $(function(){
 			<li class="breadcrumb-item"><a href="/">홈</a></li>
 			<li class="breadcrumb-item"><a href="/goods/goodsList">상품 리스트</a></li>
 			<li class="breadcrumb-item"><a href="/goods/goodsIpgoList">상품 입고 현황</a></li>
-			<li class="breadcrumb-item active text-white">상품 입고</li>
+			<li class="breadcrumb-item active text-white">입고 상세정보</li>
 		</ol>
 	</div>
 	<!-- Single Page Header End -->
@@ -144,34 +138,23 @@ $(function(){
 	<!-- Single Product Start -->
 	
 	<div class="container">
-	  <form action="ipgoRegist" method="post" id="frm" >
-	  <table class="responsive-table">
-	    <thead>
-	    <tr><th colspan="2" style="text-align: center;">상품 입고 관리</th> </tr>
-	    </thead>
-	    <tbody>
-	    <tr><td>입고번호</td>
-	        <td><input type="text" name= "ipgoNum" id="ipgoNum" th:value="${goodsIpgoCommand.ipgoNum}" readonly="readonly" /></td></tr>
-	    <tr><td>상품번호</td>
-	        <td><input type="text" name= "goodsNum" id="goodsNum" readonly="readonly" />
-	        	<input type="button" id="btn" value="상품 검색" /></td></tr>
-	    <tr><td>상품명</td>
-	        <td><input type="text"  id="goodsName" readonly="readonly" /></td> </tr>
-	    <tr><td>상품 생산일</td>
-	        <td><input type="date" name= "madeDate" id="madeDate" /></td></tr>
-	    <tr><td>입고일</td>
-	        <td><input type="date" name= "ipgoDate" id="ipgoDate" /></td></tr>
-	    <tr><td>입고 수량</td>
-	        <td><input type="number" name= "ipgoQty" id="ipgoQty" min="0"/></td></tr>
-	    <tr><td>가격</td>
-	        <td><input type="number" name= "ipgoPrice" id="ipgoPrice" min="0"/></td></tr>
-	    </tbody>
-	    <tfoot>
-	    <tr><th colspan="2"><input type="submit" value="입고 등록" id="regist"/></th></tr>
-	    </tfoot>
+	  <table align="center" width="600" border="1">
+	    <caption style="caption-side: top;"><b>[[${dto.goodsName}]]</b> 입고 현황</caption>
+	       <tr><th>입고번호</th><td>[[${dto.goodsIpgoDTO.ipgoNum}]]</td></tr>
+		    <tr><th>상품번호</th><td>[[${dto.goodsIpgoDTO.goodsNum}]]</td></tr>
+		    <tr><th>상품이름</th><td>[[${dto.goodsName}]]</td></tr>
+		    <tr><th>제조일</th><td>[[${#dates.format(dto.goodsIpgoDTO.madeDate,'yyyy-MM-dd')}]]</td></tr>
+		    <tr><th>수량</th><td>[[${dto.goodsIpgoDTO.ipgoQty}]]</td></tr>
+		    <tr><th>가격</th><td>[[${#numbers.formatCurrency(dto.goodsIpgoDTO.ipgoPrice) + "원" }]]</td></tr>
+		    <tr><th>입고일</th><td>[[${#dates.format(dto.goodsIpgoDTO.ipgoDate,'yyyy-MM-dd')}]]</td></tr>
+		    <tr><th colspan="2">
+		    <a href="|'goodsIpgoUpdate?ipgoNum='+ [[${dto.goodsIpgoDTO.ipgoNum}]] +'&goodsNum=' + [[${dto.goodsIpgoDTO.goodsNum}]]|"
+							class="btn border border-secondary rounded-pill px-3 text-primary">입고 수정</a>
+		    <a href="goodsIpgoDelete?ipgoNum=${dto.goodsIpgoDTO.ipgoNum}&goodsNum=${dto.goodsIpgoDTO.goodsNum}"
+							class="btn border border-secondary rounded-pill px-3 text-primary">입고 삭제</a>
 	  </table>
-	  </form>
 	</div>
+	
 	<!-- Single Product End -->
 
 

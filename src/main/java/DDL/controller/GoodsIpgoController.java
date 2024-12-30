@@ -3,12 +3,20 @@ package DDL.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import DDL.command.GoodsIpgoCommand;
 import DDL.mapper.AutoNumMapper;
+import DDL.service.goods.GoodsListService;
 import DDL.service.goodsIpgo.GoodsIpgoListService;
+import DDL.service.goodsIpgo.GoodsIpgoService;
+import DDL.service.goodsIpgo.IpgoDetailService;
+import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 @RequestMapping("goods")
@@ -17,6 +25,10 @@ public class GoodsIpgoController {
 	GoodsIpgoListService goodsIpgoListService;
 	@Autowired
 	AutoNumMapper autoNumMapper;
+	@Autowired
+	GoodsIpgoService goodsIpgoService;
+	@Autowired
+	IpgoDetailService ipgoDetailService;
 	@GetMapping("goodsIpgoList")
 	public String goodsIpgoList(Model model) {
 		goodsIpgoListService.execute(model);
@@ -28,6 +40,28 @@ public class GoodsIpgoController {
 		goodsIpgoCommand.setIpgoNum(ipgoNum);
 		model.addAttribute("goodsIpgoCommand", goodsIpgoCommand);
 		return "thymeleaf/goodsIpgo/goodsIpgo";
+	}
+	@PostMapping("ipgoRegist")
+	public String ipgoRegist(@Validated GoodsIpgoCommand goodsIpgoCommand
+			, BindingResult result
+			, HttpSession session) {
+		if (result.hasErrors()) {
+			return "thymeleaf/goodsIpgo/goodsIpgo";
+		}
+		goodsIpgoService.execute(goodsIpgoCommand, session);
+		return "redirect:goodsIpgoList";
+	}
+	@Autowired
+	GoodsListService goodsListService;
+	@GetMapping("goodsItem")
+	public String goodsItem(Model model) {
+		goodsListService.execute(model);
+		return "thymeleaf/goodsIpgo/goodsItem";
+	}
+	@GetMapping("goodsIpgoDetail")
+	public String goodsIpgoDetail(String ipgoNum, String goodsNum, Model model) {
+		ipgoDetailService.execute(ipgoNum, goodsNum, model);
+		return "thymeleaf/goodsIpgo/goodsIpgoDetail";
 	}
 	
 }

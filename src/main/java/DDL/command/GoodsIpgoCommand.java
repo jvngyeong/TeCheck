@@ -14,6 +14,8 @@ public class GoodsIpgoCommand {
 	String ipgoNum;
 	Integer ipgoQty;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	Date TpgoDate;
+	Date ipgoDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	Date madeDate;
 	Integer ipgoPrice;
 }
