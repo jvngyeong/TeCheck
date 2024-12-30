@@ -15,7 +15,7 @@ local.properties
 target/m2e-wtp/**
 target/maven-status/**
 target/surefire-reports/**
-
+target/classes/static/upload/**
 
 # Compiled class file
 *.class

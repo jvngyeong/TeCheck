@@ -13,6 +13,8 @@
 	        <result column="goods_price" property="goodsPrice" javaType="Integer" jdbcType="INTEGER"/>
 	        <result column="goods_main_image" property="goodsMainImage" javaType="String" jdbcType="VARCHAR"/>
 	        <result column="goods_main_store_image" property="goodsMainStoreImage" javaType="String" jdbcType="VARCHAR"/>
+	        <result column="goods_detail_image" property="goodsDetailImage" javaType="String" jdbcType="VARCHAR"/>
+	        <result column="goods_detail_store_image" property="goodsDetailStoreImage" javaType="String" jdbcType="VARCHAR"/>
 	    </association>
 	    <association property="cartDTO" javaType="cartDTO">
 	        <id column="goods_num" property="goodsNum" javaType="String" jdbcType="VARCHAR"/>
@@ -34,7 +36,7 @@
 	
 	<select id="cartSelect" resultMap="goodsCartDTO">
 		select c.goods_num, c.cart_qty, c.member_num,
-			   g.goods_main_image, g.goods_main_store_image, g.goods_name, g.goods_price
+			   g.goods_main_image, g.goods_main_store_image, g.goods_detail_image, g.goods_detail_store_image, g.goods_name, g.goods_price
 		from cart c join goods g on c.goods_num = g.goods_num
 		where c.member_num = #{memberNum}
 	</select>
