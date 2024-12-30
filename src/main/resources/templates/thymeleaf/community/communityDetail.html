@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <style>
+<style>
+
 /* 댓글 작성 폼 스타일 */
 .comment-section {
     margin-top: 40px;
@@ -27,7 +29,7 @@
     margin-top: 15px;
     padding: 10px 20px;
     border-radius: 30px;
-    background-color: #007bff;
+    background-color: #fff;
     border: none;
     color: #fff;
     font-weight: bold;
@@ -38,7 +40,7 @@
     background-color: #0056b3;
 }
 
-/* 댓글 목록 스타일 */
+/* 댓글 작성 스타일 */
 .comments-list {
     margin-top: 50px;
 }
@@ -97,6 +99,7 @@ hr {
         padding: 12px;
     }
 }
+
 </style>
 <head>
 <meta charset="utf-8">
@@ -169,7 +172,7 @@ hr {
 						<a href="contact.html" class="nav-item nav-link">Contact</a> <a
 							href="/member/memberList" class="nav-item nav-link">회원 관리</a> <a
 							href="/employee/employeeList" class="nav-item nav-link">직원 관리</a>
-						<a href="contact.html" class="nav-item nav-link">상품 관리</a> <a
+						<a href="/goods/goodsList" class="nav-item nav-link">상품 관리</a> <a
 							href="/department/departmentList" class="nav-item nav-link">부서
 							관리</a>
 					</div>
@@ -239,10 +242,10 @@ hr {
 		            <div class="col-lg-8 col-xl-9">
 		                <div class="row g-4">
 		                    <div class="col-lg-6">
-		                        <p class="mb-4">회원번호 : [[${communityDTO.memberNum}]]</p>
-		                        <p class="mb-4">작성날짜 : [[${#dates.format(communityDTO.commDate, 'yyyy-MM-dd')}]]</p>
-		                        <p class="mb-4">제목 : [[${communityDTO.commTitle}]]</p>							
-		                        <p class="mb-4">내용 : [[${communityDTO.commContents}]]</p>
+		                        <p class="post-info"><span class="info-label">회원번호 :</span><span class="info-value">[[${communityDTO.memberNum}]]</span></p>
+								<p class="post-info"><span class="info-label">작성날짜 :</span><span class="info-value">[[${#dates.format(communityDTO.commDate, 'yyyy-MM-dd')}]]</span></p>
+								<p class="post-info"><span class="info-label">제목 :</span><span class="info-value">[[${communityDTO.commTitle}]]</span></p>
+								<p class="post-info"><span class="info-label">내용 :</span><span class="info-value">[[${communityDTO.commContents}]]</span></p>
 		                        <a th:href="|/community/communityModify?commNum=${communityDTO.commNum}|"
 		                            class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
 		                            <i class="fa-solid fa-pen" style="margin-right: 10px;"></i>수정하기
@@ -252,28 +255,36 @@ hr {
 		                            <i class="fa-solid fa-circle-xmark" style="margin-right: 10px;"></i>삭제하기
 		                        </a>
 		                        
-		                        <!-- 댓글 작성 폼 (게시글 아래 추가) -->
-		                        <div class="comment-section">
-		                            <form action="/community/addComment" method="post" class="comment-form">
-		                                <input type="hidden" name="commNum" value="[[${commDTO.commNum}]]">
-		                                <div class="mb-3">
-		                                    <label for="comment" class="form-label">댓글 작성</label>
-		                                    <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="댓글을 입력해주세요." required></textarea>
-		                                </div>
-		                                <button type="submit" class="btn btn-primary">댓글 작성</button>
-		                            </form>
-		                        </div>
-		                        <!-- 댓글 목록 표시 -->
-		                        <div class="comments-list">
-		                            <h5>댓글 목록</h5>
-		                            <div class="comment-item" th:each="comment : ${comments}">
-		                                <div class="comment-body">
-		                                    <p><strong>[[${comment.memberID}]]</strong> - [[${#dates.format(comment.date, 'yyyy-MM-dd')}]]</p>
-		                                    <p>[[${comment.text}]]</p>
-		                                </div>
-		                                <hr>
-		                            </div>
-		                        </div>
+		                        <div class="comments-list border-top pt-3">
+								    <h6 class="mb-3">전체 댓글 <span class="badge bg-secondary">{{ commentList.size() }}개</span></h6>
+								    <div th:each="comment : ${commentList}">
+								        <div class="comment-item border-bottom pb-2 mb-2">
+								            <p class="mb-1"><strong th:text="${comment.memberId}"></strong></p>
+								            <p th:text="${comment.content}"></p>
+								            <p class="text-muted small mb-1" th:text="${#dates.format(comment.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+								        </div>
+								    </div>
+								</div>
+								
+								<!-- 댓글 작성 폼 -->
+								<div class="comment-section border-top pt-3">
+								    <h6 class="mb-3">댓글 작성</h6>
+								    <form action="/community/addComment" method="post" class="comment-form">
+								        <input type="hidden" name="commNum" value="[[${communityDTO.commNum}]]">
+								        <div class="row align-items-center">
+								            <!-- 댓글 입력 -->
+								            <div class="col-md-8 mb-2 mb-md-0">
+								                <input name="commContents" type="text" class="form-control" placeholder="내용" required />
+								            </div>
+								            <!-- 작성 버튼 -->
+								            <div class="col-md-4 text-end">
+								                <button type="submit" class="btn border border-secondary rounded-pill px-4 py-2 text-primary" style="white-space: nowrap; min-width: 120px;">
+								                    <i class="fa-solid fa-paper-plane" style="margin-right: 10px;"></i>작성하기
+								                </button>
+								            </div>
+								        </div>
+								    </form>
+								</div>
 		                    </div>
 		                </div>
 		            </div>
