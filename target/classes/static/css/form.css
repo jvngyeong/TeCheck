@@ -228,3 +228,9 @@ select option {
   box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
   color: #fff;
 }
+
+.memInfoBtn{
+	width: 200px !important;
+	position: absolute;
+	left: 50px;
+}

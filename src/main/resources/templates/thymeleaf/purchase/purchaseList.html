@@ -159,29 +159,29 @@
         <!-- Checkout Page Start -->
         <div class="container-fluid py-5">
             <div class="container py-5">
-                <h1 class="mb-4">Billing details</h1>
-                <form action="#">
+                <h1 class="mb-4">배송 정보 입력</h1>
+                <form action="/purchase/order" method = "post">
                     <div class="row g-5">
                         <div class="col-md-12 col-lg-6 col-xl-7">
                             <div class="form-item">
                                 <label class="form-label my-3">주소 <sup>*</sup></label>
-                                <input type="text" class="form-control" placeholder="">
+                                <input type="text" name = "deliveryAddr" class="form-control" placeholder="">
                             </div>
                             <div class="form-item">
                                 <label class="form-label my-3">상세 주소<sup>*</sup></label>
-                                <input type="text" class="form-control">
+                                <input type="text" name = "deliveryAddrDetail" class="form-control">
                             </div>
                             <div class="form-item">
                                 <label class="form-label my-3">우편번호<sup>*</sup></label>
-                                <input type="text" class="form-control">
+                                <input type="text" name = "deliveryAddrPost" class="form-control">
                             </div>
                             <div class="form-item">
                                 <label class="form-label my-3">전화번호<sup>*</sup></label>
-                                <input type="tel" class="form-control">
+                                <input type="tel" name = "deliveryPhone" class="form-control">
                             </div>
                             <div class="form-item">
                             <label class="form-label my-3">메시지</label>
-                                <textarea name="text" class="form-control" spellcheck="false" cols="30" rows="11" placeholder="요청사항을 입력해주세요. (선택사항)"></textarea>
+                                <textarea name="message" class="form-control" spellcheck="false" cols="30" rows="11" placeholder="요청사항을 입력해주세요. (선택사항)"></textarea>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-6 col-xl-5">
@@ -201,13 +201,15 @@
 	                                        <tr>
 	                                            <th scope="row">
 	                                                <div class="d-flex align-items-center mt-2">
-	                                                    <img src="/static/img/vegetable-item-2.jpg" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
+	                                                    <img th:src="|/static/upload/${goodsCartDTO.goodsDTO.goodsMainStoreImage}|" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
 	                                                </div>
 	                                            </th>
-	                                            <td class="py-5">[[${goodsCartDTO.goodsDTO.goodsName}]]</td>
-	                                            <td class="py-5">[[${#numbers.formatCurrency(goodsCartDTO.goodsDTO.goodsPrice)}]]</td>
-	                                            <td class="py-5">[[${goodsCartDTO.cartDTO.cartQty}]]개</td>
-	                                            <td class="py-5">[[${#numbers.formatCurrency(T(java.lang.Integer).parseInt(goodsCartDTO.cartDTO.cartQty) * goodsCartDTO.goodsDTO.goodsPrice)}]]</td>
+	                                            <input type = "hidden" name = "goodsNums" th:value = "${goodsCartDTO.goodsDTO.goodsNum}" />
+	                                            <input type = "hidden" name = "cartQties" th:value = "${goodsCartDTO.cartDTO.cartQty}" />
+	                                            <td class="">[[${goodsCartDTO.goodsDTO.goodsName}]]</td>
+	                                            <td class="">[[${#numbers.formatCurrency(goodsCartDTO.goodsDTO.goodsPrice)}]]</td>
+	                                            <td class="">[[${goodsCartDTO.cartDTO.cartQty}]]개</td>
+	                                            <td class="">[[${#numbers.formatCurrency(T(java.lang.Integer).parseInt(goodsCartDTO.cartDTO.cartQty) * goodsCartDTO.goodsDTO.goodsPrice)}]]</td>
 	                                        </tr>
                                         </th:block>
                                         <tr>
@@ -219,7 +221,8 @@
                                             <td class="py-5"></td>
                                             <td class="py-5"></td>
                                             <td class="py-5">
-                                                <div class="py-3 border-bottom border-top">
+                                                <div class="py-3">
+                                                	<input type = "hidden" name = "orderPrice" th:value = "${totalPrice}" />
                                                     <p class="mb-0 text-dark">[[${#numbers.formatCurrency(totalPrice)}]]</p>
                                                 </div>
                                             </td>
@@ -228,7 +231,7 @@
                                 </table>
                             </div>
                             <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                                <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">결제하기</button>
+                                <input type="submit" value = "결제하기" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary" />
                             </div>
                         </div>
                     </div>

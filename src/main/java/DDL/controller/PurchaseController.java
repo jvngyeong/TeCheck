@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import DDL.command.OrderCommand;
 import DDL.domain.CartDTO;
 import DDL.domain.GoodsCartDTO;
 import DDL.domain.GoodsDTO;
+import DDL.service.IniPayReqService;
 import DDL.service.cart.CartListService;
+import DDL.service.order.OrderService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -21,6 +25,12 @@ import jakarta.servlet.http.HttpSession;
 public class PurchaseController {
 	@Autowired
 	CartListService cartListService;
+	
+	@Autowired
+	OrderService orderService;
+	
+	@Autowired
+	IniPayReqService iniPayReqService;
 	
 	@GetMapping("purchaseList")
 	public String purchaseList(Model model, HttpSession session, String goodsNum, String memberNum, String cartQty, String goodsPrice, String goodsName) {
@@ -70,5 +80,21 @@ public class PurchaseController {
 				return "200";
 			}
 		}
+	}
+	
+	@PostMapping("order")
+	public String order(OrderCommand orderCommand, String[] cartQties, HttpSession session) {
+		String orderNum = orderService.execute(orderCommand, cartQties, session);
+		return "redirect:paymentOk?orderNum="+orderNum;
+	}
+	
+	@GetMapping("paymentOk")
+	public String paymentOk(String orderNum, Model model) {
+		try {
+			iniPayReqService.execute(orderNum, model);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "thymeleaf/purchase/payment";
 	}
 }

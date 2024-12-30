@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DDL.mapper.OrderMapper">
+	<insert id="orderInsert">
+		insert into orders(ORDER_NUM, ORDER_DATE, ORDER_PRICE, DELIVERY_ADDR, DELIVERY_ADDR_DETAIL, DELIVERY_ADDR_POST, DELIVERY_PHONE, MESSAGE, ORDER_STATUS, MEMBER_NUM)
+		values(#{orderNum}, sysdate, #{orderPrice}, #{deliveryAddr}, #{deliveryAddrDetail}, #{deliveryAddrPost},
+				#{deliveryPhone}, #{message}, '결제 대기중', #{memberNum})
+	</insert>
+	
+	
+	<select id="getOrderNum">
+		select concat(to_char(sysdate, 'yyyyMMdd'), coalesce(max(to_number(substr(order_num, 9))), 0) + 1)
+		from orders
+		where substr(order_num, 1, 8) = to_char(sysdate, 'yyyyMMdd')
+	</select>
+	
+	<insert id="purchaseListInsert">
+		insert all
+	        <foreach collection="goodsNums" item="goodsNum" index="index">
+	        into purchase_list(goods_num, order_num, purchase_qty, goods_unit_price)
+	        values (#{goodsNum}, #{orderNum}, #{cartQties[${index}]}, (select goods_price from goods where goods_num = #{goodsNum}))
+	   		</foreach>
+	   		select * from dual
+	</insert>
+	
+	<select id="orderSelectOne">
+		select ORDER_NUM, ORDER_DATE, ORDER_PRICE, DELIVERY_ADDR, DELIVERY_ADDR_DETAIL, DELIVERY_ADDR_POST, DELIVERY_PHONE, MESSAGE, ORDER_STATUS, MEMBER_NUM
+		from orders where order_num = #{orderNum}
+	</select>
+	
+	<insert id="payInsert">
+		insert into pay(order_num, confirmnumber, cardnum, tid, totalprice, resultmessage, 
+					paymethod, appldate, apptime)
+			values(#{orderNum}, #{confirmnumber}, #{cardnum}, #{tid}, #{totalprice}, #{resultmessage},
+					#{paymethod}, #{appldate}, #{apptime})	
+	</insert>
+	
+	<update id = "purchaseStatusUpdate">
+		update order set purchase_status = '결제 완료' where order_num = #{orderNum}
+	</update>
+	
+	<select id="orderSelectByMemberNum">
+		select ORDER_NUM, ORDER_DATE, ORDER_PRICE, DELIVERY_ADDR, DELIVERY_ADDR_DETAIL, DELIVERY_ADDR_POST, DELIVERY_PHONE, MESSAGE, ORDER_STATUS, MEMBER_NUM
+		from orders where member_num = #{memberNum}
+	</select>
+</mapper>

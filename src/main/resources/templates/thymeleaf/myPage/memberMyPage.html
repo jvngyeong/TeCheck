@@ -135,6 +135,11 @@
          <div class="row g-4 mb-5 justify-content-center">
             <div class="col-lg-8 col-xl-9">
                <div class="row g-4">
+               <a href="#" style="margin: 25px 0 8px 30px;" class="memInfoBtn btn border border-secondary px-3 text-primary">예약 내역</a>
+               <a th:href="|/order/orderList?memberNum=${memberCommand.memberNum}|" style="margin: 75px 0 8px 30px;" class="memInfoBtn btn border border-secondary px-3 text-primary">주문 목록</a>
+               <a href="/delivery/deliveryInfo" style="margin: 125px 0 8px 30px;" class="memInfoBtn btn border border-secondary px-3 text-primary">배송 정보</a>
+               <a href="#" style="margin: 175px 0 8px 30px;" class="memInfoBtn btn border border-secondary px-3 text-primary">리뷰 목록</a>
+               <a href="#" style="margin: 225px 0 8px 30px;" class="memInfoBtn btn border border-secondary px-3 text-primary">문의 내역</a>
                   <div class="col-lg-6">
                      <div class="border rounded">
                         <a href="#"> <img src="/static/img/default-profile.png"
@@ -142,6 +147,7 @@
                         </a>
                      </div>
                   </div>
+                  
                   <div class="col-lg-6">
                      <h4 class="fw-bold mb-3">[[${memberCommand.memberName}]]님 상세정보</h4>
                      <p class="mb-4">회원번호 : [[${memberCommand.memberNum}]]</p>
