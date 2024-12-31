@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import DDL.domain.OrderDTO;
+import DDL.domain.OrderPurchaseListGoodsDTO;
 import DDL.domain.PayDTO;
 
 @Mapper
@@ -21,7 +22,7 @@ public interface OrderMapper {
 
 	void payInsert(PayDTO dto);
 
-	void purchaseStatusUpdate(String orderNum);
+	void orderStatusUpdate(String orderNum);
 
-	List<OrderDTO> orderSelectByMemberNum(String memberNum);
+	List<OrderPurchaseListGoodsDTO> orderSelectByMemberNum(String memberNum);
 }

@@ -6,7 +6,6 @@
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
     margin: 0;
-    padding: 20px;
   }
 
   .board-list {
@@ -54,16 +53,6 @@
     padding: 12px;
     text-align: center;
     border-bottom: 1px solid #ddd;
-  }
-
-  .board-list tbody td:nth-child(2) {
-    text-align: left;
-    color: #007bff;
-    font-weight: 500;
-  }
-
-  .board-list tbody td:nth-child(2):hover {
-    text-decoration: underline;
   }
 
   .board-list tbody td {
@@ -232,17 +221,24 @@
 				      </tr>
 				    </thead>
 				    <tbody>
-				    	<th:block th:each = "dto : ${list}">
+				    	<th:block th:each = "list, idx : ${splitList}">
 					      <tr>
-					        <td>[[${dto.orderNum}]]</td>
-					        <td>[[${#numbers.formatCurrency(dto.orderPrice)}]]</td>
-					        <td>[[${dto.deliveryAddr}]]</td>
-					        <td>[[${dto.deliveryAddrDetail}]]</td>
-					        <td>[[${dto.deliveryAddrPost}]]</td>
-					        <td>[[${dto.deliveryPhone}]]</td>	 
-				         	<td>[[${dto.message}]]</td>	
-					        <td>[[${dto.orderStatus}]]</td>
-					        <td>[[${#dates.format(dto.orderDate, 'yyyy-MM-dd')}]]</td>
+					        <td>[[${list[0].orderDTO.orderNum}]]</td>
+					        <td>[[${#numbers.formatCurrency(list[0].orderDTO.orderPrice)}]]</td>
+					        <td>[[${list[0].orderDTO.deliveryAddr}]]</td>
+					        <td>[[${list[0].orderDTO.deliveryAddrDetail}]]</td>
+					        <td>[[${list[0].orderDTO.deliveryAddrPost}]]</td>
+					        <td>[[${list[0].orderDTO.deliveryPhone}]]</td>	 
+				         	<td>[[${list[0].orderDTO.message}]]</td>	
+					        <td>
+					       	<th:block th:if = "${list[0].orderDTO.orderStatus == '결제 대기중'}">
+					        <a style = "text-decoration-line:underline;"th:href = "|/purchase/paymentOk?orderNum=${list[0].orderDTO.orderNum}&goodsName=${list[0].goodsDTO[0].goodsName}+ 외 +${idx.count-1}|+개">[[${list[0].orderDTO.orderStatus}]]</a>
+					        </th:block>
+					        <th:block th:if = "${list[0].orderDTO.orderStatus != '결제 대기중'}">
+					        [[${list[0].orderDTO.orderStatus}]]
+					        </th:block>
+					        </td>
+					        <td>[[${#dates.format(list[0].orderDTO.orderDate, 'yyyy-MM-dd')}]]</td>
 					      </tr>
 				      	</th:block>
 				    </tbody>

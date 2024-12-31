@@ -18,4 +18,10 @@ public class OrderController {
 		orderListService.execute(memberNum, model);
 		return "thymeleaf/order/orderList";
 	}
+	
+	@GetMapping("empOrderList")
+	public String orderList(Model model) {
+		orderListService.execute(null, model);
+		return "thymeleaf/order/empOrderList";
+	}
 }

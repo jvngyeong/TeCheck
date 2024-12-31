@@ -11,11 +11,12 @@ import com.inicis.std.util.SignatureUtil;
 
 import DDL.domain.OrderDTO;
 import DDL.mapper.OrderMapper;
+import jakarta.servlet.http.HttpSession;
 @Service
 public class IniPayReqService {
    @Autowired
    OrderMapper orderMapper;
-   public void execute(String orderNum, Model model) throws Exception{
+   public void execute(String orderNum, String goodsName, Model model, HttpSession session) throws Exception{
       OrderDTO dto = orderMapper.orderSelectOne(orderNum);
       String mid               = "INIpayTest";                          // 상점아이디               
       String signKey             = "SU5JTElURV9UUklQTEVERVNfS0VZU1RS";   // 웹 결제 signkey
@@ -30,6 +31,9 @@ public class IniPayReqService {
       signParam.put("timestamp", timestamp);
       String signature = SignatureUtil.makeSignature(signParam);   
       
+      if(goodsName != null) {
+    	  session.setAttribute("goodsName", goodsName);
+      }
       model.addAttribute("mid", mid);
       model.addAttribute("orderNumber", orderNumber);
       model.addAttribute("price", price);

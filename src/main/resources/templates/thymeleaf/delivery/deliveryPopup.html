@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<table width = "800" align = "center" border = '1'>
+		<th:block th:each = "list : ${list}">
+				<tr>
+					<th>
+						<img/>
+					</th>
+					<th>
+						제품명 :  | 제품 가격 : | 주문수량 : 
+					</th>
+				</tr>
+					
+				<tr>
+					<th colspan = '2'>
+						상품 설명<br />
+						<span></span>
+					</th>
+				</tr>
+		</th:block>
+		<tr>
+			<td width = "400">
+				<h2 align = "center">주문내용</h2>
+				주문 번호 : <br />
+				주문 날짜 : <br />
+				주문 금액 : <br />
+				배송지 : <br />
+				연락처 : <br />
+				받는 사람 : <br />
+				주문 메시지 : <br />
+			</td>
+			<td width = "400">
+				<h2 align = "center">결제내용</h2>
+				<span>
+				결제 번호 
+				</span>
+				<span>
+					현금 결제
+				</span><br />
+				결제 금액 : <br />
+				결제일 : <br />
+				<span>
+				카드 번호 : <br />
+				</span>
+			</td>
+		</tr>
+	</table>
+	
+	<form action = "/delivery/deliveryDelete" method = "post">
+		<table width = "800" align = "center" border = '1'>
+			<tr>
+				<td colspan = '2'><h2>배송정보</h2></td>
+			</tr>
+			<tr>
+				<td>송장번호</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td colspan = '2'>
+					<input type = "hidden" name = "purchaseNum">
+					<input type = "hidden" name = "deliveryNum">
+					<input type = "submit" class="w3-button w3-black w3-section" value = "배송정보 삭제" />
+				</td>
+			</tr>
+		</table>
+	</form>
+	<form action = "/delivery/deliveryWrite" method = "post">
+		<table width = "800" align = "center" border = '1'>
+			<tr>
+				<td colspan = '2'>배송정보 입력</td>
+			</tr>
+			<tr class = "inputTR">
+				<td>송장번호</td>
+				<td>
+					<input type = "text" name = "deliveryNum" required="required" id = "deliveryInput"/>
+				</td>
+			</tr>
+			<tr>
+				<th colspan = '2'>
+					<input type = "submit" class="w3-button w3-white w3-section"  value = "배송정보 등록" />
+				</th>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

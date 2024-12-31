@@ -1,5 +1,9 @@
 ### Eclipse ###
+TeCheck1-0.0.1-SNAPSHOT
+TeCheck1-0.0.1-SNAPSHOT.war
+TeCheck1-0.0.1-SNAPSHOT.war.original
 .metadata
+application.properties
 bin/
 tmp/
 *.tmp

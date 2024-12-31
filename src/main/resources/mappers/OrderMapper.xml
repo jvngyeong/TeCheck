@@ -4,6 +4,32 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="DDL.mapper.OrderMapper">
+	<resultMap type="orderPurchaseListGoodsDTO" id="orderPurchaseListGoodsDTO">
+		<association property="orderDTO">
+		    <id property="orderNum" column="order_num" />
+		    <result property="orderDate" column="order_date" />
+		    <result property="orderPrice" column="order_price" />
+		    <result property="deliveryAddr" column="delivery_addr" />
+		    <result property="deliveryAddrDetail" column="delivery_addr_detail" />
+		    <result property="deliveryAddrPost" column="delivery_addr_post" />
+		    <result property="deliveryPhone" column="delivery_phone" />
+		    <result property="message" column="message" />
+		    <result property="orderStatus" column="order_status" />
+		    <result property="memberNum" column="member_num" />
+		</association>
+		
+		<collection property="purchaseListDTO" ofType = "purchaseListDTO">
+			    <id property="orderNum" column="order_num" />
+			    <id property="goodsNum" column="goods_num" />
+			    <result property="purchaseQty" column="purchase_qty" javaType="Integer" />
+			    <result property="goodsUnitPrice" column="goods_unit_price" javaType="Integer" />
+		</collection>
+		<collection property="goodsDTO" ofType = "goodsDTO">
+				<id property="goodsNum" column="goods_num" />
+			    <result property="goodsName" column="goods_name" />
+			    <result property="goodsMainStoreImage" column="goods_main_store_image" />
+		</collection>
+	</resultMap>
 	<insert id="orderInsert">
 		insert into orders(ORDER_NUM, ORDER_DATE, ORDER_PRICE, DELIVERY_ADDR, DELIVERY_ADDR_DETAIL, DELIVERY_ADDR_POST, DELIVERY_PHONE, MESSAGE, ORDER_STATUS, MEMBER_NUM)
 		values(#{orderNum}, sysdate, #{orderPrice}, #{deliveryAddr}, #{deliveryAddrDetail}, #{deliveryAddrPost},
@@ -38,12 +64,18 @@
 					#{paymethod}, #{appldate}, #{apptime})	
 	</insert>
 	
-	<update id = "purchaseStatusUpdate">
-		update order set purchase_status = '결제 완료' where order_num = #{orderNum}
+	<update id = "orderStatusUpdate">
+		update orders set order_status = '결제 완료' where order_num = #{orderNum}
 	</update>
 	
-	<select id="orderSelectByMemberNum">
-		select ORDER_NUM, ORDER_DATE, ORDER_PRICE, DELIVERY_ADDR, DELIVERY_ADDR_DETAIL, DELIVERY_ADDR_POST, DELIVERY_PHONE, MESSAGE, ORDER_STATUS, MEMBER_NUM
-		from orders where member_num = #{memberNum}
+	<select id="orderSelectByMemberNum" resultMap="orderPurchaseListGoodsDTO">
+		select o.ORDER_NUM, ORDER_DATE, ORDER_PRICE, DELIVERY_ADDR, DELIVERY_ADDR_DETAIL, DELIVERY_ADDR_POST, DELIVERY_PHONE, MESSAGE, ORDER_STATUS, MEMBER_NUM,	
+				pl.goods_num, purchase_qty, goods_unit_price,
+				g.goods_name, g.goods_main_store_image
+		from orders o join purchase_list pl on o.order_num = pl.order_num
+		join goods g on pl.goods_num = g.goods_num 
+		<if test="memberNum != null">
+		where o.member_num = #{memberNum}
+		</if>
 	</select>
 </mapper>

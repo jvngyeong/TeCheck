@@ -89,9 +89,9 @@ public class PurchaseController {
 	}
 	
 	@GetMapping("paymentOk")
-	public String paymentOk(String orderNum, Model model) {
+	public String paymentOk(String orderNum, String goodsName, Model model, HttpSession session) {
 		try {
-			iniPayReqService.execute(orderNum, model);
+			iniPayReqService.execute(orderNum, goodsName, model, session);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
