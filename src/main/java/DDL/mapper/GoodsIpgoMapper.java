@@ -17,5 +17,11 @@ public interface GoodsIpgoMapper {
 	public GoodsIpgoNameDTO ipgoSelectOne(
 			@Param(value = "ipgoNum") String ipgoNum,
 			@Param(value = "goodsNum" ) String goodsNum);
+
+	public Integer goodsIpgoUpdate(GoodsIpgoDTO dto);
+
+	public void goodsIpgoDelete(
+			@Param(value = "ipgoNum") String ipgoNum,
+			@Param(value = "goodsNum" ) String goodsNum);
 	
 }

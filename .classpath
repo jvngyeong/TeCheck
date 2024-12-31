@@ -52,6 +52,6 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Real_Time_Data_Process/eclipse-workspace/TeCheck/src/main/resources/static/lib/INIpaySample_v1.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/301-14/eclipse-final/TeCheck/libs/INIpaySample_v1.3.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
