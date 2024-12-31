@@ -6,12 +6,12 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import DDL.domain.OrderDTO;
+import DDL.domain.OrderPurchaseListDTO;
 import DDL.domain.OrderPurchaseListGoodsDTO;
 import DDL.domain.PayDTO;
 
 @Mapper
 public interface OrderMapper {
-
 	OrderDTO orderSelectOne(String orderNum);
 
 	void orderInsert(OrderDTO dto);
@@ -25,4 +25,6 @@ public interface OrderMapper {
 	void orderStatusUpdate(String orderNum);
 
 	List<OrderPurchaseListGoodsDTO> orderSelectByMemberNum(String memberNum);
+
+	List<OrderPurchaseListGoodsDTO> orderPurchaseListSelectOne(String orderNum);
 }

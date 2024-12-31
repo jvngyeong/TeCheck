@@ -4,7 +4,7 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="DDL.mapper.OrderMapper">
-	<resultMap type="orderPurchaseListGoodsDTO" id="orderPurchaseListGoodsDTO">
+	<resultMap type="orderPurchaseListDTO" id="orderPurchaseListDTO">
 		<association property="orderDTO">
 		    <id property="orderNum" column="order_num" />
 		    <result property="orderDate" column="order_date" />
@@ -24,10 +24,48 @@
 			    <result property="purchaseQty" column="purchase_qty" javaType="Integer" />
 			    <result property="goodsUnitPrice" column="goods_unit_price" javaType="Integer" />
 		</collection>
+	</resultMap>
+
+
+	<resultMap type="orderPurchaseListGoodsDTO" id="orderPurchaseListGoodsDTO">
+		<association property="orderDTO">
+		    <id property="orderNum" column="order_num" />
+		    <result property="orderDate" column="order_date" />
+		    <result property="orderPrice" column="order_price" />
+		    <result property="deliveryAddr" column="delivery_addr" />
+		    <result property="deliveryAddrDetail" column="delivery_addr_detail" />
+		    <result property="deliveryAddrPost" column="delivery_addr_post" />
+		    <result property="deliveryPhone" column="delivery_phone" />
+		    <result property="message" column="message" />
+		    <result property="orderStatus" column="order_status" />
+		    <result property="memberNum" column="member_num" />
+		</association>
+		
+		<association property="payDTO">
+			<result property="confirmnumber" column="confirmnumber" />
+			<result property="cardnum" column="cardnum" />
+			<result property="totalprice" column="totalprice" />
+			<result property="appldate" column="appldate" />
+		</association>
+		
+		<association property="deliveryDTO">
+			<result property="deliveryNum" column="delivery_num" />
+			<result property="deliveryName" column="delivery_name" />
+			<result property="deliveryStatus" column="delivery_status" />
+			<result property="deliveryDate" column="delivery_date" />
+		</association>
+		
+		<collection property="purchaseListDTO" ofType = "purchaseListDTO">
+			    <id property="orderNum" column="order_num" />
+			    <id property="goodsNum" column="goods_num" />
+			    <result property="purchaseQty" column="purchase_qty" javaType="Integer" />
+			    <result property="goodsUnitPrice" column="goods_unit_price" javaType="Integer" />
+		</collection>
 		<collection property="goodsDTO" ofType = "goodsDTO">
 				<id property="goodsNum" column="goods_num" />
 			    <result property="goodsName" column="goods_name" />
 			    <result property="goodsMainStoreImage" column="goods_main_store_image" />
+			    <result property="goodsContents" column="goods_contents" />
 		</collection>
 	</resultMap>
 	<insert id="orderInsert">
@@ -71,11 +109,26 @@
 	<select id="orderSelectByMemberNum" resultMap="orderPurchaseListGoodsDTO">
 		select o.ORDER_NUM, ORDER_DATE, ORDER_PRICE, DELIVERY_ADDR, DELIVERY_ADDR_DETAIL, DELIVERY_ADDR_POST, DELIVERY_PHONE, MESSAGE, ORDER_STATUS, MEMBER_NUM,	
 				pl.goods_num, purchase_qty, goods_unit_price,
-				g.goods_name, g.goods_main_store_image
+				g.goods_name, g.goods_main_store_image,
+				delivery_num, delivery_name, delivery_status, delivery_date
 		from orders o join purchase_list pl on o.order_num = pl.order_num
-		join goods g on pl.goods_num = g.goods_num 
+		join goods g on pl.goods_num = g.goods_num
+		left outer join delivery d on d.order_num = o.order_num
 		<if test="memberNum != null">
 		where o.member_num = #{memberNum}
 		</if>
+	</select>
+	
+	<select id="orderPurchaseListSelectOne" resultMap="orderPurchaseListGoodsDTO">
+		select o.ORDER_NUM, ORDER_DATE, ORDER_PRICE, DELIVERY_ADDR, DELIVERY_ADDR_DETAIL, DELIVERY_ADDR_POST, DELIVERY_PHONE, MESSAGE, ORDER_STATUS, MEMBER_NUM,	
+				pl.goods_num, purchase_qty, goods_unit_price,
+				g.goods_name, g.goods_main_store_image, g.goods_contents,
+				confirmnumber, cardnum, totalprice, appldate,
+				delivery_num, delivery_name, delivery_status, delivery_date
+		from orders o join purchase_list pl on o.order_num = pl.order_num
+		join goods g on pl.goods_num = g.goods_num
+		join pay p on o.order_num = p.order_num
+		left outer join delivery d on d.order_num = o.order_num
+		where o.order_num = #{order_num}
 	</select>
 </mapper>

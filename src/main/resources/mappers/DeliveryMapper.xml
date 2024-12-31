@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DDL.mapper.DeliveryMapper">
+	<insert id="deliveryWrite">
+		insert into delivery(delivery_num, delivery_name, delivery_Status, delivery_date, order_num)
+		values(#{deliveryNum}, #{deliveryName}, '배송 중', null, #{orderNum})
+	</insert>
+	
+	<delete id="deliveryDelete">
+		delete from delivery
+		where delivery_num = #{deliveryNum}
+	</delete>
+	
+	<update id="deliveryStatusUpdate">
+		update delivery set delivery_status = '배송 완료' where order_num = #{orderNum}
+	</update>
+</mapper>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
 <style>
   body {
@@ -77,7 +77,13 @@
 </style>
 <script type="text/javascript">
 function deliveryPopup(orderNum){
-	window.open("/delivery/deliveryPopup?orderNum=" + orderNum, "deliveryPopup", "top=100px; left=100px; width=1000px; height=800px;");
+	var popupWindow = window.open("/delivery/deliveryPopup?orderNum=" + orderNum, "deliveryPopup", "top=100px; left=100px; width=1000px; height=800px;");
+	let popupCheckInterval = setInterval(function(){
+		if(popupWindow.closed){
+			clearInterval(popupCheckInterval);
+			window.location.reload();
+		}
+	}, 500);
 }
 </script>
 <meta charset="utf-8">
@@ -239,8 +245,16 @@ function deliveryPopup(orderNum){
 					       	<th:block th:if = "${list[0].orderDTO.orderStatus == '결제 대기중'}">
 					        [[${list[0].orderDTO.orderStatus}]]
 					        </th:block>
-					        <th:block th:if = "${list[0].orderDTO.orderStatus != '결제 대기중'}">
-					        <a style = "text-decoration-line:underline;" th:attr = "onclick=|deliveryPopup([[${list[0].orderDTO.orderNum}]]);|">배송 정보 입력</a>
+					        <th:block th:if = "${list[0].orderDTO.orderStatus != '결제 대기중' && list[0].deliveryDTO == null}">
+					        	<a style = "text-decoration-line:underline;" th:attr = "onclick=|deliveryPopup([[${list[0].orderDTO.orderNum}]]);|">배송 정보 입력</a>
+					        </th:block>
+					        <th:block th:if = "${list[0].orderDTO.orderStatus != '결제 대기중' && list[0].deliveryDTO != null}">
+					        	<th:block th:if="${list[0].deliveryDTO.deliveryStatus == '배송 중'}">
+    								<a style = "text-decoration-line:underline;" th:href = "|/delivery/deliveryStatusUpdate?orderNum=${list[0].orderDTO.orderNum}|">[[${list[0].deliveryDTO.deliveryStatus}]]</a>
+					        	</th:block>
+					        	<th:block th:if="${list[0].deliveryDTO.deliveryStatus == '배송 완료'}">
+    								<a style = "text-decoration-line:underline;" th:attr = "onclick=|deliveryPopup([[${list[0].orderDTO.orderNum}]]);|">[[${list[0].deliveryDTO.deliveryStatus}]]</a>
+					        	</th:block>
 					        </th:block>
 					        </td>
 					        <td>[[${#dates.format(list[0].orderDTO.orderDate, 'yyyy-MM-dd')}]]</td>
