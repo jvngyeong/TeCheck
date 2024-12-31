@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DDL.mapper.StoreMapper">
+	<sql id="baseColumns">
+		STORE_NUM, STORE_NAME, STORE_ADDR, STORE_ADDR_DETAIL, STORE_POST, STORE_TEL
+	</sql>
+	
+	<insert id="storeInsert" parameterType="storeDTO">
+		insert into store(<include refid="baseColumns"/>)
+		values(#{storeNum}, #{storeName}, #{storeAddr}, #{storeAddrDetail}, #{storePost}, #{storeTel})
+	</insert>
+	
+	<select id="storeSelectAll" resultType="storeDTO">
+		select <include refid="baseColumns"/> from store
+	</select>
+	
+	<select id="storeSelectOne" parameterType="string" resultType="storeDTO">
+		select <include refid="baseColumns"/> from store
+		where STORE_NUM = #{storeNum}
+	</select>
+	
+	<update id="storeUpdate" parameterType="storeDTO">
+		update store set
+		STORE_NUM = #{storeNum}
+		, STORE_NAME = #{storeName}
+		, STORE_ADDR = #{storeAddr}
+		, STORE_ADDR_DETAIL = #{storeAddrDetail}
+		, STORE_POST = #{storePost}
+		, STORE_TEL = #{storeTel}
+		where STORE_NUM = #{storeNum}
+	</update>
+	
+	<delete id="storeDelete" parameterType="string">
+		delete from store where STORE_NUM = #{storeNum}
+	</delete>
+</mapper>
