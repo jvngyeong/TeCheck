@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DDL.mapper.ExperienceMapper">
+	<sql id="baseColumns">
+		EXP_NUM, EXP_CONTENTS, EXP_NAME
+	</sql>
+	
+	<insert id="experienceInsert" parameterType="experienceDTO">
+		insert into experience(<include refid="baseColumns"/>)
+		values(#{expNum}, #{expContents}, #{expName})
+	</insert>
+	
+	<select id="experienceSelectAll" resultType="experienceDTO">
+		select <include refid="baseColumns"/> from experience
+	</select>
+	
+	<select id="experienceSelectOne" parameterType="string" resultType="experienceDTO">
+		select <include refid="baseColumns"/> from experience
+		where EXP_NUM = #{expNum}
+	</select>
+	
+	<update id="experienceUpdate" parameterType="experienceDTO">
+		update experience set
+		EXP_NUM = #{expNum}
+		, EXP_NAME = #{expName}
+		, EXP_CONTENTS = #{expContents}
+		where EXP_NUM = #{expNum}
+	</update>
+	
+	<delete id="experienceDelete" parameterType="string">
+		delete from experience where EXP_NUM = #{expNum}
+	</delete>
+</mapper>
