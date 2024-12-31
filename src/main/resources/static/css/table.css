@@ -7,6 +7,13 @@ html {
 *:after {
   box-sizing: inherit;
 }
+.table-sh{
+  background-color: #13299f;
+  border: 1px solid lightgray;
+  font-weight: normal;
+  text-align: center;
+  color: white;
+}
 .responsive-table {
   margin-top: 2em;
   width: 100%;

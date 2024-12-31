@@ -78,8 +78,8 @@
 							</th:block>
 						</th:block>
 					</div>
-					<div class="d-flex m-3 me-0">
-						<button
+					<div class="d-flex m-3 me-0" style="align-content: stretch;">
+						<button style="margin-left: 8px; margin-top: 3px;"
 							class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
 							data-bs-toggle="modal" data-bs-target="#searchModal">
 							<i class="fas fa-search text-primary"></i>
@@ -88,8 +88,34 @@
 							class="fa fa-shopping-bag fa-2x"></i> <span
 							class="cartBtn position-absolute rounded-circle d-flex align-items-center justify-content-center text-white px-1"
 							style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
-						</a> <a href="#" class="my-auto"> <i class="fas fa-user fa-2x"></i>
 						</a>
+						<div class="nav-item dropdown">
+							<a style="display: block; padding-left: 4px;" href="#"
+								class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+								<i class="fas fa-user fa-2x"></i>
+							</a>
+							<div class="dropdown-menu m-0 bg-secondary rounded-0">
+								<th:block th:if="${session.auth == null}">
+								<a href="/login/loginForm" class="dropdown-item">로그인</a>
+								<a href="/regist/registForm" class="dropdown-item">회원가입</a>
+								</th:block>
+								<th:block th:if="${session.auth != null}">
+									<th:block th:if="${session.auth.grade == 'mem'}">
+									<a href="#" class="dropdown-item">회원 로그인 성공</a>
+									<a href="/myPage/memberMyPage" class="dropdown-item">마이페이지</a>
+									</th:block>
+									<th:block th:if="${session.auth.grade == 'emp'}">
+									<a href="#" class="dropdown-item">직원 로그인 성공</a>
+									<a href="/myPage/empMyPage" class="dropdown-item">마이페이지</a>
+									</th:block>
+									<a href="/login/logout" class="dropdown-item">로그아웃</a>
+								</th:block>
+									
+								
+							</div>
+						</div>
+
+						<a href="#" class="my-auto"> </a>
 					</div>
 				</div>
 			</nav>
@@ -138,21 +164,22 @@
 	<!-- Single Product Start -->
 	
 	<div class="container">
-	  <table align="center" width="600" border="1">
+	  <table class="responsive-table" style="border-color: lightgray;">
 	    <caption style="caption-side: top;"><b>[[${dto.goodsName}]]</b> 입고 현황</caption>
-	       <tr><th>입고번호</th><td>[[${dto.goodsIpgoDTO.ipgoNum}]]</td></tr>
-		    <tr><th>상품번호</th><td>[[${dto.goodsIpgoDTO.goodsNum}]]</td></tr>
-		    <tr><th>상품이름</th><td>[[${dto.goodsName}]]</td></tr>
-		    <tr><th>제조일</th><td>[[${#dates.format(dto.goodsIpgoDTO.madeDate,'yyyy-MM-dd')}]]</td></tr>
-		    <tr><th>수량</th><td>[[${dto.goodsIpgoDTO.ipgoQty}]]</td></tr>
-		    <tr><th>가격</th><td>[[${#numbers.formatCurrency(dto.goodsIpgoDTO.ipgoPrice) + "원" }]]</td></tr>
-		    <tr><th>입고일</th><td>[[${#dates.format(dto.goodsIpgoDTO.ipgoDate,'yyyy-MM-dd')}]]</td></tr>
-		    <tr><th colspan="2">
-		    <a href="|'goodsIpgoUpdate?ipgoNum='+ [[${dto.goodsIpgoDTO.ipgoNum}]] +'&goodsNum=' + [[${dto.goodsIpgoDTO.goodsNum}]]|"
+	       <tr><th class="table-sh">입고번호</th><td>[[${dto.goodsIpgoDTO.ipgoNum}]]</td></tr>
+		    <tr><th class="table-sh">상품번호</th><td>[[${dto.goodsIpgoDTO.goodsNum}]]</td></tr>
+		    <tr><th class="table-sh">상품이름</th><td>[[${dto.goodsName}]]</td></tr>
+		    <tr><th class="table-sh">제조일</th><td>[[${#dates.format(dto.goodsIpgoDTO.madeDate,'yyyy-MM-dd')}]]</td></tr>
+		    <tr><th class="table-sh">수량</th><td>[[${dto.goodsIpgoDTO.ipgoQty}]]</td></tr>
+		    <tr><th class="table-sh">가격</th><td>[[${#numbers.formatCurrency(dto.goodsIpgoDTO.ipgoPrice) + "원" }]]</td></tr>
+		    <tr><th class="table-sh">입고일</th><td>[[${#dates.format(dto.goodsIpgoDTO.ipgoDate,'yyyy-MM-dd')}]]</td></tr>
+		    <tr><th style="text-align-last: center;" colspan="2">
+		    <a th:href="|goodsIpgoUpdate?ipgoNum=${dto.goodsIpgoDTO.ipgoNum}&goodsNum=${dto.goodsIpgoDTO.goodsNum}|"
 							class="btn border border-secondary rounded-pill px-3 text-primary">입고 수정</a>
-		    <a href="goodsIpgoDelete?ipgoNum=${dto.goodsIpgoDTO.ipgoNum}&goodsNum=${dto.goodsIpgoDTO.goodsNum}"
+		    <a th:href="|goodsIpgoDelete?ipgoNum=${dto.goodsIpgoDTO.ipgoNum}&goodsNum=${dto.goodsIpgoDTO.goodsNum}|"
 							class="btn border border-secondary rounded-pill px-3 text-primary">입고 삭제</a>
 	  </table>
+	  
 	</div>
 	
 	<!-- Single Product End -->

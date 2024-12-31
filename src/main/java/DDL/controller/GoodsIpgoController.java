@@ -14,8 +14,11 @@ import DDL.mapper.AutoNumMapper;
 import DDL.service.goods.GoodsListService;
 import DDL.service.goodsIpgo.GoodsIpgoListService;
 import DDL.service.goodsIpgo.GoodsIpgoService;
+import DDL.service.goodsIpgo.IpgoDeleteService;
 import DDL.service.goodsIpgo.IpgoDetailService;
+import DDL.service.goodsIpgo.IpgoUpdateService;
 import jakarta.servlet.http.HttpSession;
+
 
 
 @Controller
@@ -29,6 +32,10 @@ public class GoodsIpgoController {
 	GoodsIpgoService goodsIpgoService;
 	@Autowired
 	IpgoDetailService ipgoDetailService;
+	@Autowired
+	IpgoUpdateService ipgoUpdateService;
+	@Autowired
+	IpgoDeleteService ipgoDeleteService;
 	@GetMapping("goodsIpgoList")
 	public String goodsIpgoList(Model model) {
 		goodsIpgoListService.execute(model);
@@ -62,6 +69,22 @@ public class GoodsIpgoController {
 	public String goodsIpgoDetail(String ipgoNum, String goodsNum, Model model) {
 		ipgoDetailService.execute(ipgoNum, goodsNum, model);
 		return "thymeleaf/goodsIpgo/goodsIpgoDetail";
+	}
+	@GetMapping("goodsIpgoUpdate")
+	public String goodsIpgoUpdate(String ipgoNum, String goodsNum, Model model) {
+		ipgoDetailService.execute(ipgoNum, goodsNum, model);
+		return "thymeleaf/goodsIpgo/goodsIpgoUpdate";
+	}
+	@PostMapping("goodsIpgoModify")
+	public String goodsIpgoModify(GoodsIpgoCommand goodsIpgoCommand) {
+		ipgoUpdateService.execute(goodsIpgoCommand);
+		return "redirect:goodsIpgoDetail?ipgoNum=" + goodsIpgoCommand.getIpgoNum() 
+						+ "&goodsNum="+goodsIpgoCommand.getGoodsNum();
+	}
+	@GetMapping("goodsIpgoDelete")
+	public String goodsIpgoDelete(String ipgoNum, String goodsNum) {
+		ipgoDeleteService.execute(ipgoNum, goodsNum);
+		return "redirect:goodsIpgoList";
 	}
 	
 }

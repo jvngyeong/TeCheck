@@ -9,7 +9,7 @@
 	
 	<insert id="goodsIpgo" parameterType="ipgoDTO">
 		insert into goods_ipgo(<include refid="baseColumns" />)
-		values(#{goodsNum}, #{ipgoNum}, #{ipgoQty}, #{ipgoDate}, #{madeDate}, #{ipgoPrice}, #{empNum})
+		values(#{ipgoNum}, #{goodsNum}, #{ipgoQty}, #{ipgoDate}, #{madeDate}, #{ipgoPrice}, #{empNum})
 	</insert>	
 	
 	<select id="goodsIpgoList" resultType="ipgoDTO">
@@ -39,4 +39,17 @@
 		on ip.GOODS_NUM = g.GOODS_NUM
 		where ip.GOODS_NUM = #{goodsNum} and IPGO_NUM = #{ipgoNum}
 	</select>
+	
+	<update id="goodsIpgoUpdate" parameterType="ipgoDTO">
+		update goods_ipgo set
+		IPGO_QTY = #{ipgoQty}
+		, IPGO_DATE = #{ipgoDate}
+		, IPGO_PRICE = #{ipgoPrice}
+		where IPGO_NUM = #{ipgoNum} and GOODS_NUM = #{goodsNum}
+	</update>
+	
+	<delete id="goodsIpgoDelete">
+		delete from goods_ipgo
+		where IPGO_NUM = #{ipgoNum} and GOODS_NUM = #{goodsNum}
+	</delete>
 </mapper>
