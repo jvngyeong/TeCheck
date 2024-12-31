@@ -11,6 +11,7 @@ tmp/
 local.properties
 .settings/
 .loadpath
+.classpath
 .recommenders
 target/m2e-wtp/**
 target/maven-status/**
