@@ -49,11 +49,6 @@ public class CommunityController {
 		communityWriteService.execute(communityCommand, session);
 		return "redirect:/community/communityList";
 	}
-	@GetMapping("communityDetail")
-	public String communityDetail(String commNum, Model model) {
-		communityDetailService.execute(commNum, model);
-		return "thymeleaf/community/communityDetail";
-	}
 	@GetMapping("communityModify")
 	public String communityModify(String commNum, Model model) {
 		communityDetailService.execute(commNum, model);
@@ -69,13 +64,17 @@ public class CommunityController {
 		communityDeleteService.execute(commNum);
 		return "redirect:/community/communityList";
 	}
-	@PostMapping("/community/addComment")
-    public String addComment(@RequestParam("commContents") String commContents, @RequestParam("commNum") int commNum) {
+	@GetMapping("communityDetail")
+	public String communityDetail(String commNum, Model model) {
+		communityDetailService.execute(commNum, model);
+		return "thymeleaf/community/communityDetail";
+	}
+	@PostMapping("commentInsert")
+    public String commentInsert(CommunityCommand communityCommand) {
         // 댓글 저장
-        communityCommentService.addComment(commContents, commNum);
-
+        communityCommentService.execute(communityCommand);
         // 댓글 목록을 다시 가져와서 같은 페이지로 리다이렉트
-        return "redirect:/community/communityDetail?commNum=" + commNum;
+        return "redirect:/community/communityDetail?commNum="+communityCommand.getCommNum();
     }
 
 }
