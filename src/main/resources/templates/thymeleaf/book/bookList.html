@@ -35,81 +35,6 @@
 <!-- Template Stylesheet -->
 <link href="/static/css/style.css" rel="stylesheet">
 
-<script type="text/javascript">
-	function cartDelete(goodsNum, memberNum){
-		$.ajax({
-			url : "/cart/cartDelete",
-			data : {"goodsNum" : goodsNum, "memberNum" : memberNum},
-			success : function(result){
-				if(result == "200"){
-					window.location.reload();
-				}
-			},
-			error : function(){
-				alert("오류가 발생했습니다.");
-			}
-		});
-	}
-	function cartTotalUpdate(){
-		var cartTotal = 0;
-		$("p[name='totalPrice']").each(function() {
-		    var price = $(this).text().replace(/[^0-9]/g, ""); 
-		    cartTotal = cartTotal + Number(price);
-		});
-		$("#cartTotal").html(cartTotal.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' }));
-	}
-	$(function(){
-		cartTotalUpdate();
-		
-	    $('.quantity button').on('click', function () {
-	        var button = $(this);
-	        var goodsPriceText = $(this)
-	        .closest("td")
-	        .siblings()
-	        .find("p[name='goodsPrice']")
-	        .text();
-	        var goodsNum = $(this)
-	        .closest("td")
-	        .siblings()
-	        .find("input[name='goodsNum']")
-	        .val();
-	        var memberNum = $(this)
-	        .closest("td")
-	        .siblings()
-	        .find("input[name='memberNum']")
-	        .val();
-	        var goodsPrice = parseInt(goodsPriceText.replace(/[^0-9]/g, ""), 10);
-	        var oldValue = button.parent().parent().find('input').val();
-	        if (button.hasClass('btn-plus')) {
-	            var newVal = parseFloat(oldValue) + 1;
-	            var totalPrice = goodsPrice * newVal;
-	        } else {
-	            if (oldValue > 1) {
-	                var newVal = parseFloat(oldValue) - 1;
-	                var totalPrice = goodsPrice * newVal;
-	            } else {
-	                newVal = 1;
-	            }
-	        }
-	        $.ajax({
-	        	url : "/cart/cartUpdate",
-	        	data : {"cartQty" : newVal, "goodsNum" : goodsNum, "memberNum" : memberNum},
-	        	success : function(){
-	        		button
-	    	        .closest("td")
-	    	        .siblings()
-	    	        .find("p[name='totalPrice']")
-	    	        .text(totalPrice.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' }));
-	    	        button.parent().parent().find('input').val(newVal);
-	    	        cartTotalUpdate();
-	        	},
-	        	error: function(jqXHR, textStatus, errorThrown) {
-	        	    alert("오류가 발생했습니다. 상태: " + textStatus + "\n메시지: " + errorThrown);
-	        	}
-	        })
-	    });	
-	})
-</script>
 </head>
 
 <body>
@@ -222,96 +147,56 @@
 
         <!-- Single Page Header start -->
         <div class="container-fluid page-header py-5">
-            <h1 class="text-center text-white display-6">장바구니</h1>
+            <h1 class="text-center text-white display-6">예약내역</h1>
             <ol class="breadcrumb justify-content-center mb-0">
                 <li class="breadcrumb-item"><a href="/">홈</a></li>
-                <li class="breadcrumb-item active text-white">장바구니</li>
+                <li class="breadcrumb-item active text-white">예약정보</li>
             </ol>
         </div>
         <!-- Single Page Header End -->
 
 
-        <!-- Cart Page Start -->
+        <!-- BookList Page Start -->
         <div class="container-fluid py-5">
             <div class="container py-5">
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
                           <tr>
-                            <th scope="col">Products</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Handle</th>
+                            <th scope="col">예약번호</th>
+                            <th scope="col">체험이름</th>
+                            <th scope="col">상품이름/종류</th>
+                            <th scope="col">예약날짜</th>
+                            <th scope="col">매장 주소</th>
                           </tr>
                         </thead>
                         <tbody>
-                        	<th:block th:each = "goodsCartDTO : ${goodsCartDTOList}">
+                        	<th:block th:each = "dto : ${list}">
 	                            <tr>
 	                                <th scope="row">
-	                                    <div class="d-flex align-items-center">
-	                                        <img th:src="|/static/upload/${goodsCartDTO.goodsDTO.goodsMainStoreImage}|" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;">
-	                                    </div>
+	                                	<p name = "bookNum" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.bookDTO.bookNum}]]</p>
 	                                </th>
 	                                <td style = "align-content:center;">
-	                                	<input name = "goodsNum" type = "hidden" th:value = "${goodsCartDTO.cartDTO.goodsNum}" />
-	                                	<input name = "memberNum" type = "hidden" th:value = "${goodsCartDTO.cartDTO.memberNum}" />
-	                                    <p name = "goodsName" class="mb-0 mt-4" style = "margin-top:0 !important">[[${goodsCartDTO.goodsDTO.goodsName}]]</p>
+	                                    <p name = "expName" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.experienceDTO.expName}]]</p>
 	                                </td>
 	                                <td style = "align-content:center;">
-	                                    <p name = "goodsPrice" class="mb-0 mt-4" style = "margin-top:0 !important">[[${#numbers.formatCurrency(goodsCartDTO.goodsDTO.goodsPrice)}]]</p>
+	                                    <p name = "goodsName" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.goodsDTO.goodsName}]]</p>/
+	                                    <p name = "goodsKind" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.goodsDTO.goodsKind}]]</p>
 	                                </td>
 	                                <td style = "align-content:center;">
-	                                    <div class="input-group quantity mt-4" style="margin-top:0 !important; width: 100px;">
-	                                        <div class="input-group-btn">
-	                                            <button class="btn btn-sm btn-minus rounded-circle bg-light border" >
-	                                            <i class="fa fa-minus"></i>
-	                                            </button>
-	                                        </div>
-	                                        <input type="text" class="form-control form-control-sm text-center border-0" min = "1" th:value="${goodsCartDTO.cartDTO.cartQty}">
-	                                        <div class="input-group-btn">
-	                                            <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-	                                                <i class="fa fa-plus"></i>
-	                                            </button>
-	                                        </div>
-	                                    </div>
+	                                    <p name = "bookDate" class="mb-0 mt-4" style = "margin-top:0 !important">[[${#dates.format(dto.bookDTO.bookDate, 'yyyy-MM-dd')}]]</p>
 	                                </td>
 	                                <td style = "align-content:center;">
-	                                    <p name = "totalPrice" class="mb-0 mt-4" style = "margin-top:0 !important">[[${#numbers.formatCurrency(T(java.lang.Integer).parseInt(goodsCartDTO.cartDTO.cartQty) * goodsCartDTO.goodsDTO.goodsPrice)}]]</p>
-	                                </td>
-	                                <td style = "align-content:center;">
-	                                    <button th:attr="onclick=|cartDelete('${goodsCartDTO.cartDTO.goodsNum}', '${goodsCartDTO.cartDTO.memberNum}')|" class="btn btn-md rounded-circle bg-light border mt-4" style = "margin-top: 0 !important;">
-	                                        <i class="fa fa-times text-danger"></i>
-	                                    </button>
+	                                    <p name = "storePost" class="mb-0 mt-4" style = "margin-top:0 !important">([[${dto.storeDTO.storePost}]])[[${dto.storeDTO.storeAddr}]] [[${dto.storeDTO.storeAddrDetail}]]</p>
 	                                </td>
 	                            </tr>
                             </th:block>
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-5">
-                    <input type="text" class="border-0 border-bottom rounded me-5 py-3 mb-4" placeholder="Coupon Code">
-                    <button class="btn border-secondary rounded-pill px-4 py-3 text-primary" type="button">Apply Coupon</button>
-                </div>
-                <div class="row g-4 justify-content-end">
-                    <div class="col-8"></div>
-                    <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
-                        <div class="bg-light rounded">
-                            <div class="p-4" style = "padding-bottom: 0px !important;">
-                                <h1 class="display-6 mb-4">Total</h1>
-                            </div>
-                            <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                                <h5 class="mb-0 ps-4 me-4">Total</h5>
-                                <p id = "cartTotal" class="mb-0 pe-4"></p>
-                            </div>
-                            <button onclick = "javascript:location.href='/purchase/purchaseList'" style = "border: 2px solid black !important;" class="btn border-secondary px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">결제하기</button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
-        <!-- Cart Page End -->
+        <!-- BookList Page End -->
 
 
         <!-- Footer Start -->
