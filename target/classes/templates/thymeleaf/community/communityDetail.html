@@ -310,33 +310,31 @@ hr {
 	
 
 
-								<!-- Single Product Start -->
-							<div class="container-fluid py-5 mt-5">
-							    <div class="container py-5">
+						<!-- Single Product Start -->
+						<div class="container-fluid py-5 mt-5">	
+							<div class="container py-5">
 							        <div class="row g-4 mb-5 justify-content-center">
 							            <div class="col-lg-8 col-xl-9">
 							                <div class="row g-4">
 							                    <div class="board-list">
-									  <table>
-									    <thead>
-									      <tr>
-									        <th>번호</th>
-									        <th>제목</th>
-									        <th>글쓴이</th>
-									        <th>작성일</th>
-									      </tr>
-									    </thead>
-									    <tbody>
-									    	<th:block th:each = "commDTO : ${commList}">
-										      <tr>
-										        <td><a th:href= "|/community/communityDetail?commNum=${commDTO.commNum}|">[[${commDTO.rownum}]]</a></td>
-										        <td><a th:href= "|/community/communityDetail?commNum=${commDTO.commNum}|">[[${commDTO.commTitle}]]</a></td>
-										        <td>[[${memberId}]]</td>
-										        <td>[[${#dates.format(commDTO.commDate, 'yyyy-MM-dd')}]]</td>
-										      </tr>
-									      	</th:block>
-									    </tbody>
-									  </table>
+												  <table>
+												    <thead>
+												      <tr>
+												        <th>번호</th>
+												        <th>제목</th>
+												        <th>글쓴이</th>
+												        <th>작성일</th>
+												      </tr>
+												    </thead>
+												    <tbody>
+													      <tr>
+													        <td>[[${commDTO.commNum}]]</td>
+													        <td>[[${commDTO.commTitle}]]</td>
+													        <td>[[${memberId}]]</td>
+													        <td>[[${#dates.format(commDTO.commDate, 'yyyy-MM-dd')}]]</td>
+													      </tr>
+												    </tbody>
+												  </table>
 								</div>
 		                        <a th:href="|/community/communityModify?commNum=${communityDTO.commNum}|"
 		                            class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
