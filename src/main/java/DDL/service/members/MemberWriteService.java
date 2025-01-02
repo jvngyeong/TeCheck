@@ -6,9 +6,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import DDL.command.MemberCommand;
+import DDL.domain.AuthInfoDTO;
 import DDL.domain.MemberDTO;
 import DDL.mapper.AutoNumMapper;
 import DDL.mapper.MemberMapper;
+import DDL.service.EmailSendService;
+import DDL.service.SMSMessageService;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class MemberWriteService {
@@ -18,12 +22,29 @@ public class MemberWriteService {
 	PasswordEncoder passwordEncoder;
 	@Autowired
 	AutoNumMapper autoNumMapper;
-	public void execute(MemberCommand memberCommand) {
+	@Autowired
+	EmailSendService emailSendService;
+	@Autowired
+	SMSMessageService sMSMessageService;
+	public void execute(MemberCommand memberCommand, HttpSession session) {
 		MemberDTO dto = new MemberDTO();
 		BeanUtils.copyProperties(memberCommand, dto);
 		String memberNum = autoNumMapper.getAutoNum("mem_", "5", "member_num", "members");
 		dto.setMemberNum(memberNum);
 		dto.setMemberPw(passwordEncoder.encode(memberCommand.getMemberPw()));
-		memberMapper.memberInsert(dto);
+		int i = memberMapper.memberInsert(dto);
+		
+		AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+		if(auth == null && i > 0) {
+			String contents = "<html><body>";
+			   contents += dto.getMemberName() + "님 가입을 환영합니다.<br/>";
+			   contents += "가입을 완료하시려면 ";
+			   contents += "<a href = 'http://localhost:8080/userConfirm?chk="+dto.getMemberEmail()+"'>여기</a>를 클릭하세요.";
+			String subject = "TeCheck 가입 확인 메일입니다.";
+			String fromEmail = "highland0@nate.com"; //요거는 안중요해요 어차피 강사님걸로 날아감
+			String toEmail = dto.getMemberEmail();
+			emailSendService.mailSend(fromEmail, toEmail, subject, contents);
+			sMSMessageService.smsSend(dto.getMemberPhone(), "010-7146-1970", "[TeCheck] 가입 시 기입한 이메일을 확인해주세요.");
+		}
 	}
 }

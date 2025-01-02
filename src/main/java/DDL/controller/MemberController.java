@@ -13,6 +13,7 @@ import DDL.service.members.MemberDetailService;
 import DDL.service.members.MemberListService;
 import DDL.service.members.MemberUpdateService;
 import DDL.service.members.MemberWriteService;
+import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("member")
 public class MemberController {
@@ -36,8 +37,8 @@ public class MemberController {
 		return "thymeleaf/member/memberForm";
 	}
 	@PostMapping("memberWrite")
-	public String memberWrite(MemberCommand memberCommand) {
-		memberWriteService.execute(memberCommand);
+	public String memberWrite(MemberCommand memberCommand, HttpSession session) {
+		memberWriteService.execute(memberCommand, session);
 		return "redirect:memberList";
 	}
 	@GetMapping("memberDetail")
@@ -61,6 +62,4 @@ public class MemberController {
 		memberDeleteService.execute(memberNum);
 		return "redirect:memberList";
 	}
-	
-	
 }

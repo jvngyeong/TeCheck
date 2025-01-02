@@ -1,4 +1,4 @@
-package DDL.kafka;
+package DDL.stock;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
@@ -96,7 +96,6 @@ public class MultiThreadedUDPServer {
                             "거래량 = " + transaction.get거래량() + ":" + "누적거래량 = " + transaction.get누적거래량();
                 System.out.println(logMessage);
                 producer.send(new ProducerRecord<>("stock", Long.toString(threadId), logMessage));  // Kafka에 메시지 보내기
-                // DB에  insert하기
             } catch (Exception e) {
                 e.printStackTrace();
             }

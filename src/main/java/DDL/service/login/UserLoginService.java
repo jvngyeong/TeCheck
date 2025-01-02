@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import DDL.command.LoginCommand;
 import DDL.domain.AuthInfoDTO;
 import DDL.mapper.LoginMapper;
+import DDL.mapper.MemberMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
@@ -17,6 +18,8 @@ public class UserLoginService {
 	LoginMapper loginMapper;
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	@Autowired
+	MemberMapper memberMapper;
 	public void execute(LoginCommand loginCommand
 			, HttpSession session
 			, BindingResult result
@@ -25,6 +28,14 @@ public class UserLoginService {
 		if(auth != null) {
 			if(passwordEncoder.matches(loginCommand.getUserPw()
 					, auth.getUserPw())) {
+				if(auth.getGrade().equals("mem")) {
+					String emailConf = memberMapper.emailConfCheck(auth.getUserId());
+					if(emailConf == null) {
+						result.rejectValue("userId", "loginCommand.userPw"
+								, "가입 확인 이메일을 확인해주세요.");	
+						System.out.println("가입 확인 이메일을 확인해주세요.");
+					}
+				}
 				System.out.println("비밀번호가 일치합니다.");
 				session.setAttribute("auth", auth);
 			}else {

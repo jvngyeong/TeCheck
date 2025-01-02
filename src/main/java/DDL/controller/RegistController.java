@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import DDL.command.MemberCommand;
 import DDL.service.members.MemberWriteService;
+import jakarta.servlet.http.HttpSession;
 
 
 @Controller
@@ -26,11 +27,11 @@ public class RegistController {
 	}
 	@PostMapping("memberRegist")
 	public String memberRegist(@Validated MemberCommand memberCommand
-			,BindingResult result) {
+			,BindingResult result, HttpSession session) {
 		if(result.hasErrors()) {
 			return "thymeleaf/regist/registForm";
 		}
-		memberWriteService.execute(memberCommand);
+		memberWriteService.execute(memberCommand, session);
 		return "redirect:/";
 	}
 }

@@ -48,4 +48,12 @@
 	<select id="getMemberNum">
 		select member_num from members where member_id = #{memberId}
 	</select>
+	
+	<update id="emailConfUpdate">
+		update members set email_conf = 'Y' where member_email = #{memberEmail}
+	</update>
+	
+	<select id="emailConfCheck">
+		select email_conf from members where member_id = #{userId}
+	</select>
 </mapper>

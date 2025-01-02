@@ -1,19 +1,23 @@
-package DDL.kafka;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.java_websocket.WebSocket;
-import org.java_websocket.handshake.ClientHandshake;
-import org.java_websocket.server.WebSocketServer;
-import org.json.JSONObject;
+package DDL.stock;
 import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.java_websocket.WebSocket;
+import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.server.WebSocketServer;
+import org.json.JSONObject;
+
+import DDL.domain.StockDTO;
+import DDL.stock.dao.StockDAO;
 public class KafkaWebSocketServer extends WebSocketServer {
     private Set<WebSocket> connections = ConcurrentHashMap.newKeySet();
     public KafkaWebSocketServer(InetSocketAddress address) {
@@ -43,12 +47,13 @@ public class KafkaWebSocketServer extends WebSocketServer {
         System.out.println("WebSocket server started successfully");
     }
     public void broadcastMessage(String message) {
+    	System.out.println(message);
         for (WebSocket conn : connections) {
             conn.send(message);
         }
     }
     public static void main(String[] args) {
-        InetSocketAddress address = new InetSocketAddress("localhost", 1012);
+        InetSocketAddress address = new InetSocketAddress("172.16.105.174", 10120);
         KafkaWebSocketServer server = new KafkaWebSocketServer(address);
         server.start();
         System.out.println("WebSocket server started on port: " + server.getPort());
@@ -77,6 +82,8 @@ public class KafkaWebSocketServer extends WebSocketServer {
                         // 데이터 파싱
                         String[] pairs = record.value().split(":");
                         JSONObject stockData = new JSONObject();
+                        StockDTO stockDTO = new StockDTO();
+                        StockDAO stockDAO = new StockDAO();
                         for (String pair : pairs) {
                             String[] keyValue = pair.split("=");
                             if (keyValue.length == 2) {
@@ -104,6 +111,11 @@ public class KafkaWebSocketServer extends WebSocketServer {
                                 }
                             }
                         }
+                        stockDTO.setTimestamp(stockData.getString("timestamp"));
+                        stockDTO.setVolume(stockData.getInt("volume"));
+                        stockDTO.setPrice(stockData.getInt("price"));
+                        System.out.println(stockDTO.getTimestamp() + " / " + stockDTO.getVolume() + " / " + stockDTO.getPrice());
+                        stockDAO.stockInsert(stockDTO);
                         System.out.println("stockData = " + stockData.toString());
                         // Kafka 메시지를 WebSocket 클라이언트들에게 브로드캐스트
                         broadcastMessage(stockData.toString());
