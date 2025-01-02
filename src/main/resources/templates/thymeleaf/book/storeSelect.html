@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>매장 검색</title>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+function storeSelect(element) {
+    // 데이터 속성에서 값을 가져옴
+    const storeNum = element.dataset.storenum;
+    const storeName = element.dataset.storename;
+
+    // 부모 창의 input 필드에 값 설정
+    $(opener.document).find("#storeNum").val(storeNum);
+    $(opener.document).find("#storeName").val(storeName);
+
+    // 팝업 창 닫기
+    window.self.close();
+}
+</script>
+</head>
+<body>
+<table border="1" width="800" align="center">
+    <thead>
+        <tr>
+            <th>매장 이름</th>
+            <th>매장 주소</th>
+            <th>매장 번호</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="dto : ${list}">
+            <td>
+                <a href="javascript:void(0);"
+                   th:data-storenum="${dto.storeNum}"
+                   th:data-storename="${dto.storeName}"
+                   onclick="storeSelect(this)">
+                   [[${dto.storeName}]]
+                </a>
+            </td>
+            <td>([[${dto.storePost}]])[[${dto.storeAddr}]] [[${dto.storeAddrDetail}]]</td>
+            <td>[[${dto.storeTel}]]</td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
