@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import DDL.command.BookCommand;
 import DDL.service.book.BookFormService;
+import DDL.service.book.BookInfoService;
 import DDL.service.book.BookInsertService;
 import DDL.service.book.BookMyListService;
+import DDL.service.book.BookUpdateService;
 import DDL.service.goods.GoodsListService;
 import DDL.service.store.StoreListService;
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +30,10 @@ public class BookController {
 	BookInsertService bookInsertService;
 	@Autowired
 	BookMyListService bookMyListService;
+	@Autowired
+	BookInfoService bookInfoService;
+	@Autowired
+	BookUpdateService bookUpdateService;
 	@GetMapping("bookForm")
 	public String bookForm(Model model) {
 		bookFormService.execute(model);
@@ -61,6 +67,32 @@ public class BookController {
 	public String bookList(Model model, HttpSession session) {
 		bookMyListService.execute(model, session);
 		return "thymeleaf/book/bookList";
+	}
+	@GetMapping("bookDetail")
+	public String bookDetail(Model model,HttpSession session, String bookNum) {
+		String result = bookInfoService.execute(model, session, bookNum);
+		if(result == "200") {
+			return "thymeleaf/book/bookDetail";
+		}else {
+			return "/";
+		}
+	}
+	@GetMapping("bookModify")
+	public String bookModify(Model model,HttpSession session, String bookNum) {
+		bookFormService.execute(model);
+		String result = bookInfoService.execute(model, session, bookNum);
+		if(result == "200") {
+			return "thymeleaf/book/bookModify";
+		}else {
+			return "/";
+		}
+	}
+	@PostMapping("bookUpdate")
+	public String bookUpdate(@Validated BookCommand bookCommand
+			, BindingResult result
+			, HttpSession session) {
+		bookUpdateService.execute(bookCommand, session);
+		return "redirect:bookDetail?bookNum=" + bookCommand.getBookNum();
 	}
 	
 	

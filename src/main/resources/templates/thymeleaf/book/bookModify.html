@@ -123,31 +123,35 @@ $(function(){
 
 
 	<div class="container">
-		<form action="/book/bookWrite" method="post">
+		<form action="/book/bookUpdate" method="post">
+			<input type="hidden" name= "memberNum" th:value="${dto.bookDTO.memberNum}"/>
+			<input type="hidden" name= "bookNum" th:value="${dto.bookDTO.bookNum}"/>
 			<div class="row">
 				<h4>체험 정보</h4>
 				<div class="input-group input-group-icon">
 					<select name="expNum">
-						<option value = "" disabled hidden selected>체험 내용을 선택해주세요.</option>
-						<th:block th:each = "experienceDTO : ${experienceList}">
-							<option th:value="${experienceDTO.expNum}">[[${experienceDTO.expName}]]</option>
-						</th:block>
+					    <option value="" disabled hidden th:selected="${dto.bookDTO.expNum == null}">체험 내용을 선택해주세요.</option>
+					    <th:block th:each="experienceDTO : ${experienceList}">
+					        <option th:value="${experienceDTO.expNum}" th:selected="${dto.bookDTO.expNum == experienceDTO.expNum}">
+					            [[${experienceDTO.expName}]]
+					        </option>
+					    </th:block>
 					</select>
 					<div class="input-icon icon-center">
 						<i class="fa-solid fa-building"></i>
 					</div>
 				</div>
 				<div class="input-group input-group-icon">
-					<input type="text" name= "goodsName" id="goodsName" readonly="readonly" />
-					<input type="hidden" name= "goodsNum" id="goodsNum" readonly="readonly" />
+					<input type="hidden" name= "goodsNum" id="goodsNum" readonly="readonly" th:value="${dto.goodsDTO.goodsNum}"/>
+					<input type="text" name= "goodsName" id="goodsName" readonly="readonly" th:value="${dto.goodsDTO.goodsName}" />
 	        		<input type="button" id="goodsBtn" value="상품 검색" /></td></tr>
 					<div class="input-icon icon-center">
 						<i class="fa fa-user"></i>
 					</div>
 				</div>
 				<div class="input-group input-group-icon">
-					<input type="hidden" name= "storeNum" id="storeNum" readonly="readonly" />
-					<input type="text" name= "storeName" id="storeName" readonly="readonly" />
+					<input type="hidden" name= "storeNum" id="storeNum" readonly="readonly" th:value="${dto.storeDTO.storeNum}"/>
+					<input type="text" name= "storeName" id="storeName" readonly="readonly" th:value="${dto.storeDTO.storeName}"/>
 	        		<input type="button" id="storeBtn" value="매장 검색" /></td></tr>
 					<div class="input-icon icon-center">
 						<i class="fa fa-user"></i>
@@ -157,25 +161,25 @@ $(function(){
 			<div class="row">
 				<h4>방문 일자</h4>
 				<div class="input-group">
-					<input type="date" name="bookDate" />
+					<input type="date" name="bookDate" th:value="${#dates.format(dto.bookDTO.bookDate, 'yyyy-MM-dd')}"/>
 				</div>
 				<div class="row">
 			    <h4>방문 시간</h4>
 			    <div class="input-group">
 			        <select name="bookHour">
-			            <option value="" disabled selected>시간 선택</option>
-			            <option value="09:00">09시</option>
-			            <option value="10:00">10시</option>
-			            <option value="11:00">11시</option>
-			            <option value="12:00">12시</option>
-			            <option value="13:00">13시</option>
-			            <option value="14:00">14시</option>
-			            <option value="15:00">15시</option>
-			            <option value="16:00">16시</option>
-			            <option value="17:00">17시</option>
-			            <option value="18:00">18시</option>
-			            <option value="19:00">19시</option>
-			            <option value="20:00">20시</option>
+			            <option value="" disabled th:selected="${dto.bookDTO.bookTime == null}">시간 선택</option>
+				        <option value="09:00" th:selected="${#temporals.format(dto.bookDTO.bookTime, 'HH:mm') == '09:00'}">09시</option>
+				        <option value="10:00" th:selected="${#temporals.format(dto.bookDTO.bookTime, 'HH:mm') == '10:00'}">10시</option>
+				        <option value="11:00" th:selected="${#temporals.format(dto.bookDTO.bookTime, 'HH:mm') == '11:00'}">11시</option>
+				        <option value="12:00" th:selected="${#temporals.format(dto.bookDTO.bookTime, 'HH:mm') == '12:00'}">12시</option>
+				        <option value="13:00" th:selected="${#temporals.format(dto.bookDTO.bookTime, 'HH:mm') == '13:00'}">13시</option>
+				        <option value="14:00" th:selected="${#temporals.format(dto.bookDTO.bookTime, 'HH:mm') == '14:00'}">14시</option>
+				        <option value="15:00" th:selected="${#temporals.format(dto.bookDTO.bookTime, 'HH:mm') == '15:00'}">15시</option>
+				        <option value="16:00" th:selected="${#temporals.format(dto.bookDTO.bookTime, 'HH:mm') == '16:00'}">16시</option>
+				        <option value="17:00" th:selected="${#temporals.format(dto.bookDTO.bookTime, 'HH:mm') == '17:00'}">17시</option>
+				        <option value="18:00" th:selected="${#temporals.format(dto.bookDTO.bookTime, 'HH:mm') == '18:00'}">18시</option>
+				        <option value="19:00" th:selected="${#temporals.format(dto.bookDTO.bookTime, 'HH:mm') == '19:00'}">19시</option>
+				        <option value="20:00" th:selected="${#temporals.format(dto.bookDTO.bookTime, 'HH:mm') == '20:00'}">20시</option>
 			        </select>
 			    </div>
 			</div>
@@ -183,7 +187,7 @@ $(function(){
 			</div>
 			
 			<div class="wrap">
-				<input type="submit" value="예약하기" class="button">
+				<input type="submit" value="예약 수정하기" class="button">
 			</div>
 		</form>
 	</div>
