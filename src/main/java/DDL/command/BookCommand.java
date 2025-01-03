@@ -19,4 +19,5 @@ public class BookCommand {
 	String storeNum;
 	@NotEmpty(message = "상품을 선택해주세요")
 	String goodsNum;
+	String bookHour; // 시간 필드를 문자열로 받음
 }

@@ -1,5 +1,6 @@
 package DDL.domain;
 
+import java.time.LocalTime;
 import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
@@ -18,4 +19,6 @@ public class BookDTO {
 	String empNum;
 	String storeNum;
 	String goodsNum;
+	@DateTimeFormat(pattern = "HH:mm")
+    LocalTime bookTime; // 시간 추가
 }

@@ -161,38 +161,46 @@
             <div class="container py-5">
                 <div class="table-responsive">
                     <table class="table">
+                    <caption style="caption-side: top; text-align: center;"><h1>예약 내역</h1></caption>
                         <thead>
                           <tr>
+                            <th scope="col">제품</th>
                             <th scope="col">예약번호</th>
-                            <th scope="col">체험이름</th>
-                            <th scope="col">상품이름/종류</th>
-                            <th scope="col">예약날짜</th>
-                            <th scope="col">매장 주소</th>
+                            <th scope="col">체험내용</th>
+                            <th scope="col">예약일시</th>
+                            <th scope="col">매장이름</th>
+                            <th scope="col">상품이름</th>
                           </tr>
                         </thead>
                         <tbody>
-                        	<th:block th:each = "dto : ${list}">
-	                            <tr>
-	                                <th style = "align-content:center;" scope="row">
-	                                	<p name = "bookNum" class="mb-0 mt-4" style = "margin-top:0 !important"><a th:href="|/book/bookDetail?bookNum=${dto.bookDTO.bookNum}|">[[${dto.bookDTO.bookNum}]]</a></p>
-	                                </th>
-	                                <td style = "align-content:center;">
-	                                    <p name = "expName" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.experienceDTO.expName}]]</p>
-	                                </td>
-	                                <td style = "align-content:center;">
-	                                    <p name = "goodsName" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.goodsDTO.goodsName}]]</p>/
-	                                    <p name = "goodsKind" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.goodsDTO.goodsKind}]]</p>
-	                                </td>
-	                                <td style = "align-content:center;">
-	                                    <p name = "bookDate" class="mb-0 mt-4" style = "margin-top:0 !important">[[${#dates.format(dto.bookDTO.bookDate, 'yyyy-MM-dd')}]]
-	                                    																	[[${#temporals.format(dto.bookDTO.bookTime, 'HH:mm')}]]</p>
-	                                </td>
-	                                <td style = "align-content:center;">
-	                                    <p name = "storePost" class="mb-0 mt-4" style = "margin-top:0 !important">([[${dto.storeDTO.storePost}]])[[${dto.storeDTO.storeAddr}]] [[${dto.storeDTO.storeAddrDetail}]]</p>
-	                                </td>
-	                            </tr>
-                            </th:block>
+                        	<tr>
+	                            <th scope="row">
+	                                <div class="d-flex align-items-center">
+	                                    <img th:src="|/static/upload/${dto.goodsDTO.goodsMainStoreImage}|" class="img-fluid me-5 rounded" style="width: 300px; height: 300px;object-fit: contain;">
+	                                </div>
+	                            </th>
+	                            <td style = "align-content:center;">
+	                                <p name = "bookNum" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.bookDTO.bookNum}]]</p>
+	                            </td>
+	                            <td style = "align-content:center;">
+	                                <p name = "expName" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.experienceDTO.expName}]]</p>
+	                            </td>
+	                            <td style = "align-content:center;">
+	                                <p name = "bookDate" class="mb-0 mt-4" style = "margin-top:0 !important">[[${#dates.format(dto.bookDTO.bookDate, 'yyyy-MM-dd')}]] [[${#temporals.format(dto.bookDTO.bookTime, 'HH:mm')}]]</p>
+	                            </td>
+	                            <td style = "align-content:center;">
+	                                <p name = "storeName" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.storeDTO.storeName}]]</p>
+	                            </td>
+	                            <td style = "align-content:center;">
+	                                <p name = "goodsName" class="mb-0 mt-4" style = "margin-top:0 !important"><a th:href = "|/shop/shopDetail?goodsNum=${dto.goodsDTO.goodsNum}|">[[${dto.goodsDTO.goodsName}]]</a></p>
+	                            </td>
+	                        </tr>
                         </tbody>
+                        <tfoot>
+                        	<tr><td colspan="6" style="text-align: right;">
+                        	<a th:href="|/book/bookModify?bookNum=${dto.bookDTO.bookNum}|" class="memInfoBtn btn border border-secondary px-3 text-primary">예약 정보 수정</a>
+                        	<a th:href="|/book/bookDelete?bookNum=${dto.bookDTO.bookNum}|" class="memInfoBtn btn border border-secondary px-3 text-primary">예약 삭제</a></td></tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>

@@ -4,16 +4,16 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="DDL.mapper.BookMapper">
 	<sql id="baseCalumns">
-		BOOK_NUM, BOOK_DATE, MEMBER_NUM, EXP_NUM, STORE_NUM, EMP_NUM, GOODS_NUM
+		BOOK_NUM, BOOK_DATE, BOOK_TIME, MEMBER_NUM, EXP_NUM, STORE_NUM, EMP_NUM, GOODS_NUM
 	</sql>
 
 	<insert id="bookInsert" parameterType="bookDTO">
 		insert into book(<include refid="baseCalumns" />)
-		values(#{bookNum}, #{bookDate}, #{memberNum}, #{expNum}, #{storeNum}, 'emp_100001', #{goodsNum})
+		values(#{bookNum}, #{bookDate}, #{bookTime}, #{memberNum}, #{expNum}, #{storeNum}, 'emp_100001', #{goodsNum})
 	</insert>
 	
 	<select id="bookSelectMine" resultMap="bookStoreGoodsExpDTO" parameterType="string">
-		select BOOK_NUM, BOOK_DATE, MEMBER_NUM, b.EXP_NUM, b.STORE_NUM, EMP_NUM, b.GOODS_NUM
+		select BOOK_NUM, BOOK_DATE, BOOK_TIME, MEMBER_NUM, b.EXP_NUM, b.STORE_NUM, EMP_NUM, b.GOODS_NUM
 		, STORE_ADDR, STORE_ADDR_DETAIL, STORE_POST, STORE_TEL, STORE_NAME
 		, GOODS_NAME, GOODS_KIND, GOODS_CONTENTS, EXP_CONTENTS, EXP_NAME
 		from book b join goods g
@@ -21,12 +21,14 @@
 		on b.store_num = s.store_num join experience e
 		on b.exp_num = e.exp_num
 		where member_num = #{memberNum}
+		ORDER BY BOOK_DATE DESC, BOOK_TIME DESC
 	</select>
 	
 	<resultMap type="bookStoreGoodsExpDTO" id="bookStoreGoodsExpDTO">
 	    <association property="bookDTO" javaType="bookDTO">
 	        <id property="bookNum" column="BOOK_NUM" />
 		    <result property="bookDate" column="BOOK_DATE" />
+		    <result property="bookTime" column="BOOK_TIME" />
 		    <result property="memberNum" column="MEMBER_NUM" />
 		    <result property="expNum" column="EXP_NUM" />
 		    <result property="storeNum" column="STORE_NUM" />
@@ -46,6 +48,9 @@
 		    <result property="goodsName" column="GOODS_NAME" />
 		    <result property="goodsKind" column="GOODS_KIND" />
 		    <result property="goodsContents" column="GOODS_CONTENTS" />
+		    <result property="goodsMainImage" column="GOODS_MAIN_IMAGE" />
+		    <result property="goodsMainStoreImage" column="GOODS_MAIN_STORE_IMAGE" />
+		    
 	    </association>
 	    <association property="experienceDTO" javaType="experienceDTO">
 	        <id property="expNum" column="EXP_NUM" />
@@ -54,5 +59,25 @@
 	    </association>
 	</resultMap>
 	
+	<select id="bookSelectInfo" resultMap="bookStoreGoodsExpDTO">
+		select BOOK_NUM, BOOK_DATE, BOOK_TIME, MEMBER_NUM, b.EXP_NUM, b.STORE_NUM, EMP_NUM, g.GOODS_NUM
+		, STORE_ADDR, STORE_ADDR_DETAIL, STORE_POST, STORE_TEL, STORE_NAME
+		, GOODS_NAME, GOODS_KIND, GOODS_CONTENTS, EXP_CONTENTS, EXP_NAME
+		, GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE
+		from book b join goods g
+		on b.goods_num = g.goods_num join store s
+		on b.store_num = s.store_num join experience e
+		on b.exp_num = e.exp_num
+		where BOOK_NUM = #{bookNum} and MEMBER_NUM = #{memberNum}
+	</select>
 	
+	<update id="bookUpdate" parameterType="bookDTO">
+		update book set
+		BOOK_DATE = #{bookDate}
+		, BOOK_TIME = #{bookTime}
+		, EXP_NUM = #{expNum}
+		, STORE_NUM = #{storeNum}
+		, GOODS_NUM = #{goodsNum}
+		where MEMBER_NUM = #{memberNum}
+	</update>
 </mapper>
