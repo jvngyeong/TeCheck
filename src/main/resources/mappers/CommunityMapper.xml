@@ -15,7 +15,9 @@
 	</select>
 	
 	<select id = "communitySelectOne">
-			select <include refid="communityColumns"></include> from community where comm_num = #{commNum}
+			select COMM_NUM, m.MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_CONTENTS , member_id from community c join members m 
+			on  c.member_num = m.member_num 
+			where comm_num = #{commNum}
 	</select>
 	<update id = "communityUpdate">
 			update community set COMM_TITLE = #{commTitle}, COMM_CONTENTS = #{commContents} where COMM_NUM = #{commNum}
@@ -23,4 +25,11 @@
 	<delete id = "communityDelete">
 			delete from community where COMM_NUM =#{commNum}
 	</delete>
+	<sql id="replyColumns">
+			REPLY_NUM, REPLY_DATE, REPLY_CONTENT, MEMBER_NUM, COMM_NUM
+	</sql>
+	<insert id="insertReply" parameterType="CommunityDTO">
+		    INSERT INTO reply(REPLY_NUM, REPLY_DATE, REPLY_CONTENT, MEMBER_NUM, COMM_NUM)
+		    VALUES ((select nvl(max(REPLY_NUM),0) + 1  from reply) ,SYSDATE, #{replyContent}, #{memberNum}, #{commNum})
+	</insert>
 </mapper>

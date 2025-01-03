@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import DDL.domain.CommunityDTO;
+import DDL.domain.CommunityReplyDTO;
 
 @Mapper
 public interface CommunityMapper {
@@ -17,4 +18,9 @@ public interface CommunityMapper {
 	void communityUpdate(CommunityDTO communityDTO);
 
 	void communityDelete(String commNum);
+
+	void insertReply(CommunityDTO communityDTO);
+
+	List<CommunityReplyDTO> communityReplyListSelect();
+
 }

@@ -9,13 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import DDL.command.CommunityCommand;
 import DDL.domain.CommunityDTO;
-import DDL.service.community.CommunityCommentService;
+import DDL.service.community.CommunityReplyService;
 import DDL.service.community.CommunityDeleteService;
 import DDL.service.community.CommunityDetailService;
 import DDL.service.community.CommunityListService;
+import DDL.service.community.CommunityReplyListService;
 import DDL.service.community.CommunityUpdateService;
 import DDL.service.community.CommunityWriteService;
 import jakarta.servlet.http.HttpSession;
@@ -34,7 +36,10 @@ public class CommunityController {
 	@Autowired
 	CommunityDeleteService communityDeleteService;
 	@Autowired
-	CommunityCommentService communityCommentService;
+	CommunityReplyService communityReplyService;
+	@Autowired
+	CommunityReplyListService communityReplyListService;
+	
 	@GetMapping("communityList")
 	public String communityList(Model model, HttpSession session) {
 		communityListService.execute(model, session);
@@ -69,12 +74,17 @@ public class CommunityController {
 		communityDetailService.execute(commNum, model);
 		return "thymeleaf/community/communityDetail";
 	}
-	@PostMapping("commentInsert")
-    public String commentInsert(CommunityCommand communityCommand) {
+	@PostMapping("replyInsert")
+    public String replyInsert(CommunityCommand communityCommand,  HttpSession session) {
         // 댓글 저장
-        communityCommentService.execute(communityCommand);
+        communityReplyService.execute(communityCommand, session);
         // 댓글 목록을 다시 가져와서 같은 페이지로 리다이렉트
         return "redirect:/community/communityDetail?commNum="+communityCommand.getCommNum();
     }
-
+	@GetMapping("communityReplyList")
+	public String communityReplyList(Model model) {
+		communityReplyListService.execute(model);
+		return "thymeleaf/community/communityDetail";
+	}
+	
 }

@@ -49,12 +49,6 @@
     border-bottom: 1px solid #ddd;
   }
 
-  .board-list tbody td:nth-child(2) {
-    text-align: left;
-    color: #007bff;
-    font-weight: 500;
-  }
-
   .board-list tbody td:nth-child(2):hover {
     text-decoration: underline;
   }
@@ -65,11 +59,6 @@
 
   .board-list tbody td:first-child {
     font-weight: bold;
-  }
-
-  .board-list tbody td:last-child {
-    font-weight: bold;
-    color: #28a745;
   }
 
   .board-list caption {
@@ -310,32 +299,33 @@ hr {
 	
 
 
-						<!-- Single Product Start -->
-						<div class="container-fluid py-5 mt-5">	
-							<div class="container py-5">
-							        <div class="row g-4 mb-5 justify-content-center">
-							            <div class="col-lg-8 col-xl-9">
-							                <div class="row g-4">
-							                    <div class="board-list">
-												  <table>
-												    <thead>
-												      <tr>
-												        <th>번호</th>
-												        <th>제목</th>
-												        <th>글쓴이</th>
-												        <th>작성일</th>
-												      </tr>
-												    </thead>
-												    <tbody>
-													      <tr>
-													        <td>[[${commDTO.commNum}]]</td>
-													        <td>[[${commDTO.commTitle}]]</td>
-													        <td>[[${memberId}]]</td>
-													        <td>[[${#dates.format(commDTO.commDate, 'yyyy-MM-dd')}]]</td>
-													      </tr>
-												    </tbody>
-												  </table>
-								</div>
+	<!-- Single Product Start -->
+	<div class="container-fluid py-5 mt-5">	
+		<div class="container py-5">
+			<div class="row g-4 mb-5 justify-content-center">
+				<div class="col-lg-8 col-xl-9">
+					 <div class="row g-4">
+						<div class="board-list">
+							 <table>
+							 	<thead>
+								  <tr>
+							    	<th>번호</th>					
+							        <th>제목</th>
+							        <th>글쓴이</th>
+							        <th>작성일</th>
+							      </tr>
+						   		</thead>
+						    	<tbody>
+							   		<tr>
+							        <td>[[${communityDTO.commNum}]]</td>
+							        <td>[[${communityDTO.commTitle}]]</td>
+							        <td>[[${communityDTO.memberId}]]</td>
+							        <td>[[${#dates.format(communityDTO.commDate, 'yyyy-MM-dd')}]]</td>
+									</tr>
+									<tr><td colspan="4">[[${communityDTO.commContents}]]</td></tr>
+								</tbody>
+							</table>
+						</div>
 		                        <a th:href="|/community/communityModify?commNum=${communityDTO.commNum}|"
 		                            class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
 		                            <i class="fa-solid fa-pen" style="margin-right: 10px;"></i>수정하기
@@ -345,26 +335,27 @@ hr {
 		                            <i class="fa-solid fa-circle-xmark" style="margin-right: 10px;"></i>삭제하기
 		                        </a>
 		                        
-		                        <div class="comments-list border-top pt-3">
-								    <h6 class="mb-3">전체 댓글 <span class="badge bg-secondary">{{ commentList.size() }}개</span></h6>
-								    <div th:each="comment : ${commentList}">
-								        <div class="comment-item border-bottom pb-2 mb-2">
-								            <p class="mb-1"><strong th:text="${comment.memberId}"></strong></p>
-								            <p th:text="${comment.content}"></p>
-								            <p class="text-muted small mb-1" th:text="${#dates.format(comment.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+		                        <div class="replys-list border-top pt-3">
+								    <h6 class="mb-3">전체 댓글 <span class="badge bg-secondary">{{ communityList.size() }}개</span></h6>
+								    <div th:each="community : ${communityList}">
+								        <div class="reply-item border-bottom pb-2 mb-2">
+								            <p class="mb-1"><strong th:text="${community.memberId}"></strong></p>
+								            <p th:text="${community.replyContent}"></p>
+								            <p class="text-muted small mb-1" th:text="${#dates.format(community.replyDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
 								        </div>
 								    </div>
 								</div>
 								
 								<!-- 댓글 작성 폼 -->
-								<div class="comment-section border-top pt-3">
+								<div class="reply-section border-top pt-3">
 								    <h6 class="mb-3">댓글 작성</h6>
-								    <form action="/community/commentInsert" method="post" class="comment-form">
+								    <form action="/community/replyInsert" method="post" class="reply-form">
+
 								        <input type="hidden" name="commNum" th:value="${communityDTO.commNum}">
 								        <div class="row align-items-center">
 								            <!-- 댓글 입력 -->
 								            <div class="col-md-8 mb-2 mb-md-0">
-								                <input name="commentContents" type="text" class="form-control" placeholder="내용" required />
+								                <input name="replyContent" type="text" class="form-control" placeholder="댓글내용" required />
 								            </div>
 								            <!-- 작성 버튼 -->
 								            <div class="col-md-4 text-end">

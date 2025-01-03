@@ -205,6 +205,11 @@
 	        <artifactId>json</artifactId>
 	    	<version>20210307</version>
 		</dependency>
+	    <dependency>
+	    	<groupId>board</groupId>
+	    	<artifactId>HomeComing</artifactId>
+	    	<version>0.0.1-SNAPSHOT</version>
+	    </dependency>
 	</dependencies>
 
 	<build>
