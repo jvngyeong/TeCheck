@@ -1,20 +1,18 @@
-package DDL.command;
+package DDL.domain;
 
 import java.util.Date;
 
+import org.apache.ibatis.type.Alias;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 @Data
-public class CommunityCommand {
-	String commNum;
-	String commTitle;
-	String commContents;
-	
+@Alias("communityReplyDTO")
+public class CommunityReplyDTO {
 	String replyNum;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	Date replyDate;
-	String replyContent;
+	Date replyDate;	
+	String replyContent;	
 	String memberNum;
-	String memberId;
+	String commNum;
 }

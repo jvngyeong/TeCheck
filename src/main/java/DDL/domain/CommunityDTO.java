@@ -13,12 +13,11 @@ public class CommunityDTO {
 	String rownum;
 	String commNum;
 	String memberNum;
+	String memberId;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	Date commDate;
 	String commTitle;
 	String commContents;
-
-	String replyContents;
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	Date replyDate;
+	
+	
 }
