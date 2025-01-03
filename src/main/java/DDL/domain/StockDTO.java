@@ -11,6 +11,13 @@ import lombok.Data;
 public class StockDTO {
 	Date tradeDate;
 	String timestamp;
-	Integer volume;
-	Integer price;
+	Long volume;
+	Long avgPrice;
+	Long maxPrice;
+	Long minPrice;
+	Long openPrice;
+	Long endPrice;
+	Long totalPrice;
+	Long totalVolume;
+	String rateOfChange;
 }
