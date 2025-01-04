@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import DDL.service.EmailConfService;
 import DDL.service.EmailSendService;
+import DDL.service.cart.CartListService;
+import jakarta.servlet.http.HttpSession;
 
 @SpringBootApplication
 @Controller
@@ -20,12 +23,16 @@ public class TeCheckApplication {
 	@Autowired
 	EmailConfService emailConfService;
 	
+	@Autowired
+	CartListService cartListService;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(TeCheckApplication.class, args);
 	}
 
 	@RequestMapping("/")
-	public String index() {
+	public String index(Model model, HttpSession session) {
+		cartListService.execute(model, session);
 		return "thymeleaf/index";
 	}
 	

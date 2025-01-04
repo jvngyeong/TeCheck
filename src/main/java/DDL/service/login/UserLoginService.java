@@ -33,20 +33,18 @@ public class UserLoginService {
 					if(emailConf == null) {
 						result.rejectValue("userId", "loginCommand.userPw"
 								, "가입 확인 이메일을 확인해주세요.");	
-						System.out.println("가입 확인 이메일을 확인해주세요.");
 					}
 				}
-				System.out.println("비밀번호가 일치합니다.");
 				session.setAttribute("auth", auth);
 			}else {
 				result.rejectValue("userPw", "loginCommand.userPw"
 						, "비밀번호가 틀렸습니다.");	
-				System.out.println("비밀번호가 일치하지 않습니다.");
 			}
 		}else {
-			result.rejectValue("userId", "loginCommand.userId"
-					, "아이디가 존재하지 않습니다.");
-			System.out.println("아이디가 존재하지 않습니다.");
+			if(loginCommand.getUserId() != "") {
+				result.rejectValue("userId", "loginCommand.userId"
+						, "아이디가 존재하지 않습니다.");
+			}
 		}
 	}
 }

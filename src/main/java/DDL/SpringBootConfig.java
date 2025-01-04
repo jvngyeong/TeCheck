@@ -1,5 +1,6 @@
 package DDL;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Component
@@ -33,15 +35,25 @@ public class SpringBootConfig implements WebMvcConfigurer {
         return new RestTemplate();
     }
 
-//    // SessionInterceptor 주입
-//    @Autowired
-//    private SessionInterceptor sessionInterceptor;
-//
-//    // 인터셉터 등록
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(sessionInterceptor)
-//                .addPathPatterns("/**") // 모든 요청에 적용
-//                .excludePathPatterns("/", "/login/**", "/member/memberWrite", "/shop/**", "/static/**", "/inquire/goodsInquire", "/review/**", "/payment/**", "/user/**", "/search/**"); // 제외 경로 수정
-//    }
+    // SessionInterceptor 주입
+    @Autowired
+    private SessionInterceptor sessionInterceptor;
+
+    // 인터셉터 등록
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(sessionInterceptor)
+                .addPathPatterns("/**") // 모든 요청에 적용
+                .excludePathPatterns("/",
+                					"/login/**",	// 로그인 창
+                					"/static/**", 	//css, js, img 등을 가져오기 위해 static 폴더 제외
+                					"/regist/registForm", 	//회원 가입 - 회원 정보 입력 창
+                					"/regist/memberRegist",
+                					"/shop/shopList",
+                					"/shop/shopDetail",
+                					"/wish/**",
+                					"/cart/cartInsert",
+                					"/stock/**",
+                					"/community/communityList"); // 제외 경로 수정
+    }
 }

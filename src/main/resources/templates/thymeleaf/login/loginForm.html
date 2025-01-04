@@ -117,18 +117,6 @@
    </div>
    <!-- Modal Search End -->
 
-
-   <!-- Single Page Header start -->
-   <!-- <div class="container-fluid page-header py-5">
-      <h1 class="text-center text-white display-6">로그인</h1>
-      <ol class="breadcrumb justify-content-center mb-0">
-         <li class="breadcrumb-item"><a href="/">홈</a></li>
-         <li class="breadcrumb-item active text-white">로그인</li>
-      </ol>
-   </div> -->
-   <!-- Single Page Header End -->
-
-
    <!-- Single Product Start -->
    <div class="container-fluid py-5 mt-5">
       <div class="container py-5">
@@ -137,10 +125,12 @@
                <div class="row g-4">
                   <div class="login-page">
 				   <div class="form">
-				     <form class="login-form" method="post" action="/login/login">
+				     <form class="login-form" method="post" action="/login/login" th:object = "${loginCommand}">
 				       <h1 style="padding: 50px;">로그인</h1>
 				       <input type="text" name="userId" placeholder="아이디"/>
+				       <span style = "color:red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></span>
 				       <input type="password" name="userPw" placeholder="비밀번호" style="margin-bottom: 25px;"/>
+				       <span style = "color:red" th:if="${#fields.hasErrors('userPw')}" th:errors="*{userPw}"></span>
 				       <input type="submit" class="loginBtn" style="margin-bottom: 10px;" value="로그인"/>
 				       <button class="regist" onclick="location.href='/regist/registForm'">회원가입</button>
 				       <p class="message"><a href="#">아이디 찾기</a>

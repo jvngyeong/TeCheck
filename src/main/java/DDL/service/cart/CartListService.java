@@ -1,5 +1,6 @@
 package DDL.service.cart;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,19 @@ public class CartListService {
 	MemberMapper memberMapper;
 	public void execute(Model model, HttpSession session) {
 		AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
-		String memberNum = memberMapper.getMemberNum(auth.getUserId());
-		List<GoodsCartDTO> goodsCartDTOList = cartMapper.cartSelect(memberNum);
-		model.addAttribute("goodsCartDTOList", goodsCartDTOList);
-		int totalPrice = 0;
-		for(GoodsCartDTO gcDTO : goodsCartDTOList) {
-			totalPrice += gcDTO.getGoodsDTO().getGoodsPrice() * Integer.parseInt(gcDTO.getCartDTO().getCartQty());
+		List<GoodsCartDTO> goodsCartDTOList = new ArrayList<GoodsCartDTO>();
+		if(auth != null) {
+			String memberNum = memberMapper.getMemberNum(auth.getUserId());
+			goodsCartDTOList = cartMapper.cartSelect(memberNum);
+			int totalPrice = 0;
+			for(GoodsCartDTO gcDTO : goodsCartDTOList) {
+				totalPrice += gcDTO.getGoodsDTO().getGoodsPrice() * Integer.parseInt(gcDTO.getCartDTO().getCartQty());
+			}
+			model.addAttribute("totalPrice", totalPrice);
+			session.setAttribute("totalCartQty", goodsCartDTOList.size());
 		}
-		model.addAttribute("totalPrice", totalPrice);
+		
+		model.addAttribute("goodsCartDTOList", goodsCartDTOList);
+		
 	}
 }

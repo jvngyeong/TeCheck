@@ -11,7 +11,8 @@ import lombok.Data;
 public class StockDTO {
 	Date tradeDate;
 	String timestamp;
-	Long volume;
+	Integer volume;
+	Integer price;
 	Long avgPrice;
 	Long maxPrice;
 	Long minPrice;

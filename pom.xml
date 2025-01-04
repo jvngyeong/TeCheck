@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>DDL</groupId>
-	<artifactId>TeCheck1</artifactId>
+	<artifactId>TeCheck</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>TeCheck1</name>
+	<name>TeCheck</name>
 	<description>실시간 주식 데이터 기반 제품 구매 추천 서비스</description>
 	<url/>
 	<licenses>
@@ -209,11 +209,6 @@
 	        <artifactId>json</artifactId>
 	    	<version>20210307</version>
 		</dependency>
-	    <dependency>
-	    	<groupId>board</groupId>
-	    	<artifactId>HomeComing</artifactId>
-	    	<version>0.0.1-SNAPSHOT</version>
-	    </dependency>
 	</dependencies>
 
 	<build>

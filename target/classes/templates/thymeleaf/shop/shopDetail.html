@@ -78,80 +78,71 @@
 		});
 	}
 	function wishCheck() {
-		$
-				.ajax({
-					url : "/wish/wishCheck",
-					data : {
-						"goodsNum" : '[[${goodsDTO.goodsNum}]]',
-						"memberNum" : '[[${memberNum}]]'
-					},
-					success : function(result) {
-						if (result == "200") {
-							if (document.querySelector("#wishIcon i[class]").className == 'fa-regular fa-heart') {
-								var icon = '<i style = "color : red; margin : 0 0.5rem 0 0.5rem" class="fa fa-heart"></i>';
-							} else {
-								var icon = '<i style = "margin : 0 0.5rem 0 0.5rem" class="fa-regular fa-heart"></i>';
-							}
-							$("#wishIcon").html(icon);
-						}
-					},
-					error : function(result) {
-						alert("오류가 발생했습니다.");
-					}
-				});
+	    $.ajax({
+	        url: "/wish/wishCheck",
+	        data: {
+	            "goodsNum": '[[${goodsDTO.goodsNum}]]',
+	            "memberNum": '[[${memberNum}]]'
+	        },
+	        success: function(result) {
+	            if (result == "200") {
+	                var icon;
+	                if (document.querySelector("#wishIcon i[class]").className == 'fa-regular fa-heart') {
+	                    icon = '<i style="color: red; margin: 0 0.5rem 0 0.5rem" class="fa fa-heart"></i>';
+	                } else {
+	                    icon = '<i style="margin: 0 0.5rem 0 0.5rem" class="fa-regular fa-heart"></i>';
+	                }
+	                $("#wishIcon").html(icon);
+	            }
+	        },
+	        error: function() {
+	            alert("오류가 발생했습니다.");
+	        }
+	    });
 	}
-	$(
-			function() {
-				wishCheck();
-				$("#wishBtn")
-						.click(
-								function() {
-									$
-											.ajax({
-												url : "/wish/wishMerge",
-												data : {
-													"goodsNum" : '[[${goodsDTO.goodsNum}]]',
-													"memberNum" : '[[${memberNum}]]'
-												},
-												success : function(result) {
-													if (result == "200") {
-														if (document
-																.querySelector("#wishIcon i[class]").className == 'fa-regular fa-heart') {
-															var icon = '<i style = "color : red; margin : 0 0.5rem 0 0.5rem" class="fa fa-heart"></i>';
-														} else {
-															var icon = '<i style = "margin : 0 0.5rem 0 0.5rem" class="fa-regular fa-heart"></i>';
-														}
-														$("#wishIcon").html(
-																icon);
-													} else if (result == "000") {
-														alert("로그인이 필요한 서비스입니다.");
-													} else if (resullt = "900") {
-														alert("직원은 이용할 수 없는 서비스입니다.");
-													}
-												},
-												error : function(result) {
-													alert("오류가 발생했습니다.");
-												}
-											});
-								})
-				$('.quantity button').on(
-						'click',
-						function() {
-							var button = $(this);
-							var oldValue = button.parent().parent().find(
-									'input').val();
-							if (button.hasClass('btn-plus')) {
-								var newVal = parseFloat(oldValue) + 1;
-							} else {
-								if (oldValue > 1) {
-									var newVal = parseFloat(oldValue) - 1;
-								} else {
-									newVal = 1;
-								}
-							}
-							button.parent().parent().find('input').val(newVal);
-						});
-			})
+	$(function() {
+	    wishCheck();
+	    $("#wishBtn").click(function() {
+	        $.ajax({
+	            url: "/wish/wishMerge",
+	            data: {
+	                "goodsNum": '[[${goodsDTO.goodsNum}]]',
+	                "memberNum": '[[${memberNum}]]'
+	            },
+	            success: function(result) {
+	                if (result == "200") {
+	                    if (document.querySelector("#wishIcon i[class]").className == 'fa-regular fa-heart') {
+	                        var icon = '<i style="color: red; margin: 0 0.5rem 0 0.5rem" class="fa fa-heart"></i>';
+	                    } else {
+	                        var icon = '<i style="margin: 0 0.5rem 0 0.5rem" class="fa-regular fa-heart"></i>';
+	                    }
+	                    $("#wishIcon").html(icon);
+	                } else if (result == "000") {
+	                    alert("로그인이 필요한 서비스입니다.");
+	                } else if (result == "900") {
+	                    alert("직원은 이용할 수 없는 서비스입니다.");
+	                }
+	            },
+	            error: function() {
+	                alert("오류가 발생했습니다.");
+	            }
+	        });
+	    });
+
+	    $('.quantity button').on('click', function() {
+	        var button = $(this);
+	        var oldValue = button.parent().parent().find('input').val();
+	        var newVal;
+
+	        if (button.hasClass('btn-plus')) {
+	            newVal = parseFloat(oldValue) + 1;
+	        } else {
+	            newVal = (oldValue > 1) ? parseFloat(oldValue) - 1 : 1;
+	        }
+	        
+	        button.parent().parent().find('input').val(newVal);
+	    });
+	});
 </script>
 </head>
 <body>
@@ -274,7 +265,8 @@
 					<div class="row g-4">
 						<div class="col-lg-6">
 							<div class="border rounded">
-								<a href="#"> <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|"
+								<a href="#"> <img
+									th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|"
 									class="img-fluid rounded" alt="Image">
 								</a>
 							</div>
