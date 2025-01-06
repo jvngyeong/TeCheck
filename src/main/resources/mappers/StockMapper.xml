@@ -8,22 +8,25 @@
 		SELECT 
 		    trade_date, 
 		    ROUND(AVG(price)) AS avgPrice, 
-		    MAX(price) AS maxPrice,
-		    MIN(price) AS minPrice,
-		    SUM(price) AS totalPrice,
-		    SUM(volume) AS totalVolume,
-		    openPrice,
-		    endPrice,
-		    nvl(ROUND(((endPrice - LAG(endPrice) OVER (ORDER BY trade_date)) / LAG(endPrice) OVER (ORDER BY trade_date)) * 100, 2), 0) AS rateOfChange
+		    MAX(price) AS maxPrice, 
+		    MIN(price) AS minPrice, 
+		    SUM(price) AS totalPrice, 
+		    SUM(volume) AS totalVolume, 
+		    openPrice, 
+		    endPrice, 
+		    NVL(ROUND(((endPrice - LAG(endPrice) OVER (ORDER BY trade_date)) / LAG(endPrice) OVER (ORDER BY trade_date)) * 100, 2), 0) AS rateOfChange 
 		FROM (
-		    SELECT
+		    SELECT 
 		        TO_DATE(trade_date, 'YY-MM-DD') AS trade_date, 
-		        price,
-		        volume,
+		        price, 
+		        volume, 
 		        FIRST_VALUE(price) OVER (PARTITION BY TO_DATE(trade_date, 'YY-MM-DD') ORDER BY timestamp ASC) AS openPrice,
-		        LAST_VALUE(price) OVER (PARTITION BY TO_DATE(trade_date, 'YY-MM-DD') ORDER BY timestamp ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS endPrice
+		        MAX(price) OVER (
+		    PARTITION BY TO_DATE(trade_date, 'YY-MM-DD')
+		    ORDER BY timestamp ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+		) AS endPrice
 		    FROM stock
-		) sub
+		) sub 
 		GROUP BY trade_date, openPrice, endPrice
 		ORDER BY trade_date
 	</select>

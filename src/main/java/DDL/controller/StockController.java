@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import DDL.domain.StockDTO;
+import DDL.service.stock.GraphUpdateService;
 import DDL.service.stock.StockDataService;
 
 @Controller
@@ -14,6 +16,9 @@ import DDL.service.stock.StockDataService;
 public class StockController {
 	@Autowired
 	StockDataService stockDataService;
+	
+	@Autowired
+	GraphUpdateService graphUpdateService;
 	
 	@GetMapping("stock")
 	public String stock(Model model) {
@@ -24,5 +29,10 @@ public class StockController {
 	@GetMapping("getStockData")
 	public @ResponseBody String getStockData() {
 		return "";
+	}
+	
+	@GetMapping("graphUpdate")
+	public @ResponseBody StockDTO graphUpdate() {
+		return graphUpdateService.execute();
 	}
 }

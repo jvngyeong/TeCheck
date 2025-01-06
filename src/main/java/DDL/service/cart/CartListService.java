@@ -25,16 +25,16 @@ public class CartListService {
 		List<GoodsCartDTO> goodsCartDTOList = new ArrayList<GoodsCartDTO>();
 		if(auth != null) {
 			String memberNum = memberMapper.getMemberNum(auth.getUserId());
-			goodsCartDTOList = cartMapper.cartSelect(memberNum);
-			int totalPrice = 0;
-			for(GoodsCartDTO gcDTO : goodsCartDTOList) {
-				totalPrice += gcDTO.getGoodsDTO().getGoodsPrice() * Integer.parseInt(gcDTO.getCartDTO().getCartQty());
+			if(memberNum != null) {
+				goodsCartDTOList = cartMapper.cartSelect(memberNum);
+				int totalPrice = 0;
+				for(GoodsCartDTO gcDTO : goodsCartDTOList) {
+					totalPrice += gcDTO.getGoodsDTO().getGoodsPrice() * Integer.parseInt(gcDTO.getCartDTO().getCartQty());
+				}
+				model.addAttribute("totalPrice", totalPrice);
+				session.setAttribute("totalCartQty", goodsCartDTOList.size());
 			}
-			model.addAttribute("totalPrice", totalPrice);
-			session.setAttribute("totalCartQty", goodsCartDTOList.size());
 		}
-		
 		model.addAttribute("goodsCartDTOList", goodsCartDTOList);
-		
 	}
 }
