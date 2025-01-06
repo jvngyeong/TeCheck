@@ -28,8 +28,14 @@
 	<sql id="replyColumns">
 			REPLY_NUM, REPLY_DATE, REPLY_CONTENT, MEMBER_NUM, COMM_NUM
 	</sql>
-	<insert id="insertReply" parameterType="CommunityDTO">
-		    INSERT INTO reply(REPLY_NUM, REPLY_DATE, REPLY_CONTENT, MEMBER_NUM, COMM_NUM)
-		    VALUES ((select nvl(max(REPLY_NUM),0) + 1  from reply) ,SYSDATE, #{replyContent}, #{memberNum}, #{commNum})
+	<insert id="insertReply" parameterType="CommunityReplyDTO">
+		    INSERT INTO reply(REPLY_NUM, REPLY_DATE, REPLY_CONTENT, MEMBER_NUM, COMM_NUM, MEMBER_ID)
+		    VALUES ((select nvl(max(REPLY_NUM),0) + 1  from reply) ,SYSDATE, #{replyContent}, #{memberNum}, #{commNum},#{memberId})
 	</insert>
+	
+	<select id="communityReplyListSelect">
+		select REPLY_NUM, REPLY_DATE, REPLY_CONTENT, MEMBER_NUM, COMM_NUM, r.member_id from reply r join members m 
+		on r.member_id = m.member_id 
+		where COMM_NUM = #{commNum}
+	</select>
 </mapper>

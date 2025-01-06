@@ -336,12 +336,12 @@ hr {
 		                        </a>
 		                        
 		                        <div class="replys-list border-top pt-3">
-								    <h6 class="mb-3">전체 댓글 <span class="badge bg-secondary">{{ communityList.size() }}개</span></h6>
-								    <div th:each="community : ${communityList}">
+								    <h6 class="mb-3">전체 댓글 <span class="badge bg-secondary">[[${#lists.size(replyList)}]]개</span></h6>
+								    <div th:each="reply : ${replyList}">
 								        <div class="reply-item border-bottom pb-2 mb-2">
-								            <p class="mb-1"><strong th:text="${community.memberId}"></strong></p>
-								            <p th:text="${community.replyContent}"></p>
-								            <p class="text-muted small mb-1" th:text="${#dates.format(community.replyDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+								            <p class="mb-1"><strong th:text="${reply.memberId}"></strong></p>
+								            <p th:text="${reply.replyContent}"></p>
+								            <p class="text-muted small mb-1" th:text="${#dates.format(reply.replyDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
 								        </div>
 								    </div>
 								</div>

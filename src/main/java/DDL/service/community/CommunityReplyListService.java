@@ -17,8 +17,9 @@ public class CommunityReplyListService {
 	@Autowired
 	AutoNumMapper autoNumMapper;
 
-	public void execute(Model model) {
-		List<CommunityReplyDTO> list = communityMapper.communityReplyListSelect();
+	public void execute(String commNum, Model model) {
+		List<CommunityReplyDTO> list = communityMapper.communityReplyListSelect(commNum);
+		model.addAttribute("replyList", list);
 	}
 	
 }
