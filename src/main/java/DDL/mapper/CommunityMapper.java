@@ -19,8 +19,8 @@ public interface CommunityMapper {
 
 	void communityDelete(String commNum);
 
-	void insertReply(CommunityDTO communityDTO);
+	void insertReply(CommunityReplyDTO communityReplyDTO);
 
-	List<CommunityReplyDTO> communityReplyListSelect();
+	List<CommunityReplyDTO> communityReplyListSelect(String commNum);
 
 }

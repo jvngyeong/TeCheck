@@ -18,6 +18,4 @@ public class CommunityDTO {
 	Date commDate;
 	String commTitle;
 	String commContents;
-	
-	
 }
