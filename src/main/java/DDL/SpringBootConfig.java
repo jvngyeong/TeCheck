@@ -54,6 +54,8 @@ public class SpringBootConfig implements WebMvcConfigurer {
                 					"/wish/**",
                 					"/cart/cartInsert",
                 					"/stock/**",
-                					"/community/communityList"); // 제외 경로 수정
+                					"/community/communityList",
+                					"/community/communityDetail",
+                					"/help/**"); // 제외 경로 수정
     }
 }

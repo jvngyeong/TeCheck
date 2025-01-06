@@ -125,19 +125,15 @@
                <div class="row g-4">
                   <div class="login-page">
 				   <div class="form">
-				     <form class="login-form" method="post" action="/login/login" th:object = "${loginCommand}">
-				       <h1 style="padding: 50px;">로그인</h1>
-				       자동 로그인&nbsp&nbsp<input th:checked="${loginCommand.isAutoLogin}" style = "width:15px; height:15px" type = "checkbox" name = "isAutoLogin"/>&nbsp&nbsp|
-				       &nbsp아이디 저장&nbsp&nbsp<input th:checked="${loginCommand.isIdStore}" style = "width:15px; height:15px" type = "checkbox" name = "isIdStore"/>
-				       <input th:value = "${loginCommand.isIdStore ? loginCommand.userId : ''}" type="text" name="userId" placeholder="아이디"/>
-				       <span style = "color:red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></span>
-				       <input type="password" name="userPw" placeholder="비밀번호" style="margin-bottom: 25px;"/>
-				       <span style = "color:red" th:if="${#fields.hasErrors('userPw')}" th:errors="*{userPw}"></span>
-				       <input type="submit" class="loginBtn" style="margin-bottom: 10px;" value="로그인"/>
-				       <button class="regist" onclick="location.href='/regist/registForm'">회원가입</button>
-				       <p class="message"><a href="/help/findId">아이디 찾기</a>
-				       					  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-				       					  <a href="/help/changePw">비밀번호 재설정</a></p>
+				     <form class="login-form" method="post" action="/help/findId">
+				       <h1 style="padding: 50px;">아이디 찾기</h1>
+				       <input type="text" name="userName" placeholder="이름"/>
+				       <span style = "color:red"></span>
+				       <input type="tel" name="userPhone" placeholder="전화번호"/>
+				       <span style = "color:red"></span>
+				       <input type="email" name="userEmail" placeholder="이메일" style="margin-bottom: 25px;"/>
+				       <span style = "color:red"></span>
+				       <input type="submit" class="loginBtn" style="margin-bottom: 10px;" value="아이디 찾기"/>
 				     </form>
 				   </div>
 				   </div>

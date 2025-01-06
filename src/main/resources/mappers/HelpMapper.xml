@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DDL.mapper.HelpMapper">
+	<select id="findId">
+		SELECT member_id AS user_id 
+FROM members 
+WHERE member_name = #{userName} 
+  AND member_phone = #{userPhone} 
+  AND member_email = #{userEmail}
+UNION
+SELECT emp_id 
+FROM employees 
+WHERE emp_name = #{userName} 
+  AND emp_phone = #{userPhone} 
+  AND emp_email = #{userEmail}
+</select>
+
+<select id="userCheck">
+		SELECT 'mem' as grade
+		FROM members 
+		WHERE member_id = #{userId}
+		  AND member_name = #{userName} 
+		  AND member_phone = #{userPhone} 
+		  AND member_email = #{userEmail}
+		UNION
+		SELECT 'emp'
+		FROM employees 
+		WHERE emp_id = #{userId}
+		  AND emp_name = #{userName} 
+		  AND emp_phone = #{userPhone} 
+		  AND emp_email = #{userEmail}
+</select>
+
+<update id="pwChange">
+	update
+	<if test="grade == 'mem'">
+		 members set member_pw = #{userPw} where member_id = #{userId} and member_name = #{userName} and member_phone = #{userPhone} and member_email = #{userEmail}
+	</if>
+	<if test = "grade == 'emp'">
+		 employees set emp_pw = #{userPw} where emp_id = #{userId} and emp_name = #{userName} and emp_phone = #{userPhone} and emp_email = #{userEmail}
+	</if>
+</update>
+</mapper>

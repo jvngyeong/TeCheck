@@ -5,29 +5,26 @@
 
 <mapper namespace="DDL.mapper.StockMapper">
 	<select id="getStockData">
-		SELECT 
-		    trade_date, 
-		    ROUND(AVG(price)) AS avgPrice, 
-		    MAX(price) AS maxPrice, 
-		    MIN(price) AS minPrice, 
-		    SUM(price) AS totalPrice, 
-		    SUM(volume) AS totalVolume, 
-		    openPrice, 
-		    endPrice, 
-		    NVL(ROUND(((endPrice - LAG(endPrice) OVER (ORDER BY trade_date)) / LAG(endPrice) OVER (ORDER BY trade_date)) * 100, 2), 0) AS rateOfChange 
-		FROM (
-		    SELECT 
-		        TO_DATE(trade_date, 'YY-MM-DD') AS trade_date, 
-		        price, 
-		        volume, 
-		        FIRST_VALUE(price) OVER (PARTITION BY TO_DATE(trade_date, 'YY-MM-DD') ORDER BY timestamp ASC) AS openPrice,
-		        MAX(price) OVER (
-		    PARTITION BY TO_DATE(trade_date, 'YY-MM-DD')
-		    ORDER BY timestamp ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-		) AS endPrice
-		    FROM stock
-		) sub 
-		GROUP BY trade_date, openPrice, endPrice
-		ORDER BY trade_date
+SELECT 
+    trade_date,
+    ROUND(AVG(price)) AS avgPrice, 
+    MAX(price) AS maxPrice, 
+    MIN(price) AS minPrice, 
+    SUM(price) AS totalPrice, 
+    SUM(volume) AS totalVolume, 
+    openPrice, 
+    endPrice, 
+    NVL(ROUND(((endPrice - LAG(endPrice) OVER (ORDER BY trade_date)) / LAG(endPrice) OVER (ORDER BY trade_date)) * 100, 2), 0) AS rateOfChange
+FROM (
+    SELECT 
+        TO_DATE(trade_date, 'YY-MM-DD') AS trade_date,
+        price, 
+        volume, 
+        FIRST_VALUE(price) OVER (PARTITION BY trade_date ORDER BY timestamp ASC) AS openPrice,
+        LAST_VALUE(price) OVER (PARTITION BY trade_date ORDER BY timestamp RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS endPrice
+    FROM stock s
+) sub
+GROUP BY trade_date, openPrice, endPrice
+ORDER BY trade_date
 	</select>
 </mapper>

@@ -10,4 +10,6 @@ public class LoginCommand {
 	String userId;
 	@NotEmpty(message = "비밀번호를 입력해주세요.")
 	String userPw;
+	Boolean isAutoLogin = false;
+	Boolean isIdStore = false;
 }

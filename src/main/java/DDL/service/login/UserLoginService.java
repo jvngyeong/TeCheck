@@ -9,6 +9,7 @@ import DDL.command.LoginCommand;
 import DDL.domain.AuthInfoDTO;
 import DDL.mapper.LoginMapper;
 import DDL.mapper.MemberMapper;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
@@ -34,6 +35,24 @@ public class UserLoginService {
 						result.rejectValue("userId", "loginCommand.userPw"
 								, "가입 확인 이메일을 확인해주세요.");	
 					}
+				}
+				if(loginCommand.getIsIdStore()) {
+					Cookie cookie = new Cookie("isIdStore", auth.getUserId());
+					cookie.setPath("/");
+					cookie.setMaxAge(60 * 60 * 24 * 30);
+					response.addCookie(cookie);
+				}
+				if(!loginCommand.getIsIdStore()) {
+					Cookie cookie = new Cookie("isIdStore", "");
+					cookie.setPath("/");
+					cookie.setMaxAge(0);
+					response.addCookie(cookie);
+				}
+				if(loginCommand.getIsAutoLogin()) {
+					Cookie cookie = new Cookie("isAutoLogin", auth.getUserId());
+					cookie.setPath("/");
+					cookie.setMaxAge(60 * 60 * 24 * 30);
+					response.addCookie(cookie);
 				}
 				session.setAttribute("auth", auth);
 			}else {

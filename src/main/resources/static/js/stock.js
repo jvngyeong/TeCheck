@@ -21,7 +21,7 @@ $(function() {
 	drawChart();
 });
 
-function getGraph(endPrice){
+function getGraph(){
 	$.ajax({
 		url : "/stock/graphUpdate",
 		dataType : 'json',
@@ -149,7 +149,7 @@ function updateChart(data) {
 
   // 차트 데이터가 변경되었으면 업데이트
   if (isChange) {
-	getGraph(parsedData.price);
+	getGraph();	
     chart.updateSeries([{
       data: seriesData, // 업데이트된 데이터만 전달
     }], false); // 'false' 플래그로 애니메이션 유지
