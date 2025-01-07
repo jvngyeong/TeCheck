@@ -15,5 +15,4 @@ public class CommunityReplyDTO {
 	String replyContent;	
 	String memberNum;
 	String commNum;
-	String memberId;
 }

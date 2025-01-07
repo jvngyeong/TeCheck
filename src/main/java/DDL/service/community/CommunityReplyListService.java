@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import DDL.domain.CommunityReplyDTO;
+import DDL.domain.CommunityReplyMemberDTO;
 import DDL.mapper.AutoNumMapper;
 import DDL.mapper.CommunityMapper;
 
@@ -18,7 +18,7 @@ public class CommunityReplyListService {
 	AutoNumMapper autoNumMapper;
 
 	public void execute(String commNum, Model model) {
-		List<CommunityReplyDTO> list = communityMapper.communityReplyListSelect(commNum);
+		List<CommunityReplyMemberDTO> list = communityMapper.communityReplyListSelect(commNum);
 		model.addAttribute("replyList", list);
 	}
 	

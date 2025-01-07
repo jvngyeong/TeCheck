@@ -3,6 +3,57 @@
    "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="DDL.mapper.CommunityMapper">
+<resultMap type="communityReplyMemberDTO" id="communityReplyMemberDTO">
+	<association property="memberDTO" javaType = "memberDTO">
+		<id column = "member_Num" property = "memberNum" javaType = "String" jdbcType = "VARCHAR"/>
+		<result column="member_Id" property="memberId" javaType="String" jdbcType="VARCHAR"/>
+		<result column="member_Pw" property="memberPw" javaType="String" jdbcType="VARCHAR"/>
+		<result column="member_Name" property="memberName" javaType="String" jdbcType="VARCHAR"/>
+		<result column="member_Phone" property="memberPhone" javaType="String" jdbcType="VARCHAR"/>
+		<result column="member_Age" property="memberAge" javaType="Integer" jdbcType="BIGINT"/>
+		<result column="member_Addr" property="memberAddr" javaType="String" jdbcType="VARCHAR"/>
+		<result column="member_AddrDetail" property="memberAddrDetail" javaType="String" jdbcType="VARCHAR"/> 
+		<result column="member_Post" property="memberPost" javaType="String" jdbcType="VARCHAR"/>
+		<result column="member_Birth" property="memberBirth" javaType="Date" jdbcType="DATE"/>
+		<result column="member_Regist" property="memberRegist" javaType="Date" jdbcType="DATE"/>
+		<result column="gender" property="gender" javaType="String" jdbcType="CHAR"/>
+		<result column="member_Email" property="memberEmail" javaType="String" jdbcType="VARCHAR"/>	
+	</association>
+	<association property="communityReplyDTO" javaType = "communityReplyDTO">
+		<id column = "member_Num" property = "memberNum" javaType = "String" jdbcType = "VARCHAR"/>
+		<result column="reply_Num" property="replyNum" javaType="String" jdbcType="VARCHAR"/>
+		<result column="reply_Date" property="replyDate" javaType="Date" jdbcType="DATE"/>
+		<result column="reply_Content" property="replyContent" javaType="String" jdbcType="VARCHAR"/>
+		<result column="community_Num" property="commNum" javaType="String" jdbcType="VARCHAR"/>
+	</association>
+</resultMap>
+
+
+<resultMap type="communityMemberDTO" id="communityMemberDTO">
+	<association property="memberDTO" javaType = "memberDTO">
+		<id column = "member_Num" property = "memberNum" javaType = "String" jdbcType = "VARCHAR"/>
+		<result column="member_Id" property="memberId" javaType="String" jdbcType="VARCHAR"/>
+		<result column="member_Pw" property="memberPw" javaType="String" jdbcType="VARCHAR"/>
+		<result column="member_Name" property="memberName" javaType="String" jdbcType="VARCHAR"/>
+		<result column="member_Phone" property="memberPhone" javaType="String" jdbcType="VARCHAR"/>
+		<result column="member_Age" property="memberAge" javaType="Integer" jdbcType="BIGINT"/>
+		<result column="member_Addr" property="memberAddr" javaType="String" jdbcType="VARCHAR"/>
+		<result column="member_AddrDetail" property="memberAddrDetail" javaType="String" jdbcType="VARCHAR"/> 
+		<result column="member_Post" property="memberPost" javaType="String" jdbcType="VARCHAR"/>
+		<result column="member_Birth" property="memberBirth" javaType="Date" jdbcType="DATE"/>
+		<result column="member_Regist" property="memberRegist" javaType="Date" jdbcType="DATE"/>
+		<result column="gender" property="gender" javaType="String" jdbcType="CHAR"/>
+		<result column="member_Email" property="memberEmail" javaType="String" jdbcType="VARCHAR"/>	
+	</association>
+	<association property="communityDTO" javaType = "communityDTO">
+		<id column="COMM_NUM" property="commNum" javaType="String" jdbcType="VARCHAR"/>
+		<id column = "MEMBER_NUM" property = "memberNum" javaType = "String" jdbcType = "VARCHAR"/>
+		<result column="rownum" property="rownum" javaType="String"/>
+		<result column="COMM_DATE" property="commDate" javaType="Date" jdbcType="DATE"/>
+		<result column="COMM_TITLE" property="commTitle" javaType="String" jdbcType="VARCHAR"/>
+		<result column="COMM_CONTENTS" property="commContents" javaType="String" jdbcType="VARCHAR"/>
+	</association>
+</resultMap>
 	<sql id="communityColumns">
 			COMM_NUM, MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_CONTENTS
 	</sql>
@@ -10,11 +61,9 @@
 			insert into community(<include refid="communityColumns"></include>)
 			values(#{commNum}, #{memberNum}, sysdate, #{commTitle}, #{commContents}) 
 	</insert>
-	<select id = "communityListSelect">
-			select rownum, <include refid="communityColumns"></include> from community order by comm_date
-	</select>
+
 	
-	<select id = "communitySelectOne">
+	<select id = "communitySelectOne" resultMap="communityMemberDTO">
 			select COMM_NUM, m.MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_CONTENTS , member_id from community c join members m 
 			on  c.member_num = m.member_num 
 			where comm_num = #{commNum}
@@ -29,13 +78,20 @@
 			REPLY_NUM, REPLY_DATE, REPLY_CONTENT, MEMBER_NUM, COMM_NUM
 	</sql>
 	<insert id="insertReply" parameterType="CommunityReplyDTO">
-		    INSERT INTO reply(REPLY_NUM, REPLY_DATE, REPLY_CONTENT, MEMBER_NUM, COMM_NUM, MEMBER_ID)
-		    VALUES ((select nvl(max(REPLY_NUM),0) + 1  from reply) ,SYSDATE, #{replyContent}, #{memberNum}, #{commNum},#{memberId})
+		    INSERT INTO reply(REPLY_NUM, REPLY_DATE, REPLY_CONTENT, MEMBER_NUM, COMM_NUM)
+		    VALUES ((select nvl(max(REPLY_NUM),0) + 1  from reply) ,SYSDATE, #{replyContent}, #{memberNum}, #{commNum})
 	</insert>
 	
-	<select id="communityReplyListSelect">
-		select REPLY_NUM, REPLY_DATE, REPLY_CONTENT, MEMBER_NUM, COMM_NUM, r.member_id from reply r join members m 
-		on r.member_id = m.member_id 
+	<select id="communityReplyListSelect" resultMap="communityReplyMemberDTO">
+		select rownum,REPLY_NUM, REPLY_DATE, REPLY_CONTENT, m.MEMBER_NUM, COMM_NUM, m.member_id 
+		from reply r join members m 
+		on r.member_num = m.member_num 
 		where COMM_NUM = #{commNum}
+	</select>
+	
+	<select id="communityListSelect" resultMap="communityMemberDTO">
+		select rownum, m.MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_NUM, COMM_CONTENTS, m.member_id
+		from community c join members m 
+		on c.member_Num = m.member_Num 
 	</select>
 </mapper>

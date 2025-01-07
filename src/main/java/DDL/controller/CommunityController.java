@@ -79,8 +79,8 @@ public class CommunityController {
         return "redirect:/community/communityDetail?commNum="+communityReplyCommand.getCommNum();
     }
 	@GetMapping("communityReplyList")
-	public String communityReplyList(Model model) {
-		communityReplyListService.execute(model);
+	public String communityReplyList(String commNum, Model model) {
+		communityReplyListService.execute(commNum, model);
 		return "thymeleaf/community/communityDetail";
 	}
 	
