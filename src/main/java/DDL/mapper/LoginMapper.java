@@ -10,5 +10,7 @@ public interface LoginMapper {
 	public AuthInfoDTO loginSelectOne(String userId);
 
 	public LoginDTO loginIdCheck(String value);
+
+	public String registIdCheck(String memberId);
 	
 }

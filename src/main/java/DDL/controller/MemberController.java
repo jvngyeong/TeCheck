@@ -3,6 +3,8 @@ package DDL.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,14 +35,20 @@ public class MemberController {
 		return "thymeleaf/member/memberList";
 	}
 	@GetMapping("memberWrite")
-	public String memberWrite() {
+	public String memberWrite(Model model) {
+		MemberCommand memberCommand = new MemberCommand();
+		model.addAttribute("memberCommand", memberCommand);
 		return "thymeleaf/member/memberForm";
 	}
 	@PostMapping("memberWrite")
-	public String memberWrite(MemberCommand memberCommand, HttpSession session) {
-		memberWriteService.execute(memberCommand, session);
+	public String memberWrite(@Validated MemberCommand memberCommand, BindingResult result, HttpSession session) {
+		if(result.hasErrors()) {
+			return "thymeleaf/member/memberForm";
+		}
+		memberWriteService.execute(memberCommand, result, session);
 		return "redirect:memberList";
 	}
+	
 	@GetMapping("memberDetail")
 	public String memberDetail(Model model, String memberNum) {
 		memberDetailService.execute(model, memberNum);
@@ -54,7 +62,6 @@ public class MemberController {
 	@PostMapping("memberUpdate")
 	public String memberUpdate(MemberCommand memberCommand) {
 		memberUpdateService.execute(memberCommand);
-		System.out.println(memberCommand.getMemberNum());
 		return "redirect:memberDetail?memberNum=" + memberCommand.getMemberNum();
 	}
 	@GetMapping("memberDelete")

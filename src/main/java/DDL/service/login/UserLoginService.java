@@ -32,7 +32,7 @@ public class UserLoginService {
 				if(auth.getGrade().equals("mem")) {
 					String emailConf = memberMapper.emailConfCheck(auth.getUserId());
 					if(emailConf == null) {
-						result.rejectValue("userId", "loginCommand.userPw"
+						result.rejectValue("userId", "loginCommand.userId"
 								, "가입 확인 이메일을 확인해주세요.");	
 					}
 				}

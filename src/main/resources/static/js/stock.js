@@ -29,12 +29,13 @@ function getGraph(){
 			console.log(result);
 			$("#todayDate").html(Intl.DateTimeFormat('en-CA', {timeZone: 'UTC'}).format(new Date(result.tradeDate)));
 			$("#todayEndPrice").html(new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(result.endPrice));
-			$("#todateRateOfChange").html(result.rateOfChange+'%');
 			if(result.rateOfChange > 0){
+				$("#todateRateOfChange").html('+'+result.rateOfChange+'%');
 				$("#todateRateOfChange").css("color", "red");
 			}
 			if(result.rateOfChange < 0){
-							$("#todateRateOfChange").css("color", "blue");
+				$("#todateRateOfChange").html(result.rateOfChange+'%');
+				$("#todateRateOfChange").css("color", "blue");
 			}
 			$("#todayTotalVolume").html(result.totalVolume.toLocaleString());
 			$("#todayTotalPrice").html(new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(result.totalPrice));

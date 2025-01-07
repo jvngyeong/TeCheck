@@ -22,9 +22,9 @@
 	</select>
 	
 	<update id="employeeUpdate">
-		update employees set emp_id = #{empId}, emp_pw = #{empPw}, emp_name = #{empName}, emp_addr = #{empAddr},
+		update employees set emp_id = #{empId}, emp_name = #{empName}, emp_addr = #{empAddr},
 		emp_addr_detail = #{empAddrDetail}, emp_post = #{empPost}, emp_phone = #{empPhone}, emp_image = #{empImage},
-		emp_store_image = '22', emp_hire_date = #{empHireDate}, emp_email = #{empEmail} where emp_num = #{empNum}
+		emp_store_image = #{empStoreImage}, emp_hire_date = #{empHireDate}, emp_email = #{empEmail} where emp_num = #{empNum}
 	</update>
 	
 	<delete id="employeeDelete">

@@ -34,55 +34,6 @@
 
 <!-- Tmemberlate Stylesheet -->
 <link href="/static/css/style.css" rel="stylesheet">
-
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
-<script type="text/javascript">
-const passwordPattern = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
-function pwCheck(event){
-	event.preventDefault();
-	$("#userPwErr").html("");
-	$("#userPwConErr").html("");
-	var formData = new FormData($("#pwForm")[0]);
-	if(!$("#userPw").val() == "" && !$("#userPwCon").val() == ""){
-		if($("#userPw").val() != $("#userPwCon").val()){
-			$("#userPwConErr").html("* 비밀번호 확인이 일치하지 않습니다.");
-		}
-		else{
-			if(!passwordPattern.test($("#userPw").val())){
-				$("#userPwErr").html("* 비밀번호는 영문자, 숫자, 특수문자가 포함된 8글자 이상이어야 합니다.");
-			}
-			else{
-				alert("성공");
-				$.ajax({
-					url : "/help/changePw",
-					method : "post",
-					contentType: false, 
-					processData: false,
-					data : formData,
-					success : function(result){
-						location.href = result;
-					},
-					error : function(){
-						alert("오류가 발생했습니다.");
-					}
-				})
-			}
-		}
-	}
-	else{
-		if($("#userPw").val() == ""){
-			$("#userPwErr").html("* 비밀번호를 입력해주세요.");
-		}
-		if($("#userPwCon").val() == ""){
-			$("#userPwConErr").html("* 비밀번호 확인을 입력해주세요.");
-		}
-	}
-}
-
-
-</script>
 </head>
 <body>
    <!-- Spinner Start -->
@@ -91,7 +42,6 @@ function pwCheck(event){
 		 <div class="spinner-grow text-primary" role="status"></div>
 	  </div>
    <!-- Spinner End -->
-   
    <!-- Navbar start -->
    <div class="container-fluid fixed-top">
       <div class="container px-0">
@@ -175,19 +125,11 @@ function pwCheck(event){
                <div class="row g-4">
                   <div class="login-page">
 				   <div class="form">
-				      <form id = "pwForm" class="login-form" method="post" onsubmit="pwCheck(event)">
-				      <input type = "hidden" name = "userId" th:value = "${findCommand.userId}"/>
-				      <input type = "hidden" name = "userName" th:value = "${findCommand.userName}"/>
-				      <input type = "hidden" name = "userPhone" th:value = "${findCommand.userPhone}"/>
-				      <input type = "hidden" name = "userEmail" th:value = "${findCommand.userEmail}"/>
-				      <input type = "hidden" name = "grade" th:value = "${findCommand.grade}"/>
-				       <h1 style="padding: 50px;">새로운 비밀번호를 입력해주세요.</h1>
-				       <input type="password" id = "userPw" name="userPw" placeholder="새 비밀번호"/>
-				       <span style = "color:red" id = "userPwErr"></span>
-				       <input type="password" id = "userPwCon" name="userPwCon" placeholder="새 비밀번호 확인"/>
-				       <span style = "color:red" id = "userPwConErr"></span>
-				       <input type="submit" class="loginBtn" style="margin-bottom: 10px;" value="비밀번호 변경"/>
-				     </form>
+				       <h1 style="padding: 20px 50px 50px 50px;">비밀번호 재설정</h1>
+				       <th:block th:if = "${findIdCommand.userId != null}">
+					       <h2>[[${findIdCommand.userName}]]님의 비밀번호를 성공적으로 변경했습니다.</h2>
+				       </th:block>
+				       <button type="button" onclick = "location.href = '/'" class="loginBtn" style="margin:50px 0 0 10px;">홈으로 돌아가기</button>
 				   </div>
 				   </div>
                </div>

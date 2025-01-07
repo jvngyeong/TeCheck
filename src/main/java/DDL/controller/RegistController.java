@@ -25,13 +25,14 @@ public class RegistController {
 		model.addAttribute("memberCommand", memberCommand);
 		return "thymeleaf/regist/registForm";
 	}
+	
 	@PostMapping("memberRegist")
 	public String memberRegist(@Validated MemberCommand memberCommand
 			,BindingResult result, HttpSession session) {
 		if(result.hasErrors()) {
 			return "thymeleaf/regist/registForm";
 		}
-		memberWriteService.execute(memberCommand, session);
+		memberWriteService.execute(memberCommand, result, session);
 		return "redirect:/";
 	}
 }

@@ -31,4 +31,10 @@
 		from employees
 		where emp_id = #{userId}
 	</select>
+	
+	<select id="registIdCheck">
+		select '400' from members where member_id = #{memberId}
+		union
+		select '400' from employees where emp_id = #{memberId}
+	</select>
 </mapper>

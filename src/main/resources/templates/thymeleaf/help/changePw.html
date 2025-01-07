@@ -125,16 +125,16 @@
                <div class="row g-4">
                   <div class="login-page">
 				   <div class="form">
-				     <form class="login-form" method="post" action="/help/changePwForm">
+				     <form class="login-form" method="post" action="/help/changePwForm" th:object="${findCommand}">
 				       <h1 style="padding: 50px;">비밀번호 찾기</h1>
 				       <input type="text" name="userId" placeholder="아이디"/>
-				       <span style = "color:red"></span>
+				       <span style = "color:red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></span>
 				       <input type="text" name="userName" placeholder="이름"/>
-				       <span style = "color:red"></span>
+				       <span style = "color:red" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></span>
 				       <input type="tel" name="userPhone" placeholder="전화번호"/>
-				       <span style = "color:red"></span>
+				       <span style = "color:red" th:if="${#fields.hasErrors('userPhone')}" th:errors="*{userPhone}"></span>
 				       <input type="email" name="userEmail" placeholder="이메일" style="margin-bottom: 25px;"/>
-				       <span style = "color:red"></span>
+				       <span style = "color:red" th:if="${#fields.hasErrors('userEmail')}" th:errors="*{userEmail}"></span>
 				       <input type="submit" class="loginBtn" style="margin-bottom: 10px;" value="비밀번호 재설정"/>
 				     </form>
 				   </div>

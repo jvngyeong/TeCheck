@@ -134,11 +134,11 @@
 				       <input type="password" name="userPw" placeholder="비밀번호" style="margin-bottom: 25px;"/>
 				       <span style = "color:red" th:if="${#fields.hasErrors('userPw')}" th:errors="*{userPw}"></span>
 				       <input type="submit" class="loginBtn" style="margin-bottom: 10px;" value="로그인"/>
+				     </form>
 				       <button class="regist" onclick="location.href='/regist/registForm'">회원가입</button>
 				       <p class="message"><a href="/help/findId">아이디 찾기</a>
 				       					  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 				       					  <a href="/help/changePw">비밀번호 재설정</a></p>
-				     </form>
 				   </div>
 				   </div>
                </div>

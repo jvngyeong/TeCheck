@@ -47,8 +47,7 @@ public class SpringBootConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/",
                 					"/login/**",	// 로그인 창
                 					"/static/**", 	//css, js, img 등을 가져오기 위해 static 폴더 제외
-                					"/regist/registForm", 	//회원 가입 - 회원 정보 입력 창
-                					"/regist/memberRegist",
+                					"/regist/**", 	//회원 가입 - 회원 정보 입력 창
                 					"/shop/shopList",
                 					"/shop/shopDetail",
                 					"/wish/**",
@@ -56,6 +55,8 @@ public class SpringBootConfig implements WebMvcConfigurer {
                 					"/stock/**",
                 					"/community/communityList",
                 					"/community/communityDetail",
-                					"/help/**"); // 제외 경로 수정
+                					"/help/**",
+                					"/userConfirm",
+                					"/user/welcome"); // 제외 경로 수정
     }
 }
