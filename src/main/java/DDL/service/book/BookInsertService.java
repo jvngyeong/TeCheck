@@ -31,7 +31,7 @@ public class BookInsertService {
 		String bookNum = autoNumMapper.getAutoNum("book_", "6", "book_num", "book");
 		dto.setBookNum(bookNum);
 		
-		dto.setBookTime(java.time.LocalTime.parse(bookCommand.getBookHour()));
+		dto.setBookTime(java.time.LocalTime.parse(bookCommand.getBookTime()));
 		
 		bookMapper.bookInsert(dto);
 	}

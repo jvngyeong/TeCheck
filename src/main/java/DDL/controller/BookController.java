@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import DDL.command.BookCommand;
+import DDL.service.book.BookDeleteService;
 import DDL.service.book.BookFormService;
 import DDL.service.book.BookInfoService;
 import DDL.service.book.BookInsertService;
@@ -34,9 +35,13 @@ public class BookController {
 	BookInfoService bookInfoService;
 	@Autowired
 	BookUpdateService bookUpdateService;
+	@Autowired
+	BookDeleteService bookDeleteService;
 	@GetMapping("bookForm")
-	public String bookForm(Model model) {
+	public String bookForm(Model model, String goodsNum, String goodsName) {
 		bookFormService.execute(model);
+		model.addAttribute("goodsName", goodsName);
+		model.addAttribute("goodsNum", goodsNum);
 		return "thymeleaf/book/bookForm";
 	}
 	@Autowired
@@ -93,6 +98,11 @@ public class BookController {
 			, HttpSession session) {
 		bookUpdateService.execute(bookCommand, session);
 		return "redirect:bookDetail?bookNum=" + bookCommand.getBookNum();
+	}
+	@GetMapping("bookDelete")
+	public String bookDelete(String bookNum) {
+		bookDeleteService.execute(bookNum);
+		return "redirect:bookList";
 	}
 	
 	
