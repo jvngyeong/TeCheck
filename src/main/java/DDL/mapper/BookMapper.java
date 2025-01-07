@@ -19,4 +19,6 @@ public interface BookMapper {
 			, @Param("memberNum") String memberNum);
 
 	public Integer bookUpdate(BookDTO dto);
+
+	public Integer bookDelete(String bookNum);
 }

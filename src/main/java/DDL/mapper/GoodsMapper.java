@@ -10,11 +10,17 @@ public interface GoodsMapper {
 
     Integer goodsWrite(GoodsDTO goodsDTO);
 
-    List<GoodsDTO> goodsListSelect();
+    List<GoodsDTO> goodsListSelect(String searchWord);
 
     GoodsDTO goodsSelectOne(String goodsNum);
 
     Integer goodsUpdate(GoodsDTO goodsDTO);
 
     Integer goodsDelete(String goodsNum);
+
+	Integer goodsVisitCountUpdate(String goodsNum);
+
+	List<GoodsDTO> goodsCategories();
+
+	
 }

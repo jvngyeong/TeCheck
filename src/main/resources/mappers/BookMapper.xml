@@ -78,6 +78,10 @@
 		, EXP_NUM = #{expNum}
 		, STORE_NUM = #{storeNum}
 		, GOODS_NUM = #{goodsNum}
-		where MEMBER_NUM = #{memberNum}
+		where BOOK_NUM = #{bookNum}
 	</update>
+	
+	<delete id="bookDelete" parameterType="string">
+		delete from book where BOOK_NUM = #{bookNum}
+	</delete>
 </mapper>

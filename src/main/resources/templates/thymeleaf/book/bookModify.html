@@ -166,7 +166,7 @@ $(function(){
 				<div class="row">
 			    <h4>방문 시간</h4>
 			    <div class="input-group">
-			        <select name="bookHour">
+			        <select name="bookTime">
 			            <option value="" disabled th:selected="${dto.bookDTO.bookTime == null}">시간 선택</option>
 				        <option value="09:00" th:selected="${#temporals.format(dto.bookDTO.bookTime, 'HH:mm') == '09:00'}">09시</option>
 				        <option value="10:00" th:selected="${#temporals.format(dto.bookDTO.bookTime, 'HH:mm') == '10:00'}">10시</option>

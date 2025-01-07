@@ -15,6 +15,7 @@ import DDL.command.OrderCommand;
 import DDL.domain.CartDTO;
 import DDL.domain.GoodsCartDTO;
 import DDL.domain.GoodsDTO;
+import DDL.mapper.GoodsMapper;
 import DDL.service.IniPayReqService;
 import DDL.service.cart.CartListService;
 import DDL.service.order.OrderService;
@@ -32,6 +33,9 @@ public class PurchaseController {
 	@Autowired
 	IniPayReqService iniPayReqService;
 	
+	@Autowired
+	GoodsMapper goodsMapper;
+	
 	@GetMapping("purchaseList")
 	public String purchaseList(Model model, HttpSession session, String goodsNum, String memberNum, String cartQty, String goodsPrice, String goodsName) {
 		if(goodsNum == null) {
@@ -39,14 +43,11 @@ public class PurchaseController {
 		}
 		else {
 			List<GoodsCartDTO> goodsCartDTOList = new ArrayList<GoodsCartDTO>();
-			GoodsDTO goodsDTO = new GoodsDTO();
+			GoodsDTO goodsDTO = goodsMapper.goodsSelectOne(goodsNum);
 			CartDTO cartDTO = new CartDTO();
 			GoodsCartDTO goodsCartDTO = new GoodsCartDTO();
 			goodsCartDTO.setCartDTO(cartDTO);
 			goodsCartDTO.setGoodsDTO(goodsDTO);
-			goodsCartDTO.getGoodsDTO().setGoodsNum(goodsNum);
-			goodsCartDTO.getGoodsDTO().setGoodsName(goodsName);
-			goodsCartDTO.getGoodsDTO().setGoodsPrice(Integer.parseInt(goodsPrice));
 			goodsCartDTO.getCartDTO().setMemberNum(memberNum);
 			goodsCartDTO.getCartDTO().setCartQty(cartQty);
 			goodsCartDTOList.add(goodsCartDTO);
@@ -55,6 +56,7 @@ public class PurchaseController {
 		}
 		return "thymeleaf/purchase/purchaseList";
 	}
+	
 	@GetMapping("directPurchase")
 	public @ResponseBody String directPurchase(String goodsNum, String memberNum, String cartQty, String goodsPrice, Model model) {
 		if(memberNum == null) {
@@ -66,12 +68,11 @@ public class PurchaseController {
 			}
 			else {
 				List<GoodsCartDTO> goodsCartDTOList = new ArrayList<GoodsCartDTO>();
-				GoodsDTO goodsDTO = new GoodsDTO();
+				GoodsDTO goodsDTO = goodsMapper.goodsSelectOne(goodsNum);
 				CartDTO cartDTO = new CartDTO();
 				GoodsCartDTO goodsCartDTO = new GoodsCartDTO();
 				goodsCartDTO.setCartDTO(cartDTO);
 				goodsCartDTO.setGoodsDTO(goodsDTO);
-				goodsCartDTO.getGoodsDTO().setGoodsNum(goodsNum);
 				goodsCartDTO.getCartDTO().setMemberNum(memberNum);
 				goodsCartDTO.getCartDTO().setCartQty(cartQty);
 				goodsCartDTOList.add(goodsCartDTO);

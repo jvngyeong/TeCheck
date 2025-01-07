@@ -9,16 +9,14 @@ import org.springframework.ui.Model;
 import DDL.domain.GoodsDTO;
 import DDL.mapper.GoodsMapper;
 
-
 @Service
-public class GoodsListService {
+public class CategoryService {
 	@Autowired
 	GoodsMapper goodsMapper;
-	
-	public void execute(String searchWord, Model model) {
-		List<GoodsDTO> list = goodsMapper.goodsListSelect(searchWord);
-		if(searchWord == null) searchWord="";
-		model.addAttribute("searchWord", searchWord);
-        model.addAttribute("goodsList", list);
+	public void execute(Model model) {
+		List<GoodsDTO> list = goodsMapper.goodsCategories();
+		model.addAttribute("categoryList", list);
+		
 	}
+	
 }

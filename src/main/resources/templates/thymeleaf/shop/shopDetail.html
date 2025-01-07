@@ -39,6 +39,17 @@
 <link href="/static/css/style.css" rel="stylesheet">
 
 <script type="text/javascript">
+	function directBook() {
+		var goodsNum = $("#goodsNum").val();
+		var memberNum = $("#memberNum").val();
+		var goodsName = $("#goodsName").val();
+		if (memberNum == "" || memberNum == null) {
+			alert("로그인이 필요한 서비스입니다.");
+		} else {
+			location.href = "/book/bookForm?goodsNum=" + goodsNum
+					+ "&goodsName=" + goodsName;
+		}
+	}
 	function directPurchase() {
 		var goodsNum = $("#goodsNum").val();
 		var cartQty = $("#cartQty").val();
@@ -285,6 +296,8 @@
 									class="fa fa-star text-secondary"></i> <i
 									class="fa fa-star text-secondary"></i> <i class="fa fa-star"></i>
 							</div>
+							<p class="mb-4">조회수 : [[${goodsDTO.visitCount}]]</p>
+							<p class="mb-4">상품종류 : [[${goodsDTO.goodsKind}]]</p>
 							<p class="mb-4">[[${goodsDTO.goodsContents}]]</p>
 							<div class="input-group quantity mb-5" style="width: 100px;">
 								<div class="input-group-btn">
@@ -309,13 +322,16 @@
 								<div id="wishIcon">
 									<i style="margin: 0 0.5rem 0 0.5rem"
 										class="fa-regular fa-heart"> </i>
-								</div>
-							</a> <a onclick="cartInsert();"
+								</div></a> 
+							<a onclick="cartInsert();"
 								class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
-								class="fa fa-shopping-bag me-2 text-primary"></i> 장바구니</a> <a
-								onclick="directPurchase();"
+								class="fa fa-shopping-bag me-2 text-primary"></i> 장바구니</a> 
+							<a onclick="directPurchase();"
 								class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
 								class="fa fa-solid fa-cart-shopping me-2 text-primary"></i> 구매하기</a>
+							<a onclick="directBook();"
+								class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+								<i class="fa-solid fa-check me-2 text-primary"></i> 체험 예약하기</a>
 						</div>
 						<div class="col-lg-12">
 							<nav>

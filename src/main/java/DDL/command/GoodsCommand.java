@@ -17,7 +17,7 @@ public class GoodsCommand {
 	Integer goodsPrice;
 	@NotEmpty(message = "설명을 입력하세요")
 	String goodsContents;
-	
+	String goodsKind;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	Date goodsRegist;
 	

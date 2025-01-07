@@ -8,8 +8,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import DDL.command.BookCommand;
+import DDL.service.book.BookDeleteService;
 import DDL.service.book.BookFormService;
 import DDL.service.book.BookInfoService;
 import DDL.service.book.BookInsertService;
@@ -34,16 +36,21 @@ public class BookController {
 	BookInfoService bookInfoService;
 	@Autowired
 	BookUpdateService bookUpdateService;
+	@Autowired
+	BookDeleteService bookDeleteService;
 	@GetMapping("bookForm")
-	public String bookForm(Model model) {
+	public String bookForm(Model model, String goodsNum, String goodsName) {
 		bookFormService.execute(model);
+		model.addAttribute("goodsName", goodsName);
+		model.addAttribute("goodsNum", goodsNum);
 		return "thymeleaf/book/bookForm";
 	}
 	@Autowired
 	GoodsListService goodsListService;
 	@GetMapping("goodsItem")
-	public String goodsItem(Model model) {
-		goodsListService.execute(model);
+	public String goodsItem(@RequestParam(value="searchWord" , required = false) String searchWord
+			, Model model) {
+		goodsListService.execute(searchWord, model);
 		return "thymeleaf/goodsIpgo/goodsItem";
 	}
 	@Autowired
@@ -93,6 +100,11 @@ public class BookController {
 			, HttpSession session) {
 		bookUpdateService.execute(bookCommand, session);
 		return "redirect:bookDetail?bookNum=" + bookCommand.getBookNum();
+	}
+	@GetMapping("bookDelete")
+	public String bookDelete(String bookNum) {
+		bookDeleteService.execute(bookNum);
+		return "redirect:bookList";
 	}
 	
 	

@@ -22,9 +22,9 @@ public class BookUpdateService {
 		AuthInfoDTO auth = (AuthInfoDTO)session.getAttribute("auth");
 		
 		String memberNum = memberMapper.getMemberNum(auth.getUserId());
-		
-		if(bookCommand.getMemberNum() == memberNum) {
-			BeanUtils.copyProperties(bookCommand, dto);
+		BeanUtils.copyProperties(bookCommand, dto);
+		dto.setBookTime(java.time.LocalTime.parse(bookCommand.getBookTime()));
+		if(bookCommand.getMemberNum().equals(memberNum)) {
 			bookMapper.bookUpdate(dto);
 		}
 	}
