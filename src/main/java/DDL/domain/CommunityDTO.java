@@ -10,10 +10,10 @@ import lombok.Data;
 @Data
 @Alias("communityDTO")
 public class CommunityDTO {
-	String rownum;
 	String commNum;
 	String memberNum;
-	String memberId;
+	
+	String rownum;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	Date commDate;
 	String commTitle;

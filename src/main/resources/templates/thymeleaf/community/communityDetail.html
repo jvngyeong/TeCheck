@@ -317,20 +317,20 @@ hr {
 						   		</thead>
 						    	<tbody>
 							   		<tr>
-							        <td>[[${communityDTO.commNum}]]</td>
-							        <td>[[${communityDTO.commTitle}]]</td>
-							        <td>[[${communityDTO.memberId}]]</td>
-							        <td>[[${#dates.format(communityDTO.commDate, 'yyyy-MM-dd')}]]</td>
+							        <td>[[${communityMemberDTO.communityDTO.commNum}]]</td>
+							        <td>[[${communityMemberDTO.communityDTO.commTitle}]]</td>
+							        <td>[[${communityMemberDTO.memberDTO.memberId}]]</td>
+							        <td>[[${#dates.format(communityMemberDTO.communityDTO.commDate, 'yyyy-MM-dd')}]]</td>
 									</tr>
-									<tr><td colspan="4">[[${communityDTO.commContents}]]</td></tr>
+									<tr><td colspan="4">[[${communityMemberDTO.communityDTO.commContents}]]</td></tr>
 								</tbody>
 							</table>
 						</div>
-		                        <a th:href="|/community/communityModify?commNum=${communityDTO.commNum}|"
+		                        <a th:href="|/community/communityModify?commNum=${communityMemberDTO.communityDTO.commNum}|"
 		                            class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
 		                            <i class="fa-solid fa-pen" style="margin-right: 10px;"></i>수정하기
 		                        </a> 
-		                        <a th:href="|/community/communityDelete?commNum=${communityDTO.commNum}|"
+		                        <a th:href="|/community/communityDelete?commNum=${communityMemberDTO.communityDTO.commNum}|"
 		                            class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
 		                            <i class="fa-solid fa-circle-xmark" style="margin-right: 10px;"></i>삭제하기
 		                        </a>
@@ -339,9 +339,9 @@ hr {
 								    <h6 class="mb-3">전체 댓글 <span class="badge bg-secondary">[[${#lists.size(replyList)}]]개</span></h6>
 								    <div th:each="reply : ${replyList}">
 								        <div class="reply-item border-bottom pb-2 mb-2">
-								            <p class="mb-1"><strong th:text="${reply.memberId}"></strong></p>
-								            <p th:text="${reply.replyContent}"></p>
-								            <p class="text-muted small mb-1" th:text="${#dates.format(reply.replyDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+								            <p class="mb-1"><strong th:text="${reply.memberDTO.memberId}"></strong></p>
+								            <p th:text="${reply.communityReplyDTO.replyContent}"></p>
+								            <p class="text-muted small mb-1" th:text="${#dates.format(reply.communityReplyDTO.replyDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
 								        </div>
 								    </div>
 								</div>
@@ -351,7 +351,7 @@ hr {
 								    <h6 class="mb-3">댓글 작성</h6>
 								    <form action="/community/replyInsert" method="post" class="reply-form">
 
-								        <input type="hidden" name="commNum" th:value="${communityDTO.commNum}">
+								        <input type="hidden" name="commNum" th:value="${communityMemberDTO.communityDTO.commNum}">
 								        <div class="row align-items-center">
 								            <!-- 댓글 입력 -->
 								            <div class="col-md-8 mb-2 mb-md-0">
