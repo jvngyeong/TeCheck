@@ -37,8 +37,8 @@ public class GoodsController {
     @Autowired
     GoodsDeleteService goodsDeleteService;
 	@GetMapping("goodsList")
-	public String List(Model model) {
-		goodsListService.execute(model);
+	public String List(String searchWord, Model model) {
+		goodsListService.execute(searchWord, model);
 		return "thymeleaf/goods/goodsList";
 	}
 	@GetMapping("goodsWrite")

@@ -61,8 +61,8 @@ public class GoodsIpgoController {
 	@Autowired
 	GoodsListService goodsListService;
 	@GetMapping("goodsItem")
-	public String goodsItem(Model model) {
-		goodsListService.execute(model);
+	public String goodsItem(String searchWord, Model model) {
+		goodsListService.execute(searchWord, model);
 		return "thymeleaf/goodsIpgo/goodsItem";
 	}
 	@GetMapping("goodsIpgoDetail")

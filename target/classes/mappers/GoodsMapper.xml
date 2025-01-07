@@ -6,7 +6,7 @@
 	<sql id = "goodsColumns">
 		GOODS_NUM, GOODS_NAME, GOODS_PRICE, GOODS_CONTENTS, VISIT_COUNT
 		, GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE, GOODS_DETAIL_IMAGE
-		, GOODS_DETAIL_STORE_IMAGE, GOODS_REGIST, GOODS_UPDATE_DATE
+		, GOODS_DETAIL_STORE_IMAGE, GOODS_REGIST, GOODS_UPDATE_DATE, GOODS_KIND
 	</sql>
 	
 	<insert id="goodsWrite" parameterType="goodsDTO">
@@ -19,11 +19,22 @@
 				<if test="goodsDetailImage == null">
 				null, null,
 				</if>
-				sysdate , null)
+				sysdate , null, #{goodsKind})
 	</insert>
 	
-	<select id="goodsListSelect">
-		select <include refid="goodsColumns" /> from goods
+	<select id="goodsListSelect" parameterType="string">
+		select * from (
+			select ROW_NUMBER() over (order by goods_num desc) as rn,
+					<include refid="goodsColumns" />
+			from goods
+			<where>
+				<if test="searchWord != null">
+					goods_name like '%' || #{searchWord} || '%'
+					or goods_kind like '%' || #{searchWord} || '%'
+				</if>
+			</where>
+		)
+		
 	</select>
 	
 	<select id = "goodsSelectOne">
@@ -49,5 +60,14 @@
 	<delete id= "goodsDelete">
 		delete from goods where goods_num = #{goodsNum}
 	</delete>
-	 
+	
+	<update id="goodsVisitCountUpdate" parameterType="string">
+		update goods
+		set visit_count = visit_count + 1
+		where goods_num = #{goodsNum}
+	</update>
+	
+	<select id="goodsCategories" resultType="goodsDTO">
+		select goods_kind from goods
+	</select>
 </mapper>

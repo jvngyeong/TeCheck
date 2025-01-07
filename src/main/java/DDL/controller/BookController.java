@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import DDL.command.BookCommand;
 import DDL.service.book.BookDeleteService;
@@ -47,8 +48,9 @@ public class BookController {
 	@Autowired
 	GoodsListService goodsListService;
 	@GetMapping("goodsItem")
-	public String goodsItem(Model model) {
-		goodsListService.execute(model);
+	public String goodsItem(@RequestParam(value="searchWord" , required = false) String searchWord
+			, Model model) {
+		goodsListService.execute(searchWord, model);
 		return "thymeleaf/goodsIpgo/goodsItem";
 	}
 	@Autowired
