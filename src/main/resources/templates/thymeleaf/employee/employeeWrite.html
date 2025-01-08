@@ -131,7 +131,7 @@
 
 
 	<div class="container">
-		<form action="/employee/employeeWrite" method="post" th:object = "${employeeCommand}" enctype="multipart/form-data">
+		<form action="/employee/employeeWrite" method="post" th:object = "${employeeCommand}" enctype="multipart/form-data" onsubmit = "fileChk()">
 			<div class="row">
 				<h4>기본 정보</h4>
 				<div class="input-group input-group-icon">

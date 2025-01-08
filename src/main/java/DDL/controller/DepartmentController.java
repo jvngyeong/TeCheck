@@ -69,7 +69,11 @@ public class DepartmentController {
 	}
 	
 	@PostMapping("departmentModify")
-	public String departmentModify(DepartmentCommand departmentCommand) {
+	public String departmentModify(@Validated DepartmentCommand departmentCommand, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			model.addAttribute("departmentCommand", departmentCommand);
+			return "thymeleaf/department/departmentModify";
+		}
 		departmentUpdateService.execute(departmentCommand);
 		return "redirect:/department/departmentDetail?departmentNum="+departmentCommand.getDepartmentNum();
 	}

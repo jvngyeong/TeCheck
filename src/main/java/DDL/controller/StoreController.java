@@ -46,9 +46,6 @@ public class StoreController {
 	public String storeWrite(@Validated StoreCommand storeCommand
 			, BindingResult result) {
 		if (result.hasErrors()) {
-		    result.getAllErrors().forEach(error -> {
-		        System.out.println("Error: " + error.getDefaultMessage());
-		    });
 		    return "thymeleaf/store/storeWrite";
 		}
 		storeWriteService.execute(storeCommand);
@@ -66,7 +63,11 @@ public class StoreController {
 	}
 	@PostMapping("storeModify")
 	public String storeModify(@Validated StoreCommand storeCommand
-			, BindingResult result) {
+			, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			model.addAttribute("storeCommand", storeCommand);
+			return "thymeleaf/store/storeModify";
+		}
 		storeUpdateService.execute(storeCommand);
 		return "redirect:storeDetail?storeNum=" + storeCommand.getStoreNum();
 	}

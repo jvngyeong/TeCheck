@@ -175,12 +175,14 @@ $(function(){
 					<div class="input-icon icon-center">
 	                	<i class="fa-solid fa-signs-post"></i>
 	                </div>
+	                <span style="color:red" th:if="${#fields.hasErrors('storePost')}" th:errors="*{storePost}"></span>
 				</div>
 				<div class="input-group input-group-icon">
 					<input name="storeTel" type="text" placeholder="전화번호" th:value="${storeCommand.storeTel}"/>
 					<div class="input-icon icon-center">
 						<i class="fa-solid fa-phone"></i>
 					</div>
+					<span style="color:red" th:if="${#fields.hasErrors('storeTel')}" th:errors="*{storeTel}"></span>
 				</div>
 			</div>
 			<div class="wrap">

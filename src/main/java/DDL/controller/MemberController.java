@@ -56,11 +56,17 @@ public class MemberController {
 	}
 	@GetMapping("memberModify")
 	public String memberModify(Model model, String memberNum) {
+		MemberCommand memberCommand = new MemberCommand();
+		model.addAttribute("memberCommand", memberCommand);
 		memberDetailService.execute(model, memberNum);
 		return "thymeleaf/member/memberModify";
 	}
 	@PostMapping("memberUpdate")
-	public String memberUpdate(MemberCommand memberCommand) {
+	public String memberUpdate(@Validated MemberCommand memberCommand, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			model.addAttribute("memberCommand", memberCommand);
+			return "thymeleaf/member/memberModify";
+		}
 		memberUpdateService.execute(memberCommand);
 		return "redirect:memberDetail?memberNum=" + memberCommand.getMemberNum();
 	}

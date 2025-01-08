@@ -1,9 +1,11 @@
 package DDL.service.employee;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import DDL.command.EmployeeCommand;
 import DDL.domain.DepartmentDTO;
 import DDL.domain.EmployeeDTO;
 import DDL.mapper.DepartmentMapper;
@@ -21,5 +23,8 @@ public class EmployeeDetailService {
 		DepartmentDTO departmentDTO = departmentMapper.departmentSelectOne(employeeDTO.getDepartmentNum());
 		model.addAttribute("employeeDTO", employeeDTO);
 		model.addAttribute("departmentName", departmentDTO.getDepartmentName());
+		EmployeeCommand employeeCommand = new EmployeeCommand();
+		BeanUtils.copyProperties(employeeDTO, employeeCommand);
+		model.addAttribute("employeeCommand", employeeCommand);
 	}
 }

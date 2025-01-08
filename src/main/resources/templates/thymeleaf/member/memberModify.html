@@ -29,6 +29,18 @@
 
 <!-- Template Stylesheet -->
 <link href="/static/css/style.css" rel="stylesheet">
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="/static/js/daumAddressScript.js"></script>
+	
+<script type="text/javascript">
+	$(function(){
+		$("#sample4_roadAddress").click(function(){
+			execDaumPostcode();
+		});
+	})
+</script>
 </head>
 
 <body>
@@ -115,7 +127,7 @@
 		</div>
 	</div>
 	<div class="container">
-      <form action="/member/memberUpdate" method="post">
+      <form action="/member/memberUpdate" method="post" th:object = "${memberCommand}">
          <div class="row">
             <h4>기본정보</h4>
             <div class="input-group input-group-icon">
@@ -129,24 +141,28 @@
                <div class="input-icon icon-center">
                   <i class="fa fa-user"></i>
                </div>
+               <span style = "color:red" th:if="${#fields.hasErrors('memberId')}" th:errors="*{memberId}"></span>
             </div>
             <div class="input-group input-group-icon">
                <input type="text" name="memberName" th:value="${memberCommand.memberName}" readonly="readonly"/>
                <div class="input-icon icon-center">
                   <i class="fa fa-user"></i>
                </div>
+               <span style = "color:red" th:if="${#fields.hasErrors('memberName')}" th:errors="*{memberName}"></span>
             </div>
             <div class="input-group input-group-icon">
                <input type="email" name="memberEmail" th:value="${memberCommand.memberEmail}" />
                <div class="input-icon icon-center">
                   <i class="fa fa-envelope"></i>
                </div>
+               <span style = "color:red" th:if="${#fields.hasErrors('memberEmail')}" th:errors="*{memberEmail}"></span>
             </div>
             <div class="input-group input-group-icon">
-               <input type="text" name="memberAddr" th:value="${memberCommand.memberAddr}" />
+               <input type="text" name="memberAddr" th:value="${memberCommand.memberAddr}" id = "sample4_roadAddress"/>
                <div class="input-icon icon-center">
                   <i class="fa-solid fa-location-dot"></i>
                </div>
+               <span style = "color:red" th:if="${#fields.hasErrors('memberAddr')}" th:errors="*{memberAddr}"></span>
             </div>
             <div class="input-group input-group-icon">
                <input type="text" name="memberAddrDetail" th:value="${memberCommand.memberAddrDetail}" />
@@ -155,16 +171,18 @@
                </div>
             </div>
             <div class="input-group input-group-icon">
-               <input type="text" name="memberPost" th:value="${memberCommand.memberPost}" />
+               <input type="text" name="memberPost" th:value="${memberCommand.memberPost}" id = "sample4_postcode"/>
                <div class="input-icon icon-center">
                   <i class="fa-solid fa-signs-post"></i>
                </div>
+               <span style = "color:red" th:if="${#fields.hasErrors('memberPost')}" th:errors="*{memberPost}"></span>
             </div>
             <div class="input-group input-group-icon">
                <input type="text" name="memberPhone" th:value="${memberCommand.memberPhone}" />
                <div class="input-icon icon-center">
                   <i class="fa-solid fa-phone"></i>
                </div>
+               <span style = "color:red" th:if="${#fields.hasErrors('memberPhone')}" th:errors="*{memberPhone}"></span>
             </div>
          </div>
          <div class="row">
@@ -173,6 +191,7 @@
                <div class="input-group">
                   <div class="col-third"><input type="date" name="memberBirth" th:value="${#dates.format(memberCommand.memberBirth, 'yyyy-MM-dd')}" /></div>
                </div>
+               <span style = "color:red;" th:if="${#fields.hasErrors('memberBirth')}" th:errors="*{memberBirth}"></span>
             </div>   
             <div class="col-half">
                <h4>성별</h4>
@@ -181,6 +200,7 @@
                   <label for="gender-male">남자</label> 
                   <input id="gender-female"type="radio" name="gender" value="F" th:checked="${memberCommand.gender == 'F'}"/>
                   <label for="gender-female">여자</label>
+                  <span style = "color:red;" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></span>
                </div>
             </div>
          </div>

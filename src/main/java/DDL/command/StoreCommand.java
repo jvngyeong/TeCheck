@@ -7,11 +7,13 @@ import lombok.Data;
 @Data
 public class StoreCommand {
 	String storeNum;
-	@NotBlank(message = "주소를 입력하여 주세요.")
+	@NotEmpty(message = "* 주소를 입력해주세요.")
 	String storeAddr;
 	String storeAddrDetail;
+	@NotEmpty(message = "* 우편번호를 입력해주세요.")
 	String storePost;
+	@NotEmpty(message = "* 전화번호를 입력해주세요.")
 	String storeTel;
-	@NotEmpty(message = "이름을 입력해주세요")
+	@NotEmpty(message = "* 매장 이름을 입력해주세요.")
 	String storeName;
 }

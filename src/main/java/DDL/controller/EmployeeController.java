@@ -70,8 +70,6 @@ public class EmployeeController {
 	
 	@GetMapping("employeeModify")
 	public String employeeModify(String empNum, Model model) {
-		EmployeeCommand employeeCommand = new EmployeeCommand();
-		model.addAttribute("employeeCommand", employeeCommand);
 		departmentListService.execute(model);
 		employeeDetailService.execute(empNum, model);
 		return "thymeleaf/employee/employeeModify";
@@ -79,11 +77,9 @@ public class EmployeeController {
 	
 	@PostMapping("employeeModify")
 	public String employeeModify(@Validated EmployeeCommand employeeCommand, BindingResult result, Model model) {
-		System.out.println(employeeCommand.getDepartmentNum()+"입니다.");
 		if(result.hasErrors()) {
-			System.out.println(result.getFieldError());
 			departmentListService.execute(model);
-			employeeDetailService.execute(employeeCommand.getEmpNum(), model);
+			model.addAttribute("employeeCommand", employeeCommand);
 			return "thymeleaf/employee/employeeModify";
 		}
 		employeeUpdateService.execute(employeeCommand);
