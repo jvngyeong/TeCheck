@@ -141,13 +141,14 @@
 						<div class="col-lg-6">
 							<div class="border rounded">
 								<a href="#"> <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|"
-									class="img-fluid rounded" alt="Image">
+									class="img-fluid rounded" alt="Image" onerror="this.src='/static/img/goods-default-img.png';">
 								</a>
 							</div>
 						</div>
 						<div class="col-lg-6">
 							<h4 class="fw-bold mb-3">[[${goodsDTO.goodsName}]]</h4>
 							<p class="mb-3">상품번호 : [[${goodsDTO.goodsNum}]]</p>
+							<p class="mb-3">상품종류 : [[${goodsDTO.goodsKind}]]</p>
 							<p class="mb-4">상품가격 : [[${goodsDTO.goodsPrice}]]</p>
 							<p class="mb-4">상품설명 : [[${goodsDTO.goodsContents}]]</p>
 							<p class="mb-4">방문자수 : [[${goodsDTO.visitCount}]]</p>

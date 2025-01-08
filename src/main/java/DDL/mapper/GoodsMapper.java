@@ -5,12 +5,11 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import DDL.domain.GoodsDTO;
+import DDL.domain.StartEndPageDTO;
 @Mapper
 public interface GoodsMapper {
 
     Integer goodsWrite(GoodsDTO goodsDTO);
-
-    List<GoodsDTO> goodsListSelect(String searchWord);
 
     GoodsDTO goodsSelectOne(String goodsNum);
 
@@ -20,7 +19,13 @@ public interface GoodsMapper {
 
 	Integer goodsVisitCountUpdate(String goodsNum);
 
-	List<GoodsDTO> goodsCategories();
+	
+
+	int goodsCount(String searchWord);
+
+	List<GoodsDTO> goodsListSelect(StartEndPageDTO sepDTO);
+
+	List<GoodsDTO> goodsCategory();
 
 	
 }

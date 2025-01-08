@@ -31,9 +31,10 @@ public class ShopController {
 	CategoryService categoryService;
 	@GetMapping("shopList")
 	public String shopList(@RequestParam(value="searchWord" , required = false) String searchWord
+			, @RequestParam(value = "page" , required = false , defaultValue = "1") int page
 			, Model model) {
 		categoryService.execute(model);
-		goodsListService.execute(searchWord, model);
+		goodsListService.execute(searchWord, model, page);
 		return "thymeleaf/shop/shopList";
 	}
 	@Autowired

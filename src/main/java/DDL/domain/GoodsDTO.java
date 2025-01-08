@@ -30,4 +30,5 @@ public class GoodsDTO {
 	String goodsMainStoreImage;
 	String goodsDetailStoreImage;
 	String goodsKind;
+	int goodsQty;
 }
