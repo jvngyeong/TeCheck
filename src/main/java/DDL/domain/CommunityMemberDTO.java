@@ -9,4 +9,5 @@ import lombok.Data;
 public class CommunityMemberDTO {
 	MemberDTO memberDTO;
 	CommunityDTO communityDTO;
+	EmployeeDTO employeeDTO;
 }

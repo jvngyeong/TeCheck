@@ -234,7 +234,12 @@
 					      <tr>
 					        <td><a th:href= "|/community/communityDetail?commNum=${communityMemberDTO.communityDTO.commNum}|">[[${communityMemberDTO.communityDTO.rownum}]]</a></td>
 					        <td><a th:href= "|/community/communityDetail?commNum=${communityMemberDTO.communityDTO.commNum}|">[[${communityMemberDTO.communityDTO.commTitle}]]</a></td>
-					        <td>[[${communityMemberDTO.memberDTO.memberId}]]</td>
+					        <th:block th:if="${communityMemberDTO.communityDTO.memberNum != null}">
+					        		<td>[[${communityMemberDTO.memberDTO.memberId}]]</td>
+					        </th:block>
+     					    <th:block th:if="${communityMemberDTO.communityDTO.memberNum == null}">
+					        		<td>[[${communityMemberDTO.employeeDTO.empId}]]</td>
+					        </th:block>
 					        <td>[[${#dates.format(communityMemberDTO.communityDTO.commDate, 'yyyy-MM-dd')}]]</td>
 					      </tr>
 				      	</th:block>

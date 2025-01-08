@@ -47,19 +47,29 @@
 	</association>
 	<association property="communityDTO" javaType = "communityDTO">
 		<id column="COMM_NUM" property="commNum" javaType="String" jdbcType="VARCHAR"/>
-		<id column = "MEMBER_NUM" property = "memberNum" javaType = "String" jdbcType = "VARCHAR"/>
+		<result column = "MEMBER_NUM" property = "memberNum" javaType = "String" jdbcType = "VARCHAR"/>
 		<result column="rownum" property="rownum" javaType="String"/>
 		<result column="COMM_DATE" property="commDate" javaType="Date" jdbcType="DATE"/>
 		<result column="COMM_TITLE" property="commTitle" javaType="String" jdbcType="VARCHAR"/>
 		<result column="COMM_CONTENTS" property="commContents" javaType="String" jdbcType="VARCHAR"/>
 	</association>
+	<association property="employeeDTO" javaType = "employeeDTO">
+		<id column = "emp_num" property = "empNum" javaType = "String" jdbcType = "VARCHAR"/>
+		<result column="emp_id" property="empId" javaType="String"/>
+	</association>
 </resultMap>
 	<sql id="communityColumns">
-			COMM_NUM, MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_CONTENTS
+			COMM_NUM, MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_CONTENTS, EMP_NUM
 	</sql>
 	<insert id="communityWrite" parameterType="communityDTO">
-			insert into community(<include refid="communityColumns"></include>)
-			values(#{commNum}, #{memberNum}, sysdate, #{commTitle}, #{commContents}) 
+		<if test="memberNum == null">
+			insert into community(COMM_NUM, COMM_DATE, COMM_TITLE, COMM_CONTENTS, EMP_NUM)
+			values(#{commNum}, sysdate, #{commTitle}, #{commContents} , #{empNum})
+		</if>
+		<if test="memberNum != null">
+			insert into community(COMM_NUM, MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_CONTENTS)
+			values(#{commNum}, ${memberNum}, sysdate, #{commTitle}, #{commContents})
+		</if>
 	</insert>
 
 	
@@ -79,7 +89,7 @@
 	</sql>
 	<insert id="insertReply" parameterType="CommunityReplyDTO">
 		    INSERT INTO reply(REPLY_NUM, REPLY_DATE, REPLY_CONTENT, MEMBER_NUM, COMM_NUM)
-		    VALUES ((select nvl(max(REPLY_NUM),0) + 1  from reply) ,SYSDATE, #{replyContent}, #{memberNum}, #{commNum})
+		    VALUES (#{replyNum} ,SYSDATE, #{replyContent}, #{memberNum}, #{commNum})
 	</insert>
 	
 	<select id="communityReplyListSelect" resultMap="communityReplyMemberDTO">
@@ -90,8 +100,9 @@
 	</select>
 	
 	<select id="communityListSelect" resultMap="communityMemberDTO">
-		select rownum, m.MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_NUM, COMM_CONTENTS, m.member_id
-		from community c join members m 
+		select rownum, m.MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_NUM, COMM_CONTENTS, m.member_id, emp_id
+		from community c left outer join members m 
 		on c.member_Num = m.member_Num 
+		left outer join employees e on c.emp_num = e.emp_num
 	</select>
 </mapper>
