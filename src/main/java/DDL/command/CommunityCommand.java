@@ -16,5 +16,6 @@ public class CommunityCommand {
 	Date replyDate;
 	String replyContent;
 	String memberNum;
+	String empNum;
 	String memberId;
 }

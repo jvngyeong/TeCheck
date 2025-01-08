@@ -12,7 +12,7 @@ import lombok.Data;
 public class CommunityDTO {
 	String commNum;
 	String memberNum;
-	
+	String empNum;
 	String rownum;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	Date commDate;
