@@ -14,9 +14,12 @@ public class CategoryService {
 	@Autowired
 	GoodsMapper goodsMapper;
 	public void execute(Model model) {
-		List<GoodsDTO> list = goodsMapper.goodsCategories();
+		List<GoodsDTO> list = goodsMapper.goodsCategory();
 		model.addAttribute("categoryList", list);
-		
+		int totalCount = 0;
+		for(GoodsDTO dto : list) {
+			totalCount += dto.getGoodsQty();
+		}
+		model.addAttribute("totalCount", totalCount);
 	}
-	
 }

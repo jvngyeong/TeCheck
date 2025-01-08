@@ -32,6 +32,13 @@
 
 <!-- Template Stylesheet -->
 <link href="/static/css/style.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			var page = $("#page").val();
+			$("#page_" + page).attr("class", "active rounded");
+		})
+	</script>
 </head>
 <body>
 	<!-- Spinner Start -->
@@ -138,27 +145,27 @@
 			<div id="tab-2" class="tab-pane fade show p-0">
 				<div class="row g-4">
 					<div class="col-lg-12">
-						<div class="row g-4">
-							<th:block th:each="goodsList : ${goodsList}">
+						<div class="row g-4" style="gap: 20px; justify-content: center;">
+							<th:block th:each="goodsDTO : ${list}">
 								<div class="col-md-6 col-lg-4 col-xl-3">
 									<div class="rounded position-relative fruite-item">
 										<div class="fruite-img">
-											<img th:src="|/static/upload/${goodsList.goodsMainStoreImage}|"
+											<img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|"
 												style="width: 300px; height: 350px; object-fit: contain;"
-												class="img-fluid w-100 rounded-top" alt="">
+												class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';">
 										</div>
 										<div
 											class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-											style="top: 10px; left: 10px;">[[${goodsList.goodsNum}]]</div>
+											style="top: 10px; left: 10px;">[[${goodsDTO.goodsNum}]]</div>
 										<div
 											class="p-4 border border-secondary border-top-0 rounded-bottom">
-											<h4>[[${goodsList.goodsName}]]</h4>
+											<h4>[[${goodsDTO.goodsName}]]</h4>
 											<p>
-												상품가격 : [[${goodsList.goodsPrice}]]<br />
+												상품가격 : [[${goodsDTO.goodsPrice}]]<br />
 											</p>
 											<div class="d-flex justify-content-between flex-lg-wrap">
 												<a
-													th:href="|/goods/goodsDetail?goodsNum=${goodsList.goodsNum}|"
+													th:href="|/goods/goodsDetail?goodsNum=${goodsDTO.goodsNum}|"
 													class="btn border border-secondary rounded-pill px-3 text-primary">
 													<i class="fa fa-info-circle" style="margin-right: 5px;"></i>
 													상세정보 보기
@@ -170,6 +177,38 @@
 							</th:block>
 						</div>
 					</div>
+					<div class="col-12">
+                    <input type="hidden" id = "page" th:value = ${page}>
+                        <div class="pagination d-flex justify-content-center mt-5">
+                            <th:block th:if="${page <= 1}">
+                                <a href="#" class="rounded">&laquo;</a>
+                            </th:block>
+                            <th:block th:if="${page > 1}">
+								<a th:href="@{goodsList(page=${page - 1},
+									searchWord=${searchWord})}" class="rounded">&laquo;</a>
+							</th:block>
+							<th:block th:each=" i, idx : ${#numbers.sequence(startPageNum, endPageNum)}">
+								<a th:href="@{goodsList(page=${i},searchWord=${searchWord})}" class="rounded" th:id="|page_${idx.count}|">[[${i}]]</a> 
+							</th:block>
+                            <th:block th:if="${page >= maxPage}">
+                                <a href="#" class="rounded">&raquo;</a>
+                            </th:block>
+                            <th:block th:if="${page < maxPage}">
+								<a th:href="@{goodsList(page=${page + 1},
+									searchWord=${searchWord})}" class="rounded">&raquo;</a>
+							</th:block>
+                        </div>
+                    </div>
+                    <div class="col-xl-3" style = "width:100%">
+                        <form action="goodsList" method="get" style = "width: 60%; place-self: center">
+                        	<div class="input-group w-100 mx-auto d-flex">
+                            <input type="search" name="searchWord" size="60" th:value="${searchWord}" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                            <button type="submit" class="input-group-text p-3">
+                            	<i class='fa fa-search'></i>
+                            </button>
+                        </div>
+                        </form>
+                    </div>
 				</div>
 			</div>
 

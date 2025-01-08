@@ -34,7 +34,17 @@
 				</if>
 			</where>
 		)
-		
+		where rn between #{startRow} and #{endRow}
+	</select>
+	
+	<select id="goodsCount" parameterType="string" resultType="integer">
+		select count(*) from goods
+		<where>
+			<if test="searchWord != null">
+				goods_name like '%' || #{searchWord} || '%'
+				or goods_num like '%' || #{searchWord} || '%'
+			</if>
+		</where>
 	</select>
 	
 	<select id = "goodsSelectOne">
@@ -46,6 +56,7 @@
 			 GOODS_NAME = #{goodsName}, GOODS_PRICE = #{goodsPrice}
 			,GOODS_CONTENTS = #{goodsContents}
 		    ,GOODS_UPDATE_DATE = sysdate
+		    ,GOODS_KIND = #{goodsKind}
 		    <if test="goodsMainImage != null">
 			    ,GOODS_MAIN_IMAGE = #{goodsMainImage}
 			    ,GOODS_MAIN_STORE_IMAGE = #{goodsMainStoreImage}
@@ -67,7 +78,7 @@
 		where goods_num = #{goodsNum}
 	</update>
 	
-	<select id="goodsCategories" resultType="goodsDTO">
-		select goods_kind from goods
+	<select id="goodsCategory" resultType="goodsDTO">
+		select count(goods_kind) as goodsQty, goods_kind from goods group by goods_kind
 	</select>
 </mapper>

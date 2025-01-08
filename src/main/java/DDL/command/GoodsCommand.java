@@ -11,12 +11,13 @@ import lombok.Data;
 @Data
 public class GoodsCommand {
 	String goodsNum;
-	@NotEmpty(message = "이름을 입력하세요")
+	@NotEmpty(message = "*이름을 입력하세요")
 	String goodsName;
-	@NotNull(message = "가격을 입력하세요")
+	@NotNull(message = "*가격을 입력하세요")
 	Integer goodsPrice;
-	@NotEmpty(message = "설명을 입력하세요")
+	@NotEmpty(message = "*설명을 입력하세요")
 	String goodsContents;
+	@NotNull(message = "*상품의 종류를 선택하세요")
 	String goodsKind;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	Date goodsRegist;

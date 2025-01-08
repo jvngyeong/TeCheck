@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import DDL.command.GoodsCommand;
@@ -37,12 +38,14 @@ public class GoodsController {
     @Autowired
     GoodsDeleteService goodsDeleteService;
 	@GetMapping("goodsList")
-	public String List(String searchWord, Model model) {
-		goodsListService.execute(searchWord, model);
+	public String List(@RequestParam(value="searchWord" , required = false) String searchWord
+			, @RequestParam(value = "page" , required = false , defaultValue = "1") int page
+			, Model model) {
+		goodsListService.execute(searchWord, model, page);
 		return "thymeleaf/goods/goodsList";
 	}
 	@GetMapping("goodsWrite")
-	public String goodsWrite() {
+	public String goodsWrite(GoodsCommand goodsCommand) {
 		return "thymeleaf/goods/goodsWrite";
 	}
 	@PostMapping("goodsWrite")

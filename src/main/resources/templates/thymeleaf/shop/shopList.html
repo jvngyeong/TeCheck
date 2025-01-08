@@ -28,6 +28,13 @@
 
         <!-- Template Stylesheet -->
         <link href="/static/css/style.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+        <script type="text/javascript">
+        	$(function(){
+        		var page = $("#page").val();
+        		$("#page_" + page).attr("class", "active rounded");
+        	})
+        </script>
     </head>
 
     <body>
@@ -165,17 +172,37 @@
                                             <ul class="list-unstyled fruite-categorie">
                                             	<li>
 	                                                <div class="d-flex justify-content-between fruite-name">
+	                                                    <a href="/shop/shopList?searchWord="><i class="fas fa-apple-alt me-2"></i>전체</a>[[${totalCount}]]
+	                                                </div>
+	                                            </li>
+                                            	<li>
+	                                                <div class="d-flex justify-content-between fruite-name">
 	                                                    <a href="/shop/shopList?searchWord=마우스"><i class="fas fa-apple-alt me-2"></i>마우스</a>
+	                                            		<th:block th:each="categoryList : ${categoryList}">
+		                                            		<th:block th:if = "${categoryList.goodsKind == '마우스'}">
+		                                            			[[${categoryList.goodsQty}]]
+	                                            			</th:block>
+		                                                </th:block>
 	                                                </div>
 	                                            </li>
 	                                            <li>
 	                                                <div class="d-flex justify-content-between fruite-name">
 	                                                    <a href="/shop/shopList?searchWord=키보드"><i class="fas fa-apple-alt me-2"></i>키보드</a>
+	                                                    <th:block th:each="categoryList : ${categoryList}">
+		                                            		<th:block th:if = "${categoryList.goodsKind == '키보드'}">
+		                                            			[[${categoryList.goodsQty}]]
+	                                            			</th:block>
+		                                                </th:block>
 	                                                </div>
 	                                            </li>
 	                                            <li>
 	                                                <div class="d-flex justify-content-between fruite-name">
 	                                                    <a href="/shop/shopList?searchWord=모니터"><i class="fas fa-apple-alt me-2"></i>모니터</a>
+	                                                    <th:block th:each="categoryList : ${categoryList}">
+		                                            		<th:block th:if = "${categoryList.goodsKind == '모니터'}">
+		                                            			[[${categoryList.goodsQty}]]
+	                                            			</th:block>
+		                                                </th:block>
 	                                                </div>
 	                                            </li>
                                             </ul>
@@ -288,13 +315,13 @@
                             </div>
                             <div class="col-lg-9">
                                 <div class="row g-4 justify-content-center">
-                                	<th:block th:each = "goodsDTO : ${goodsList}">
+                                	<th:block th:each="goodsDTO , idx : ${list}">
                                     	<a style = "padding:0px;width:0px;display:inline;" th:href = "|/shop/shopDetail?goodsNum=${goodsDTO.goodsNum}|">
                                     		<div class="col-md-6 col-lg-6 col-xl-4">
 	                                        	<div class="rounded position-relative fruite-item">
 		                                            <div class="fruite-img">
 		                                                <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|" 
-		                                                style="width: 300px; height: 350px; object-fit: contain;" class="img-fluid w-100 rounded-top" alt="">
+		                                                style="width: 300px; height: 350px; object-fit: contain;" class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />
 		                                            </div>
 		                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">[[${goodsDTO.goodsNum}]]</div>
 		                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
@@ -310,15 +337,25 @@
                                     	</a>
                                     </th:block>
                                     <div class="col-12">
+                                    	<input type="hidden" id = "page" th:value = ${page}>
                                         <div class="pagination d-flex justify-content-center mt-5">
+                                        	<th:block th:if="${page <= 1}">
                                             <a href="#" class="rounded">&laquo;</a>
-                                            <a href="#" class="active rounded">1</a>
-                                            <a href="#" class="rounded">2</a>
-                                            <a href="#" class="rounded">3</a>
-                                            <a href="#" class="rounded">4</a>
-                                            <a href="#" class="rounded">5</a>
-                                            <a href="#" class="rounded">6</a>
+                                            </th:block>
+                                            <th:block th:if="${page > 1}">
+											<a th:href="@{shopList(page=${page - 1},
+											searchWord=${searchWord})}" class="rounded">&laquo;</a>
+											</th:block>
+											<th:block th:each=" i, idx : ${#numbers.sequence(startPageNum, endPageNum)}">
+											<a th:href="@{shopList(page=${i},searchWord=${searchWord})}" class="rounded" th:id="|page_${idx.count}|">[[${i}]]</a> 
+											</th:block>
+                                            <th:block th:if="${page >= maxPage}">
                                             <a href="#" class="rounded">&raquo;</a>
+                                            </th:block>
+                                            <th:block th:if="${page < maxPage}">
+											<a th:href="@{shopList(page=${page + 1},
+											searchWord=${searchWord})}" class="rounded">&raquo;</a>
+											</th:block>
                                         </div>
                                     </div>
                                 </div>

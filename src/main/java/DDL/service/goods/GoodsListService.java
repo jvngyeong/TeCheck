@@ -7,18 +7,27 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import DDL.domain.GoodsDTO;
+import DDL.domain.StartEndPageDTO;
 import DDL.mapper.GoodsMapper;
+import DDL.service.StartEndPageService;
 
 
 @Service
 public class GoodsListService {
 	@Autowired
 	GoodsMapper goodsMapper;
-	
-	public void execute(String searchWord, Model model) {
-		List<GoodsDTO> list = goodsMapper.goodsListSelect(searchWord);
-		if(searchWord == null) searchWord="";
-		model.addAttribute("searchWord", searchWord);
-        model.addAttribute("goodsList", list);
+	@Autowired
+	StartEndPageService startEndPageService;
+	public void execute(String searchWord, Model model, int page) {
+		// 한페이지에 보일 list
+		int limit = 6;
+		StartEndPageDTO sepDTO = startEndPageService.execute(page, limit, searchWord);
+		
+		
+		List<GoodsDTO> list = goodsMapper.goodsListSelect(sepDTO);
+		int count = goodsMapper.goodsCount(searchWord);
+		// 페이징
+		startEndPageService.execute(page, limit, count, searchWord, list, model);
+		
 	}
 }
