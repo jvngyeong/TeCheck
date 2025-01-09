@@ -26,8 +26,13 @@ function getGraph(){
 		url : "/stock/graphUpdate",
 		dataType : 'json',
 		success : function(result){
-			console.log(result);
-			$("#todayDate").html(Intl.DateTimeFormat('en-CA', {timeZone: 'UTC'}).format(new Date(result.tradeDate)));
+			const utcDate = new Date(result.tradeDate); // UTC 시간 변환
+			const koreaTime = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000); // KST로 변환 (UTC+9)
+
+			// Intl.DateTimeFormat 사용
+			$("#todayDate").html(
+			    Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(koreaTime)
+			);
 			$("#todayEndPrice").html(new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(result.endPrice));
 			if(result.rateOfChange > 0){
 				$("#todateRateOfChange").html('+'+result.rateOfChange+'%');

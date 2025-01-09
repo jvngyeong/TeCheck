@@ -19,4 +19,6 @@ public interface EmployeeMapper {
 	void employeeDelete(String empNum);
 
 	String getEmpNum(String userId);
+
+	String getEmployeeId(String participantNum);
 }

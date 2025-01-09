@@ -56,4 +56,8 @@
 	<select id="emailConfCheck">
 		select email_conf from members where member_id = #{userId}
 	</select>
+	
+	<select id="getMemberId">
+		select member_id from members where member_num = #{participantNum}
+	</select>
 </mapper>

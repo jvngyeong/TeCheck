@@ -35,4 +35,8 @@
 		select EMP_NUM from employees 
 		where EMP_ID = #{empId}
 	</select>
+	
+	<select id="getEmployeeId">
+		select emp_id from employees where emp_num = #{participantNum}
+	</select>
 </mapper>

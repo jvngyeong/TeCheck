@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -15,8 +16,11 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.transport.socket.DatagramAcceptor;
 import org.apache.mina.transport.socket.DatagramSessionConfig;
 import org.apache.mina.transport.socket.nio.NioDatagramAcceptor;
+import org.springframework.stereotype.Service;
 
 import DDL.vo.StockA3;
+import jakarta.annotation.PostConstruct;
+@Service
 public class MultiThreadedUDPServer {
     private static final MultiThreadedUDPServer instance = new MultiThreadedUDPServer();
     private KafkaProducer<String, String> producer;
@@ -32,6 +36,7 @@ public class MultiThreadedUDPServer {
         this.producer = new KafkaProducer<>(props);
         //this.producer = null;
     }
+    @PostConstruct
     public void startServer() {
         DatagramAcceptor acceptor = new NioDatagramAcceptor();
         acceptor.setHandler(new UDPHandler(producer));
@@ -81,12 +86,10 @@ public class MultiThreadedUDPServer {
                 long threadId = Thread.currentThread().getId();
                 if (buffer.remaining() < 195) {
                     String bufferContent = buffer.getString(buffer.remaining(), StandardCharsets.UTF_8.newDecoder());
-                    System.out.println("T_id = " + threadId + " : " + bufferContent);
                     return;
                 }
                 byte[] data = new byte[buffer.remaining()]; // 남은 데이터 크기만큼 배열 생성
                 buffer.get(data); // 버퍼 내용을 배열에 복사
-                //System.out.println("Buffer contents: " + new String(data, Charset.forName("UTF-8"))); // UTF-8로 변환하여 출력
                 // 받은 메세지를 스레드가 코드별로 분류해서 처리
                 StockA3 transaction = stockA3.parseTransaction(buffer);
                 // 여기서부터는 transaction 객체를 이용하여 원하는 작업 수행
@@ -94,14 +97,10 @@ public class MultiThreadedUDPServer {
                             "거래종류 = " + transaction.get거래종류() + ":" +
                             "체결가격 = " + transaction.get체결가격() + ":" +
                             "거래량 = " + transaction.get거래량() + ":" + "누적거래량 = " + transaction.get누적거래량();
-                System.out.println(logMessage);
                 producer.send(new ProducerRecord<>("stock", Long.toString(threadId), logMessage));  // Kafka에 메시지 보내기
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    }
-    public static void main(String[] args){
-        MultiThreadedUDPServer.getInstance().startServer();
     }
 }

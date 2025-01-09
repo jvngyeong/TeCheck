@@ -12,6 +12,18 @@
      visibility: visible;
      opacity: 1;
  }
+ 
+ .chatting{
+  	position: fixed;
+    right: 30px;
+    bottom: 30px;
+    display: flex;
+    width: 45px;
+    height: 45px;
+    align-items: center;
+    justify-content: center;
+    z-index: 99;
+ }
 
  .back-to-top {
     position: fixed;

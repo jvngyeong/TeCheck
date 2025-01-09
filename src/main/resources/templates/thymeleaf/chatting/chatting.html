@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script>
+$(function() {
+    const userId = $("#userId").val();
+    const roomNum = $("#roomNum").val();
+    ws = new WebSocket(`ws://172.16.105.174:2020?userId=${userId}&roomNum=${roomNum}`);
+    ws.onopen = onOpen;
+    ws.onmessage = onMessage;
+    ws.onclose = onClose;
+    
+    $("#message").on("keypress", function(event) {
+        if (event.which === 13 && !event.shiftKey) { // Enter key pressed without Shift
+            event.preventDefault(); // Prevent default newline behavior
+            send();
+        }
+    });
+});
+
+function appendMessage(messageData){
+    const { isOwnMessage, userId, message, timestamp } = messageData;
+    const chatMessageArea = $("#chatMessageArea");
+    const messageElement = $("<div>").addClass(isOwnMessage ? "message own" : "message other");
+
+    if (!isOwnMessage) {
+        const userElement = $("<span>").addClass("user-id").text(userId);
+        messageElement.append(userElement);
+    }
+
+    const timeElement = $("<span>").addClass("timestamp").text(timestamp);
+    const textElement = $("<span>").addClass("text").text(message);
+
+    messageElement.append(timeElement).append(textElement);
+    chatMessageArea.append(messageElement);
+
+    scrollToBottom();
+}
+
+function scrollToBottom() {
+    const chatMessageArea = $("#chatMessageArea");
+    $("#chatArea").scrollTop(chatMessageArea.prop("scrollHeight"));
+}
+
+function onOpen(evt){
+	console.log("연결 성공");
+}
+
+function onMessage(evt) {
+    var data = evt.data;
+    try {
+        data = JSON.parse(evt.data);
+        if (Array.isArray(data)) {
+            data.forEach(item => {
+                appendMessage({
+                    isOwnMessage: item.userId === $("#userId").val(),
+                    userId: item.userId,
+                    message: item.message || "",
+                    timestamp: new Date(item.messageDate).toLocaleString('ko-KR', { hour12: false })
+                });
+            });
+        } else if (typeof data === "object" && data !== null) {
+            appendMessage({
+                isOwnMessage: data.userId === $("#userId").val(),
+                userId: data.userId,
+                message: data.message || "",
+                timestamp: new Date(data.messageDate).toLocaleString('ko-KR', { hour12: false })
+            });
+        }
+    } catch (error) {
+        appendMessage({
+            isOwnMessage: false,
+            userId: "System",
+            message: data,
+            timestamp: new Date().toLocaleString('ko-KR', { hour12: false })
+        });
+    }
+}
+
+function onClose(evt){
+   appendMessage({
+       isOwnMessage: false,
+       userId: "System",
+       message: "연결을 끊었습니다.",
+       timestamp: new Date().toLocaleString('ko-KR', { hour12: false })
+   });
+}
+
+function send(){
+   const message = $("#message").val();
+   ws.send($("#userId").val()+":"+message);
+   $("#message").val("");
+}
+
+function disconnect(){
+   ws.close();
+}
+
+$(function(){
+   $("#sendBtn").click(function(){send();});
+});
+</script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-top: 20px;
+    }
+
+    #chatArea {
+        width: 95%;
+        max-width: 600px;
+        height: 500px;
+        margin: 20px auto;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #chatMessageArea {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        padding: 10px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .message {
+        display: flex;
+        flex-direction: column;
+        max-width: 70%;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .message.own {
+        align-self: flex-end;
+        background-color: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .message.other {
+        align-self: flex-start;
+        background-color: #f8d7da;
+        color: #842029;
+    }
+
+    .timestamp {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .user-id {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    #message {
+        width: 95%;
+ 	    height: 120px;
+        max-width: 480px;
+        margin: 10px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    #sendBtn {
+	    position: absolute;
+	    left: 410px;
+	    bottom: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    #sendBtn:hover {
+        background-color: #0056b3;
+    }
+</style>
+</head>
+<body>
+<div id="chatArea">
+	<div id="chatMessageArea"></div>
+</div>
+<div style = "width:95%;">
+	<input type="text" id="message" placeholder="Enter your message..." />
+	<button id="sendBtn">전송</button>
+</div>
+<input type = "hidden" id = "userId" th:value = "${session.auth.userId}" /> 
+<input type = "hidden" id = "roomNum" th:value = "${roomNum}" /> 
+</body>
+</html>

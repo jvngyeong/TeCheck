@@ -15,50 +15,58 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import DDL.domain.StockDTO;
 import DDL.stock.dao.StockDAO;
+import jakarta.annotation.PostConstruct;
+@Service
 public class KafkaWebSocketServer extends WebSocketServer {
-    private Set<WebSocket> connections = ConcurrentHashMap.newKeySet();
-    public KafkaWebSocketServer(InetSocketAddress address) {
-        super(address);
+    private final Set<WebSocket> connections = ConcurrentHashMap.newKeySet();
+
+    @Autowired
+    public KafkaWebSocketServer(InetSocketAddress stockAddress) {
+        super(stockAddress);
     }
+
+    @PostConstruct
+    public void startServer() {
+        this.start();
+        this.startKafkaConsumer();
+        System.out.println("WebSocket server started successfully on " + this.getAddress());
+    }
+
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         connections.add(conn);
-        System.out.println("New WebSocket connection: " + conn.getRemoteSocketAddress());
+        System.out.println("New connection: " + conn.getRemoteSocketAddress());
     }
+
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         connections.remove(conn);
-        System.out.println("Closed WebSocket connection: " + conn.getRemoteSocketAddress());
+        System.out.println("Connection closed: " + conn.getRemoteSocketAddress());
     }
+
     @Override
     public void onMessage(WebSocket conn, String message) {
-        System.out.println("Received message from WebSocket client: " + message);
-        // 여기에 WebSocket 클라이언트로부터 받은 메시지를 처리하는 로직을 추가할 수 있습니다.
     }
+
     @Override
     public void onError(WebSocket conn, Exception ex) {
         ex.printStackTrace();
     }
+
     @Override
     public void onStart() {
-        System.out.println("WebSocket server started successfully");
+        System.out.println("WebSocket server started.");
     }
+
     public void broadcastMessage(String message) {
-    	System.out.println(message);
         for (WebSocket conn : connections) {
             conn.send(message);
         }
-    }
-    public static void main(String[] args) {
-        InetSocketAddress address = new InetSocketAddress("172.16.105.174", 10120);
-        KafkaWebSocketServer server = new KafkaWebSocketServer(address);
-        server.start();
-        System.out.println("WebSocket server started on port: " + server.getPort());
-        // Kafka Consumer 실행
-        server.startKafkaConsumer();
     }
     public void startKafkaConsumer() {
         Properties props = new Properties();
@@ -75,8 +83,6 @@ public class KafkaWebSocketServer extends WebSocketServer {
                 while (true) {
                     ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
                     for (ConsumerRecord<String, String> record : records) {
-                        System.out.printf("Received message: key = %s, value = %s, topic = %s, partition = %d, offset = %d\n",
-                                record.key(), record.value(), record.topic(), record.partition(), record.offset());
                         // Kafka 메시지를 WebSocket 클라이언트들에게 브로드캐스트
                         // 거래시간 / 종목코드 / 체결가격 / 거래량 / 누적 거래량
                         // 데이터 파싱
@@ -107,16 +113,13 @@ public class KafkaWebSocketServer extends WebSocketServer {
                                         stockData.put("cumulativeVolume", Long.parseLong(value));
                                         break;
                                     default:
-                                        System.out.println("Unknown key: " + key);
                                 }
                             }
                         }
                         stockDTO.setTimestamp(stockData.getString("timestamp"));
                         stockDTO.setVolume(stockData.getInt("volume"));
                         stockDTO.setPrice(stockData.getInt("price"));
-                        System.out.println(stockDTO.getTimestamp() + " / " + stockDTO.getVolume() + " / " + stockDTO.getPrice());
                         stockDAO.stockInsert(stockDTO);
-                        System.out.println("stockData = " + stockData.toString());
                         // Kafka 메시지를 WebSocket 클라이언트들에게 브로드캐스트
                         broadcastMessage(stockData.toString());
                     }

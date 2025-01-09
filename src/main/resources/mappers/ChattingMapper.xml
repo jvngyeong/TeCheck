@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="DDL.mapper.ChattingMapper">
+	<select id="getChattingParticipantInfo">
+		select room_num, PARTICIPANT_NUM, join_date from chatting_participant where PARTICIPANT_NUM = #{userNum}
+	</select>
+	
+	<insert id="createChattingRoom">
+		insert into chatting_room(room_num, room_created, room_updated)
+		values(#{roomNum}, sysdate, sysdate)
+	</insert>
+	
+	<insert id="addUser">
+		insert into chatting_participant(room_num, participant_num, join_date)
+		values(#{roomNum}, #{userNum}, sysdate)
+	</insert>
+	
+	<select id="getMessageList">
+		select message_num, room_num, participant_num, message, message_date
+		from message where room_num = #{roomNum}
+	</select>
+	
+	<insert id="saveMessage">
+		insert into message(message_num, room_num, participant_num, message, message_date)
+		values(#{messageNum}, #{roomNum}, #{userNum}, #{receivedMessage}, sysdate)
+	</insert>
+	
+	<select id="getChattingRoomList">
+		select room_num, room_created, room_updated from chatting_room
+	</select>
+</mapper>

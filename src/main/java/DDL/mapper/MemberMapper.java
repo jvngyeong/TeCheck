@@ -16,4 +16,5 @@ public interface MemberMapper {
 	public String getMemberNum(String memberId);
 	public void emailConfUpdate(String memberEmail);
 	public String emailConfCheck(String userId);
+	public String getMemberId(String participantNum);
 }
