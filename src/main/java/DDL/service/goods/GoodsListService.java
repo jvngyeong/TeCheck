@@ -19,15 +19,19 @@ public class GoodsListService {
 	@Autowired
 	StartEndPageService startEndPageService;
 	public void execute(String searchWord, Model model, int page) {
-		// 한페이지에 보일 list
-		int limit = 6;
-		StartEndPageDTO sepDTO = startEndPageService.execute(page, limit, searchWord);
-		
-		
-		List<GoodsDTO> list = goodsMapper.goodsListSelect(sepDTO);
-		int count = goodsMapper.goodsCount(searchWord);
-		// 페이징
-		startEndPageService.execute(page, limit, count, searchWord, list, model);
-		
+		if(searchWord == null && page < 0) {
+			List<GoodsDTO> list = goodsMapper.goodsAllSelect();
+			model.addAttribute("list", list);
+		}else {
+			// 한페이지에 보일 list
+			int limit = 6;
+			StartEndPageDTO sepDTO = startEndPageService.execute(page, limit, searchWord);
+			
+			
+			List<GoodsDTO> list = goodsMapper.goodsListSelect(sepDTO);
+			int count = goodsMapper.goodsCount(searchWord);
+			// 페이징
+			startEndPageService.execute(page, limit, count, searchWord, list, model);
+		}
 	}
 }

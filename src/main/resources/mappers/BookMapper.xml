@@ -4,23 +4,28 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="DDL.mapper.BookMapper">
 	<sql id="baseCalumns">
-		BOOK_NUM, BOOK_DATE, BOOK_TIME, MEMBER_NUM, EXP_NUM, STORE_NUM, EMP_NUM, GOODS_NUM
+		BOOK_NUM, BOOK_DATE, BOOK_TIME, MEMBER_NUM, EXP_NUM, STORE_NUM, EMP_NUM, GOODS_NUM, BOOK_STATUS
 	</sql>
 
 	<insert id="bookInsert" parameterType="bookDTO">
 		insert into book(<include refid="baseCalumns" />)
-		values(#{bookNum}, #{bookDate}, #{bookTime}, #{memberNum}, #{expNum}, #{storeNum}, 'emp_100001', #{goodsNum})
+		values(#{bookNum}, #{bookDate}, #{bookTime}, #{memberNum}, #{expNum}, #{storeNum}, 'emp_100001', #{goodsNum}, '예약완료')
 	</insert>
 	
 	<select id="bookSelectMine" resultMap="bookStoreGoodsExpDTO" parameterType="string">
-		select BOOK_NUM, BOOK_DATE, BOOK_TIME, MEMBER_NUM, b.EXP_NUM, b.STORE_NUM, EMP_NUM, b.GOODS_NUM
+		select BOOK_NUM, BOOK_DATE, BOOK_TIME, b.MEMBER_NUM, b.EXP_NUM, b.STORE_NUM, EMP_NUM, b.GOODS_NUM
 		, STORE_ADDR, STORE_ADDR_DETAIL, STORE_POST, STORE_TEL, STORE_NAME
-		, GOODS_NAME, GOODS_KIND, GOODS_CONTENTS, EXP_CONTENTS, EXP_NAME
+		, GOODS_NAME, GOODS_KIND, GOODS_CONTENTS, EXP_CONTENTS, EXP_NAME, BOOK_STATUS, MEMBER_NAME
 		from book b join goods g
 		on b.goods_num = g.goods_num join store s
 		on b.store_num = s.store_num join experience e
-		on b.exp_num = e.exp_num
-		where member_num = #{memberNum}
+		on b.exp_num = e.exp_num join members m
+		on b.MEMBER_NUM = m.member_num
+		<trim prefix="where">
+			<if test="memberNum != null">
+				b.member_num = #{memberNum}
+			</if>
+		</trim>
 		ORDER BY BOOK_DATE DESC, BOOK_TIME DESC
 	</select>
 	
@@ -34,6 +39,7 @@
 		    <result property="storeNum" column="STORE_NUM" />
 		    <result property="empNum" column="EMP_NUM" />
 		    <result property="goodsNum" column="GOODS_NUM" />
+		    <result property="bookStatus" column="BOOK_STATUS" />
 	    </association>
 	    <association property="storeDTO" javaType="storeDTO">
 	        <id property="storeNum" column="STORE_NUM" />
@@ -56,6 +62,11 @@
 	        <id property="expNum" column="EXP_NUM" />
 		    <result property="expContents" column="EXP_CONTENTS" />
 		    <result property="expName" column="EXP_NAME" />
+	    </association>
+	    
+	    <association property="memberDTO" javaType="memberDTO">
+	        <id property="memberNum" column="MEMBER_NUM" />
+		    <result property="memberName" column="MEMBER_NAME" />
 	    </association>
 	</resultMap>
 	
@@ -84,4 +95,10 @@
 	<delete id="bookDelete" parameterType="string">
 		delete from book where BOOK_NUM = #{bookNum}
 	</delete>
+	
+	<update id="bookStatusUpdate">
+		update book set
+		BOOK_STATUS = #{bookStatus}
+		where BOOK_NUM = #{bookNum}
+	</update>
 </mapper>

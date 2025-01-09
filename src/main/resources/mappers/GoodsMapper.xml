@@ -81,4 +81,8 @@
 	<select id="goodsCategory" resultType="goodsDTO">
 		select count(goods_kind) as goodsQty, goods_kind from goods group by goods_kind
 	</select>
+	
+	<select id="goodsAllSelect" resultType="goodsDTO">
+		select <include refid="goodsColumns"/> from goods
+	</select>
 </mapper>

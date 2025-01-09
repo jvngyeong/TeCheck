@@ -15,6 +15,9 @@
 	</delete>
 	
 	<update id="deliveryStatusUpdate">
-		update delivery set delivery_status = '배송 완료' where order_num = #{orderNum}
+		update delivery set 
+		delivery_status = '배송 완료' 
+		, DELIVERY_DATE = sysdate
+		where order_num = #{orderNum}
 	</update>
 </mapper>

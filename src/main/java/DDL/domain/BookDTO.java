@@ -21,4 +21,5 @@ public class BookDTO {
 	String goodsNum;
 	@DateTimeFormat(pattern = "HH:mm")
     LocalTime bookTime; // 시간 추가
+	String bookStatus;
 }

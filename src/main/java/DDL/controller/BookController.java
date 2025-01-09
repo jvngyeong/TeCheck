@@ -16,6 +16,7 @@ import DDL.service.book.BookFormService;
 import DDL.service.book.BookInfoService;
 import DDL.service.book.BookInsertService;
 import DDL.service.book.BookMyListService;
+import DDL.service.book.BookStatusUpdateService;
 import DDL.service.book.BookUpdateService;
 import DDL.service.goods.GoodsListService;
 import DDL.service.store.StoreListService;
@@ -28,16 +29,24 @@ import jakarta.servlet.http.HttpSession;
 public class BookController {
 	@Autowired
 	BookFormService bookFormService;
+	
 	@Autowired
 	BookInsertService bookInsertService;
+	
 	@Autowired
 	BookMyListService bookMyListService;
+	
 	@Autowired
 	BookInfoService bookInfoService;
+	
 	@Autowired
 	BookUpdateService bookUpdateService;
+	
 	@Autowired
 	BookDeleteService bookDeleteService;
+	
+	@Autowired
+	BookStatusUpdateService bookStatusUpdateService;
 	@GetMapping("bookForm")
 	public String bookForm(Model model, String goodsNum, String goodsName) {
 		bookFormService.execute(model);
@@ -49,8 +58,9 @@ public class BookController {
 	GoodsListService goodsListService;
 	@GetMapping("goodsItem")
 	public String goodsItem(@RequestParam(value="searchWord" , required = false) String searchWord
+			, @RequestParam(value = "page" , required = false , defaultValue = "1") int page
 			, Model model) {
-		goodsListService.execute(searchWord, model);
+		goodsListService.execute(null, model, -1);
 		return "thymeleaf/goodsIpgo/goodsItem";
 	}
 	@Autowired
@@ -105,6 +115,16 @@ public class BookController {
 	public String bookDelete(String bookNum) {
 		bookDeleteService.execute(bookNum);
 		return "redirect:bookList";
+	}
+	@GetMapping("empBookList")
+	public String empBookList(Model model, HttpSession session) {
+		bookMyListService.execute(model, session);
+		return "thymeleaf/book/empBookList";
+	}
+	@GetMapping("bookStatusUpdate")
+	public String bookStatusUpdate(String bookNum, String bookStatus) {
+		bookStatusUpdateService.execute(bookNum, bookStatus);
+		return "redirect:empBookList";
 	}
 	
 	
