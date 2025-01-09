@@ -21,4 +21,8 @@ public interface BookMapper {
 	public Integer bookUpdate(BookDTO dto);
 
 	public Integer bookDelete(String bookNum);
+
+	public void bookStatusUpdate(
+			@Param("bookNum") String bookNum
+			, @Param("bookStatus") String bookStatus);
 }

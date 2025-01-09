@@ -30,7 +30,7 @@ function goodsItem(element) {
         </tr>
     </thead>
     <tbody>
-        <tr th:each="dto : ${goodsList}">
+        <tr th:each="dto : ${list}">
             <td>
                 <a href="javascript:void(0);"
                    th:data-goodsnum="${dto.goodsNum}"

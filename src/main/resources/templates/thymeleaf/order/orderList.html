@@ -96,8 +96,8 @@
 	rel="stylesheet">
 
 <!-- Libraries Stylesheet -->
-<link href="/static/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-<link href="/static/lib/owlcarousel/assets/owl.carousel.min.css"
+<link href="/static/libs/lightbox/css/lightbox.min.css" rel="stylesheet">
+<link href="/static/libs/owlcarousel/assets/owl.carousel.min.css"
 	rel="stylesheet">
 
 
@@ -212,8 +212,6 @@
 				        <th>주문 번호</th>
 				        <th>주문 금액</th>
 				        <th>주소</th>
-				        <th>상세 주소</th>
-				        <th>우편번호</th>
 				        <th>전화번호</th>
 				        <th>메시지</th>
 				        <th>주문 상태</th>
@@ -225,17 +223,26 @@
 					      <tr>
 					        <td>[[${list[0].orderDTO.orderNum}]]</td>
 					        <td>[[${#numbers.formatCurrency(list[0].orderDTO.orderPrice)}]]</td>
-					        <td>[[${list[0].orderDTO.deliveryAddr}]]</td>
-					        <td>[[${list[0].orderDTO.deliveryAddrDetail}]]</td>
-					        <td>[[${list[0].orderDTO.deliveryAddrPost}]]</td>
+					        <td>([[${list[0].orderDTO.deliveryAddrPost}]]) [[${list[0].orderDTO.deliveryAddr}]] [[${list[0].orderDTO.deliveryAddrDetail}]]</td>
 					        <td>[[${list[0].orderDTO.deliveryPhone}]]</td>	 
 				         	<td>[[${list[0].orderDTO.message}]]</td>	
 					        <td>
 					       	<th:block th:if = "${list[0].orderDTO.orderStatus == '결제 대기중'}">
 					        <a style = "text-decoration-line:underline;"th:href = "|/purchase/paymentOk?orderNum=${list[0].orderDTO.orderNum}&goodsName=${list[0].goodsDTO[0].goodsName}+ 외 +${idx.count-1}|+개">[[${list[0].orderDTO.orderStatus}]]</a>
 					        </th:block>
-					        <th:block th:if = "${list[0].orderDTO.orderStatus != '결제 대기중'}">
+					        <th:block th:if = "${list[0].orderDTO.orderStatus != '결제 대기중' && list[0].deliveryDTO == null}">
 					        [[${list[0].orderDTO.orderStatus}]]
+					        </th:block>
+					        <th:block th:if = "${list[0].orderDTO.orderStatus != '결제 대기중' && list[0].deliveryDTO != null}">
+					        	<th:block th:if="${list[0].deliveryDTO.deliveryStatus == '배송 중'}">
+    								[[${list[0].deliveryDTO.deliveryStatus}]]
+					        	</th:block>
+					        	<th:block th:if="${list[0].deliveryDTO.deliveryStatus == '배송 완료'}">
+    								[[${list[0].deliveryDTO.deliveryStatus}]]<br>
+									<th:block th:each="goodsDTO : ${list[0].goodsDTO}">	
+	    								<a th:href="|/review/goodsReview?goodsNum=${goodsDTO.goodsNum}&orderNum=${list[0].orderDTO.orderNum}|">후기 등록/수정</a>
+									</th:block>
+					        	</th:block>
 					        </th:block>
 					        </td>
 					        <td>[[${#dates.format(list[0].orderDTO.orderDate, 'yyyy-MM-dd')}]]</td>
@@ -389,10 +396,10 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="/static/lib/easing/easing.min.js"></script>
-	<script src="/static/lib/waypoints/waypoints.min.js"></script>
-	<script src="/static/lib/lightbox/js/lightbox.min.js"></script>
-	<script src="/static/lib/owlcarousel/owl.carousel.min.js"></script>
+	<script src="/static/libs/easing/easing.min.js"></script>
+	<script src="/static/libs/waypoints/waypoints.min.js"></script>
+	<script src="/static/libs/lightbox/js/lightbox.min.js"></script>
+	<script src="/static/libs/owlcarousel/owl.carousel.min.js"></script>
 
 	<!-- Template Javascript -->
 	<script src="/static/js/main.js"></script>

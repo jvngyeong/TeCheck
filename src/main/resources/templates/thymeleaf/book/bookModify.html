@@ -14,6 +14,16 @@ $(function(){
 		window.open("storeSelect","매장검색"
 				,"width=820,height=500,left=30, top=500" );
 	});
+	// 현재 날짜를 가져오기
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const dd = String(today.getDate()).padStart(2, '0');
+
+    const sysdate = `${yyyy}-${mm}-${dd}`; // yyyy-MM-dd 형식의 현재 날짜
+
+    // 방문 일자 input에 최소 날짜(min) 설정
+    document.getElementById('bookDate').setAttribute('min', sysdate);
 });
 </script>
 <meta content="width=device-width, initial-scale=1.0" name="viewport">

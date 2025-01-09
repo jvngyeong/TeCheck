@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import DDL.command.GoodsIpgoCommand;
 import DDL.mapper.AutoNumMapper;
@@ -61,8 +62,10 @@ public class GoodsIpgoController {
 	@Autowired
 	GoodsListService goodsListService;
 	@GetMapping("goodsItem")
-	public String goodsItem(String searchWord, Model model) {
-		goodsListService.execute(searchWord, model);
+	public String goodsItem(@RequestParam(value="searchWord" , required = false) String searchWord
+			, @RequestParam(value = "page" , required = false , defaultValue = "1") int page
+			, Model model) {
+		goodsListService.execute(null, model, -1);
 		return "thymeleaf/goodsIpgo/goodsItem";
 	}
 	@GetMapping("goodsIpgoDetail")

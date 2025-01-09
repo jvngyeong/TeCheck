@@ -165,6 +165,7 @@
                           <tr>
                             <th scope="col">예약번호</th>
                             <th scope="col">체험이름</th>
+                            <th scope="col">예약자 성함</th>
                             <th scope="col">상품이름/종류</th>
                             <th scope="col">예약날짜</th>
                             <th scope="col">매장 주소</th>
@@ -175,10 +176,13 @@
                         	<th:block th:each = "dto : ${list}">
 	                            <tr>
 	                                <th style = "align-content:center;" scope="row">
-	                                	<p name = "bookNum" class="mb-0 mt-4" style = "margin-top:0 !important"><a th:href="|/book/bookDetail?bookNum=${dto.bookDTO.bookNum}|">[[${dto.bookDTO.bookNum}]]</a></p>
+	                                	<p name = "bookNum" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.bookDTO.bookNum}]]</p>
 	                                </th>
 	                                <td style = "align-content:center;">
 	                                    <p name = "expName" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.experienceDTO.expName}]]</p>
+	                                </td>
+	                                <td style = "align-content:center;">
+	                                    <p name = "memberName" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.memberDTO.memberName}]]</p>
 	                                </td>
 	                                <td style = "align-content:center;">
 	                                    <p name = "goodsName" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.goodsDTO.goodsName}]]</p>/
@@ -192,7 +196,13 @@
 	                                    <p name = "storePost" class="mb-0 mt-4" style = "margin-top:0 !important">([[${dto.storeDTO.storePost}]])[[${dto.storeDTO.storeAddr}]] [[${dto.storeDTO.storeAddrDetail}]]</p>
 	                                </td>
 	                                <td style = "align-content:center;">
-	                                    <p name = "bookStatus" class="mb-0 mt-4" style = "margin-top:0 !important">[[${dto.bookDTO.bookStatus}]]</p>
+	                                    <p name = "bookStatus" class="mb-0 mt-4" style = "margin-top:0 !important">
+	                                    	<th:block th:if="${dto.bookDTO.bookStatus == '예약완료'}">
+	                                    		<a th:href="|/book/bookStatusUpdate?bookNum=${dto.bookDTO.bookNum}&bookStatus=이용완료|">이용완료</a> | <a th:href="|/book/bookStatusUpdate?bookNum=${dto.bookDTO.bookNum}&bookStatus=예약취소|">예약취소</a>
+	                                    	</th:block>
+	                                    	<th:block th:if="${dto.bookDTO.bookStatus == '이용완료'}">이용완료</th:block>
+	                                    	<th:block th:if="${dto.bookDTO.bookStatus == '예약취소'}">예약취소</th:block>
+	                                    </p>
 	                                </td>
 	                            </tr>
                             </th:block>

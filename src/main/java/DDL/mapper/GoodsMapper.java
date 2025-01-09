@@ -27,5 +27,7 @@ public interface GoodsMapper {
 
 	List<GoodsDTO> goodsCategory();
 
+	List<GoodsDTO> goodsAllSelect();
+
 	
 }

@@ -11,4 +11,5 @@ public class BookStoreGoodsExpDTO {
 	StoreDTO storeDTO;
 	GoodsDTO goodsDTO;
 	ExperienceDTO experienceDTO;
+	MemberDTO memberDTO;
 }
