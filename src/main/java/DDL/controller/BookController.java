@@ -126,6 +126,10 @@ public class BookController {
 		bookStatusUpdateService.execute(bookNum, bookStatus);
 		return "redirect:empBookList";
 	}
-	
+	@GetMapping("memBookStatusUpdate")
+	public String memBookStatusUpdate(String bookNum, String bookStatus) {
+		bookStatusUpdateService.execute(bookNum, bookStatus);
+		return "redirect:bookList";
+	}
 	
 }
