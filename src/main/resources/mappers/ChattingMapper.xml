@@ -44,7 +44,7 @@
 	
 	<select id="getMessageList">
 		select message_num, room_num, participant_num, message, message_date
-		from message where room_num = #{roomNum}
+		from message where room_num = #{roomNum} order by message_num
 	</select>
 	
 	<insert id="saveMessage">
