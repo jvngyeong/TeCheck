@@ -122,7 +122,7 @@
 	<select id="orderPurchaseListSelectOne" resultMap="orderPurchaseListGoodsDTO">
 		select o.ORDER_NUM, ORDER_DATE, ORDER_PRICE, DELIVERY_ADDR, DELIVERY_ADDR_DETAIL, DELIVERY_ADDR_POST, DELIVERY_PHONE, MESSAGE, ORDER_STATUS, MEMBER_NUM,	
 				pl.goods_num, purchase_qty, goods_unit_price,
-				g.goods_name, g.goods_main_store_image, g.goods_contents,
+				g.goods_name, g.goods_main_store_image, g.goods_contents
 				confirmnumber, cardnum, totalprice, appldate,
 				delivery_num, delivery_name, delivery_status, delivery_date
 		from orders o join purchase_list pl on o.order_num = pl.order_num

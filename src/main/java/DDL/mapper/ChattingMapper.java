@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import DDL.domain.ChattingParticipantDTO;
-import DDL.domain.ChattingRoomDTO;
+import DDL.domain.ChattingRoomParticipantDTO;
 import DDL.domain.MessageDTO;
 
 @Mapper
@@ -20,5 +20,5 @@ public interface ChattingMapper {
 
 	void saveMessage(String messageNum, String roomNum, String userNum, String receivedMessage);
 
-	List<ChattingRoomDTO> getChattingRoomList();
+	List<ChattingRoomParticipantDTO> getChattingRoomList();
 }

@@ -67,13 +67,13 @@
    	  <div style = "border-bottom: 1px solid #eaeaea;">
    	  <h2 style = "margin-left : 20px;">채팅 목록</h2>
    	  </div>
-      <a th:each="list : ${chattingRoomList}" th:href="|/chatting/chatting?roomNum=${list.roomNum}|" class="chat-room">
+      <a th:each="list : ${chattingRoomList}" th:href="|/chatting/chatting?roomNum=${list.chattingRoomDTO.roomNum}|" class="chat-room">
          <!-- Example: Room Avatar (Optional) -->
          <img src = "/static/img/chatting-img.png" />
          <!-- Room Info -->
          <div class="room-info">
-            <h4 th:text="${list.roomNum}">채팅방 이름</h4>
-            <p>마지막 메시지 미리보기</p>
+            <h4 th:text="${list.memberDTO.memberId}">채팅방 이름</h4>
+            <p>[[${list.messageDTO.message}]]</p>
          </div>
       </a>
    </div>

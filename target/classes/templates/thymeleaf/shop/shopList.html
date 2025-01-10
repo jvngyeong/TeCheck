@@ -35,8 +35,16 @@
         		$("#page_" + page).attr("class", "active rounded");
         	})
         </script>
+        
+        <style type="text/css">
+        	 .ellipsis-container{
+			    width: 100%; /* 원하는 너비 설정 */
+			    white-space: nowrap; /* 텍스트가 한 줄에 유지되도록 설정 */
+			    overflow: hidden; /* 초과된 텍스트 숨기기 */
+			    text-overflow: ellipsis; /* 초과된 텍스트를 '...'으로 표시 */
+			  }
+        </style>
     </head>
-
     <body>
 
     <!-- Spinner Start -->
@@ -208,109 +216,6 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <h4 class="mb-2">Price</h4>
-                                            <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput" min="0" max="500" value="0" oninput="amount.value=rangeInput.value">
-                                            <output id="amount" name="amount" min-velue="0" max-value="500" for="rangeInput">0</output>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <h4>Additional</h4>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-1" name="Categories-1" value="Beverages">
-                                                <label for="Categories-1"> Organic</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-2" name="Categories-1" value="Beverages">
-                                                <label for="Categories-2"> Fresh</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-3" name="Categories-1" value="Beverages">
-                                                <label for="Categories-3"> Sales</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-4" name="Categories-1" value="Beverages">
-                                                <label for="Categories-4"> Discount</label>
-                                            </div>
-                                            <div class="mb-2">
-                                                <input type="radio" class="me-2" id="Categories-5" name="Categories-1" value="Beverages">
-                                                <label for="Categories-5"> Expired</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <h4 class="mb-3">Featured products</h4>
-                                        <div class="d-flex align-items-center justify-content-start">
-                                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                                <img src="/static/img/featur-1.jpg" class="img-fluid rounded" alt="">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-2">Big Banana</h6>
-                                                <div class="d-flex mb-2">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <div class="d-flex mb-2">
-                                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-start">
-                                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                                <img src="/static/img/featur-2.jpg" class="img-fluid rounded" alt="">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-2">Big Banana</h6>
-                                                <div class="d-flex mb-2">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <div class="d-flex mb-2">
-                                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-start">
-                                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                                <img src="/static/img/featur-3.jpg" class="img-fluid rounded" alt="">
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-2">Big Banana</h6>
-                                                <div class="d-flex mb-2">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <div class="d-flex mb-2">
-                                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-center my-4">
-                                            <a href="#" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew More</a>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="position-relative">
-                                            <img src="/static/img/banner-fruits.jpg" class="img-fluid w-100 rounded" alt="">
-                                            <div class="position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%);">
-                                                <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-9">
@@ -318,15 +223,17 @@
                                 	<th:block th:each="goodsDTO , idx : ${list}">
                                     	<a style = "padding:0px;width:0px;display:inline;" th:href = "|/shop/shopDetail?goodsNum=${goodsDTO.goodsNum}|">
                                     		<div class="col-md-6 col-lg-6 col-xl-4">
-	                                        	<div class="rounded position-relative fruite-item">
+	                                        	<div style = "border:1px solid lightgray"class="rounded position-relative fruite-item">
 		                                            <div class="fruite-img">
 		                                                <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|" 
-		                                                style="width: 300px; height: 350px; object-fit: contain;" class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />
+		                                                style="width: 300px;" class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />
 		                                            </div>
-		                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">[[${goodsDTO.goodsNum}]]</div>
-		                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+		                                            <div class="bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">[[${goodsDTO.goodsKind}]]</div>
+		                                            <div style = "border-top: 1px solid lightgray;" class="p-4 border-secondary rounded-bottom">
 		                                                <h4>[[${goodsDTO.goodsName}]]</h4>
-		                                                <p style = "color:black">[[${goodsDTO.goodsContents}]]</p>
+		                                                <p class = "ellipsis-container" style = "color:black">
+		                                               	 [[${goodsDTO.goodsContents}]]
+		                                                </p>
 		                                                <div class="d-flex justify-content-between flex-lg-wrap" style = "display: block !important;">
 		                                                    <p class="text-dark fs-5 fw-bold mb-0">[[${#numbers.formatCurrency(goodsDTO.goodsPrice)}]]</p>
 		                                                   	<a style = "margin-top: 20px;" href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>

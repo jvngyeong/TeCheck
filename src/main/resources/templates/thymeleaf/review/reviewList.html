@@ -212,7 +212,7 @@ body {
 			<div class="tab-class text-center">
 				<div class="row g-4">
 					<div class="col-lg-4 text-start">
-						<h1 style="display: inline-block">주문 목록</h1>
+						<h1 style="display: inline-block">리뷰 목록</h1>
 					</div>
 				</div>
 			</div>
@@ -220,58 +220,26 @@ body {
 				<table>
 					<thead>
 						<tr>
-							<th>주문 번호</th>
-							<th>주문 금액</th>
-							<th>주소</th>
-							<th>전화번호</th>
-							<th>메시지</th>
-							<th>주문 상태</th>
-							<th>주문 일자</th>
+							<th>리뷰 번호</th>
+							<th>주문 상품</th>
+							<th>리뷰 내용</th>
+							<th>리뷰 일자</th>
+							<th>삭제</th>
 						</tr>
 					</thead>
 					<tbody>
-						<th:block th:each="list, idx : ${splitList}" class="toggle-header">
-							<tr class="toggle-header">
-								<td>[[${list[0].orderDTO.orderNum}]]</td>
-								<td>[[${#numbers.formatCurrency(list[0].orderDTO.orderPrice)}]]</td>
-								<td>([[${list[0].orderDTO.deliveryAddrPost}]]) [[${list[0].orderDTO.deliveryAddr}]] [[${list[0].orderDTO.deliveryAddrDetail}]]</td>
-								<td>[[${list[0].orderDTO.deliveryPhone}]]</td>
-								<td>[[${list[0].orderDTO.message}]]</td>
+						<th:block th:each="dto : ${list}">
+							<tr>
+								<td>[[${dto.reviewDTO.reviewNum}]]</td>
 								<td>
-									<th:block th:if="${list[0].orderDTO.orderStatus == '결제 대기중'}">
-										<a style="text-decoration-line: underline;" th:href="|/purchase/paymentOk?orderNum=${list[0].orderDTO.orderNum}&goodsName=${list[0].goodsDTO[0].goodsName}+ 외 +${idx.count-1}|+개">[[${list[0].orderDTO.orderStatus}]]</a>
-									</th:block>
-									<th:block th:if="${list[0].orderDTO.orderStatus != '결제 대기중' && list[0].deliveryDTO == null}">
-					       				[[${list[0].orderDTO.orderStatus}]]
-					        		</th:block> 
-					        		<th:block th:if="${list[0].orderDTO.orderStatus != '결제 대기중' && list[0].deliveryDTO != null}">
-										<th:block th:if="${list[0].deliveryDTO.deliveryStatus == '배송 중'}">
-    										[[${list[0].deliveryDTO.deliveryStatus}]]
-					        			</th:block>
-										<th:block th:if="${list[0].deliveryDTO.deliveryStatus == '배송 완료'}">
-    										[[${list[0].deliveryDTO.deliveryStatus}]]<br>
-										</th:block>
-									</th:block></td>
-								<td>[[${#dates.format(list[0].orderDTO.orderDate,
-									'yyyy-MM-dd')}]]</td>
-							</tr>
-							<tr th:each="list2, idx : ${list}" class="toggle-content">
-								<td>
-									<img style="width: 50px;"
-									th:src="|${list2.goodsDTO[0].goodsMainStoreImage}|"
-									onerror="this.src='/static/img/goods-default-img.png';" />
+									<a style = "underline"th:href = "|/shop/shopDetail?goodsNum=${dto.reviewDTO.goodsNum}|">
+										[[${dto.goodsDTO.goodsName}]]
+									</a>
 								</td>
-								<td colspan='2'>[[${list2.goodsDTO[0].goodsName}]]</td>
+								<td>[[${dto.reviewDTO.reviewContent}]]</td>
+								<td>[[${#dates.format(dto.reviewDTO.reviewDate, 'yyyy-MM-dd')}]]</td>
 								<td>
-									[[${#numbers.formatCurrency(list2.purchaseListDTO[0].goodsUnitPrice)}]]
-								</td>
-								<td>[[${list2.purchaseListDTO[0].purchaseQty}]]개</td>
-								<td colspan='2'>
-									<th:block th:if="${list[0].orderDTO.orderStatus != '결제 대기중' && list[0].deliveryDTO != null}">
-										<a th:href="|/review/goodsReview?goodsNum=${list2.goodsDTO[0].goodsNum}&orderNum=${list[0].orderDTO.orderNum}|">
-											후기 등록/수정
-										</a>
-									</th:block>
+									<a th:href ="|/review/reviewDelete?reviewNum=${dto.reviewDTO.reviewNum}|" class = "btn border border-secondary rounded-pill text-primary">삭제</a>
 								</td>
 							</tr>
 						</th:block>

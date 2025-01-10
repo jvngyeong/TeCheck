@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import DDL.domain.AuthInfoDTO;
-import DDL.domain.ChattingRoomDTO;
+import DDL.domain.ChattingRoomParticipantDTO;
 import DDL.mapper.ChattingMapper;
 import DDL.mapper.EmployeeMapper;
 import jakarta.servlet.http.HttpSession;
@@ -20,9 +19,7 @@ public class ChattingRoomListService {
 	@Autowired
 	EmployeeMapper employeeMapper;
 	public void execute(Model model, HttpSession session) {
-		AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
-		String empNum = employeeMapper.getEmpNum(auth.getUserId());
-		List <ChattingRoomDTO> chattingRoomList = chattingMapper.getChattingRoomList();
+		List <ChattingRoomParticipantDTO> chattingRoomList = chattingMapper.getChattingRoomList();
 		model.addAttribute("chattingRoomList", chattingRoomList);
 	}
 }

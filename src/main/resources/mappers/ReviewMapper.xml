@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="DDL.mapper.ReviewMapper">
+	<resultMap type="goodsReviewDTO" id="goodsReviewDTO">
+		<association property="goodsDTO">
+			<id column="goods_num" property="goodsNum" javaType="String" jdbcType="VARCHAR"/>
+			<result column ="goods_name" property="goodsName" javaType="String" jdbcType="VARCHAR"/>		
+		</association>
+		
+		<association property="reviewDTO">
+			<id column="review_num" property="reviewNum" javaType="String" jdbcType="VARCHAR"/>
+			<result column="book_num" property="bookNum" javaType="String" jdbcType="VARCHAR"/>
+			<result column="review_date" property="reviewDate" javaType="java.util.Date" jdbcType="DATE"/>
+			<result column="review_content" property="reviewContent" javaType="String" jdbcType="VARCHAR"/>
+			<result column="order_num" property="orderNum" javaType="String" jdbcType="VARCHAR"/>
+			<result column="goods_num" property="goodsNum" javaType="String" jdbcType="VARCHAR"/>
+		</association>
+	</resultMap>
+	<insert id="reviewWrite" parameterType = "reviewDTO">
+		MERGE INTO review r
+		USING (SELECT goods_num FROM goods WHERE goods_num = #{goodsNum}) g
+		ON (r.goods_num = g.goods_num)
+		WHEN MATCHED THEN
+		    UPDATE
+		        SET r.book_num = #{bookNum}, 
+		            r.review_date = SYSDATE, 
+		            r.review_content = #{reviewContent}
+		WHEN NOT MATCHED THEN
+		    INSERT (review_num, book_num, review_date, review_content, order_num, goods_num)
+		    VALUES (#{reviewNum}, #{bookNum}, SYSDATE, #{reviewContent}, #{orderNum}, #{goodsNum})
+	</insert>
+	
+	<select id="selectReviewList" resultMap="goodsReviewDTO">
+		select review_num, book_num, review_date, review_content, order_num, r.goods_num,
+		g.goods_name
+		from review r join goods g
+		on r.goods_num = g.goods_num
+	</select>
+	
+	<select id="reviewSelectOne">
+		select review_num, book_num, review_date, review_content, order_num, goods_num
+		from review where order_num = #{orderNum} and goods_num = #{goodsNum}
+	</select>
+</mapper>

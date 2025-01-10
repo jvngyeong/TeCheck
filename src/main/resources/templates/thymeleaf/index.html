@@ -77,9 +77,6 @@ function chattingListPopup(){
 									<a href="/book/empBookList" class="dropdown-item">예약 관리</a>
 								</div>
 							</th:block>
-							<th:block th:if="${session.auth.grade == 'mem'}">
-								<a href="/cart/cart"  class="nav-item nav-link">장바구니</a>
-							</th:block>
 						</th:block>
 						</div>
 						<a href="/community/communityList" class="nav-item nav-link">커뮤니티</a> 
@@ -101,8 +98,10 @@ function chattingListPopup(){
 								<a href="/cart/cart" class="position-relative me-4 my-auto"> 
 									<i class="fa fa-shopping-bag fa-2x"></i> 
 									<th:block th:if = "${goodsCartDTOList != null}">
-										<span class="cartBtn position-absolute rounded-circle d-flex align-items-center justify-content-center text-white px-1"
-										style="top: -5px; left: 15px; height: 20px; min-width: 20px;">[[${session.totalCartQty}]]</span>
+										<th:block th:if = "${session.totalCartQty > 0}">
+											<span class="cartBtn position-absolute rounded-circle d-flex align-items-center justify-content-center text-white px-1"
+											style="top: -5px; left: 15px; height: 20px; min-width: 20px;">[[${session.totalCartQty}]]</span>
+										</th:block>
 									</th:block>								
 								</a>
 							</th:block>

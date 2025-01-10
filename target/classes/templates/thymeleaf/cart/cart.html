@@ -251,13 +251,17 @@
 	                            <tr>
 	                                <th scope="row">
 	                                    <div class="d-flex align-items-center">
-	                                        <img th:src="|/static/upload/${goodsCartDTO.goodsDTO.goodsMainStoreImage}|" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;">
+	                                        <img th:src="|/static/upload/${goodsCartDTO.goodsDTO.goodsMainStoreImage}|" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;"onerror="this.src='/static/img/goods-default-img.png';">
 	                                    </div>
 	                                </th>
 	                                <td style = "align-content:center;">
 	                                	<input name = "goodsNum" type = "hidden" th:value = "${goodsCartDTO.cartDTO.goodsNum}" />
 	                                	<input name = "memberNum" type = "hidden" th:value = "${goodsCartDTO.cartDTO.memberNum}" />
-	                                    <p name = "goodsName" class="mb-0 mt-4" style = "margin-top:0 !important">[[${goodsCartDTO.goodsDTO.goodsName}]]</p>
+	                                    <p name = "goodsName" class="mb-0 mt-4" style = "margin-top:0 !important">
+	                                    <a th:href = "|/goods/goodsDetail?goodsNum=${goodsCartDTO.cartDTO.goodsNum}|">
+	                                    [[${goodsCartDTO.goodsDTO.goodsName}]]
+	                                    </a>
+	                                    </p>
 	                                </td>
 	                                <td style = "align-content:center;">
 	                                    <p name = "goodsPrice" class="mb-0 mt-4" style = "margin-top:0 !important">[[${#numbers.formatCurrency(goodsCartDTO.goodsDTO.goodsPrice)}]]</p>

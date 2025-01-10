@@ -17,9 +17,15 @@ $(function() {
         if (event.which === 13 && !event.shiftKey) { // Enter key pressed without Shift
             event.preventDefault(); // Prevent default newline behavior
             send();
+            scrollToBottom();
         }
     });
 });
+
+function scrollToBottom() {
+    const scrollableDiv = document.querySelector('.scrollable-div'); // 대상 div 선택
+    scrollableDiv.scrollTop = scrollableDiv.scrollHeight; // 스크롤을 최하단으로 설정
+}
 
 function appendMessage(messageData){
     const { isOwnMessage, userId, message, timestamp } = messageData;
@@ -38,11 +44,6 @@ function appendMessage(messageData){
     chatMessageArea.append(messageElement);
 
     scrollToBottom();
-}
-
-function scrollToBottom() {
-    const chatMessageArea = $("#chatMessageArea");
-    $("#chatArea").scrollTop(chatMessageArea.prop("scrollHeight"));
 }
 
 function onOpen(evt){
@@ -91,8 +92,10 @@ function onClose(evt){
 
 function send(){
    const message = $("#message").val();
+   if(message != ""){
    ws.send($("#userId").val()+":"+message);
    $("#message").val("");
+   }
 }
 
 function disconnect(){
@@ -137,7 +140,7 @@ $(function(){
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 2%;
     }
 
     .message {
@@ -175,8 +178,7 @@ $(function(){
     }
 
     #message {
-        width: 95%;
- 	    height: 120px;
+ 	    min-height: 120px;
         max-width: 480px;
         margin: 10px;
         padding: 10px;
@@ -186,9 +188,7 @@ $(function(){
     }
 
     #sendBtn {
-	    position: absolute;
-	    left: 410px;
-	    bottom: 20px;
+    	margin : 85px 20px 0 -90px;
         padding: 10px 20px;
         font-size: 16px;
         color: #fff;
@@ -206,11 +206,11 @@ $(function(){
 </head>
 <body>
 <div id="chatArea">
-	<div id="chatMessageArea"></div>
+	<div class="scrollable-div" id="chatMessageArea"></div>
 </div>
-<div style = "width:95%;">
-	<input type="text" id="message" placeholder="Enter your message..." />
-	<button id="sendBtn">전송</button>
+<div style = "display: flex; justify-content: space-between; align-items: center">
+	<input style ="width:90%; flex-grow: 1;" type="text" id="message" placeholder="Enter your message..." />
+	<button  id="sendBtn">전송</button>
 </div>
 <input type = "hidden" id = "userId" th:value = "${session.auth.userId}" /> 
 <input type = "hidden" id = "roomNum" th:value = "${roomNum}" /> 

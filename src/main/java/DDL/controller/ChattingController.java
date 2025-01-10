@@ -18,6 +18,7 @@ public class ChattingController {
 	
 	@Autowired
 	ChattingRoomListService chattingRoomListService;
+	
 	@GetMapping("chatting")
 	public String chatting(String roomNum, Model model) {
 		model.addAttribute("roomNum", roomNum);

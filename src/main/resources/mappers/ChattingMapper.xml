@@ -4,6 +4,30 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
    
 <mapper namespace="DDL.mapper.ChattingMapper">
+	<resultMap type="chattingRoomParticipantDTO" id="chattingRoomParticipantDTO">
+		<association property="chattingRoomDTO">
+			<id column="room_num" property="roomNum" javaType="String" jdbcType="VARCHAR"></id>
+			<result column="room_created" property="roomCreated" javaType="date" jdbcType="DATE"/>
+			<result column="room_updated" property="roomUpdated" javaType="date" jdbcType="DATE"/>
+		</association>
+		
+		<association property="chattingParticipantDTO">
+			<id column="room_num" property="roomNum" javaType="String" jdbcType="VARCHAR"></id>
+			<id column="participant_num" property="participantNum" javaType="String" jdbcType="VARCHAR"></id>
+		</association>
+		
+		<association property="memberDTO">
+			<id column="member_num" property="memberNum" javaType="String" jdbcType="VARCHAR"></id>
+			<result column="member_id" property="memberId" javaType="String" jdbcType="VARCHAR"></result>
+		</association>
+		
+		<association property="messageDTO">
+			<id column="message_num" property="messageNum" javaType="String" jdbcType="VARCHAR"/>
+			<result column="room_num" property="roomNum" javaType="String" jdbcType="VARCHAR"></result>
+			<result column="MESSAGE" property="message" javaType="String" jdbcType="VARCHAR"></result>
+			<result column="MESSAGE_DATE" property="messageDate" javaType="date" jdbcType="TIMESTAMP"></result>
+		</association>
+	</resultMap>
 	<select id="getChattingParticipantInfo">
 		select room_num, PARTICIPANT_NUM, join_date from chatting_participant where PARTICIPANT_NUM = #{userNum}
 	</select>
@@ -28,7 +52,21 @@
 		values(#{messageNum}, #{roomNum}, #{userNum}, #{receivedMessage}, sysdate)
 	</insert>
 	
-	<select id="getChattingRoomList">
-		select room_num, room_created, room_updated from chatting_room
+	<select id="getChattingRoomList" resultMap="chattingRoomParticipantDTO">
+		SELECT cr.room_num, cr.room_created, cr.room_updated, 
+		       cp.participant_num, m.member_id,
+		       ms.message, ms.message_date
+		FROM chatting_room cr
+		JOIN chatting_participant cp
+		  ON cr.room_num = cp.room_num
+		JOIN members m 
+		  ON cp.participant_num = m.member_num
+		JOIN message ms 
+		  ON cr.room_num = ms.room_num
+		WHERE ms.message_num = (
+		    SELECT MAX(message_num)
+		    FROM message
+		    WHERE room_num = cr.room_num
+		)
 	</select>
 </mapper>
