@@ -116,6 +116,9 @@
 	}
 	$(function() {
 	    wishCheck();
+	    $("#inquire").click(function(){
+	    	alert("문의");
+	    });
 	    $("#wishBtn").click(function() {
 	        $.ajax({
 	            url: "/wish/wishMerge",
@@ -338,20 +341,20 @@
 							<nav>
 								<div class="nav nav-tabs mb-3">
 									<button class="nav-link active border-white border-bottom-0"
-										type="button" role="tab" id="nav-about-tab"
+										type="button" role="tab" id="descript"
 										data-bs-toggle="tab" data-bs-target="#nav-about"
 										aria-controls="nav-about" aria-selected="true">상세 설명</button>
 									<button class="nav-link border-white border-bottom-0"
-										type="button" role="tab" id="nav-mission-tab"
+										type="button" role="tab" id="review"
 										data-bs-toggle="tab" data-bs-target="#nav-mission"
 										aria-controls="nav-mission" aria-selected="false">리뷰</button>
 									<button class="nav-link border-white border-bottom-0"
-										type="button" role="tab" id="nav-mission-tab"
+										type="button" role="tab" id="inquire"
 										data-bs-toggle="tab" data-bs-target="#nav-mission"
 										aria-controls="nav-mission" aria-selected="false">문의</button>
 								</div>
 							</nav>
-							<div class="tab-content mb-5">
+							<div class="tab-content mb-5" id="content">
 								<div class="tab-pane active" id="nav-about" role="tabpanel"
 									aria-labelledby="nav-about-tab">
 									<p>
@@ -365,7 +368,7 @@
 									<div class="">
 										<p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
 										<div class="d-flex justify-content-between">
-											<h5>Sam Peters</h5>
+											<h5>이름ㄴ</h5>
 											<div class="d-flex mb-3">
 												<i class="fa fa-star text-secondary"></i> <i
 													class="fa fa-star text-secondary"></i> <i
@@ -373,10 +376,7 @@
 													class="fa fa-star"></i> <i class="fa fa-star"></i>
 											</div>
 										</div>
-										<p class="text-dark">The generated Lorem Ipsum is
-											therefore always free from repetition injected humour, or
-											non-characteristic words etc. Susp endisse ultricies nisi
-											vel quam suscipit</p>
+										<p class="text-dark">reiview 콘텐츠</p>
 									</div>
 								</div>
 							</div>
