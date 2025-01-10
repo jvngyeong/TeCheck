@@ -74,7 +74,7 @@
 		select BOOK_NUM, BOOK_DATE, BOOK_TIME, MEMBER_NUM, b.EXP_NUM, b.STORE_NUM, EMP_NUM, g.GOODS_NUM
 		, STORE_ADDR, STORE_ADDR_DETAIL, STORE_POST, STORE_TEL, STORE_NAME
 		, GOODS_NAME, GOODS_KIND, GOODS_CONTENTS, EXP_CONTENTS, EXP_NAME
-		, GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE
+		, GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE, BOOK_STATUS
 		from book b join goods g
 		on b.goods_num = g.goods_num join store s
 		on b.store_num = s.store_num join experience e

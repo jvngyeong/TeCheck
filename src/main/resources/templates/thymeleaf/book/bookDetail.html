@@ -196,11 +196,13 @@
 	                            </td>
 	                        </tr>
                         </tbody>
+                        <th:block th:if="${dto.bookDTO.bookStatus == '예약완료'}">
                         <tfoot>
                         	<tr><td colspan="6" style="text-align: right;">
-                        	<a th:href="|/book/bookModify?bookNum=${dto.bookDTO.bookNum}|" class="memInfoBtn btn border border-secondary px-3 text-primary">예약 정보 수정</a>
-                        	<a th:href="|/book/bookDelete?bookNum=${dto.bookDTO.bookNum}|" class="memInfoBtn btn border border-secondary px-3 text-primary">예약 삭제</a></td></tr>
+                        		<a th:href="|/book/bookModify?bookNum=${dto.bookDTO.bookNum}|" class="memInfoBtn btn border border-secondary px-3 text-primary">예약변경</a>
+                        		<a th:href="|/book/memBookStatusUpdate?bookNum=${dto.bookDTO.bookNum}&bookStatus=예약취소|" class="memInfoBtn btn border border-secondary px-3 text-primary">예약취소</a></td></tr>
                         </tfoot>
+                        </th:block>
                     </table>
                 </div>
             </div>
