@@ -17,12 +17,14 @@
 <!-- Icon Font Stylesheet -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
 	rel="stylesheet">
 
 <!-- Libraries Stylesheet -->
 <link href="/static/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+<link href="/static/css/form.css" rel="stylesheet">
 <link href="/static/lib/owlcarousel/assets/owl.carousel.min.css"
 	rel="stylesheet">
 
@@ -32,13 +34,6 @@
 
 <!-- Template Stylesheet -->
 <link href="/static/css/style.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-	<script type="text/javascript">
-		$(function(){
-			var page = $("#page").val();
-			$("#page_" + page).attr("class", "active rounded");
-		})
-	</script>
 </head>
 <body>
 	<!-- Spinner Start -->
@@ -47,6 +42,7 @@
 		<div class="spinner-grow text-primary" role="status"></div>
 	</div>
 	<!-- Spinner End -->
+	
 	<!-- Navbar start -->
 	<div class="container-fluid fixed-top">
 		<div class="container px-0">
@@ -72,11 +68,10 @@
 									href="404.html" class="dropdown-item">404 Page</a>
 							</div>
 						</div>
-						<a href = "/community/communityList" class = "nav-item nav-link">커뮤니티</a>
 						<a href="contact.html" class="nav-item nav-link">Contact</a> <a
 							href="contact.html" class="nav-item nav-link">회원 관리</a> <a
 							href="/employee/employeeList" class="nav-item nav-link">직원 관리</a>
-						<a href="/goods/goodsList" class="nav-item nav-link">상품 관리</a> <a
+						<a href="contact.html" class="nav-item nav-link">상품 관리</a> <a
 							href="/department/departmentList" class="nav-item nav-link">부서
 							관리</a>
 					</div>
@@ -99,94 +94,86 @@
 	</div>
 	<!-- Navbar End -->
 
-	<div class="container-fluid fruite py-5"
-		style="padding-top: 7rem !important;">
-		<div class="container py-5">
-			<div class="tab-class text-center">
-				<div class="row g-4">
-					<div class="col-lg-4 text-start" style = "width:100%">
-						<h1 style="display: inline-block">상품 목록</h1>
-						<a href="/goods/goodsWrite" style="margin: 0 0 8px 30px;"
-							class="btn border border-secondary rounded-pill px-3 text-primary">상품등록</a>
-						<a href="/goodsOrder/goodsOrderList" style="margin: 0 0 8px 10px;"
-							class="btn border border-secondary rounded-pill px-3 text-primary">발주관리</a>
-						<a href="/goods/goodsIpgoList" style="margin: 0 0 8px 10px;"
-							class="btn border border-secondary rounded-pill px-3 text-primary">입고관리</a>
-					</div>
-					<div class = "col-lg-4 text-end"></div>
-				</div>
-			</div>
-			<div id="tab-2" class="tab-pane fade show p-0">
-				<div class="row g-4">
-					<div class="col-lg-12">
-						<div class="row g-4" style= "justify-content: center;">
-							<th:block th:each="goodsDTO : ${list}">
-								<div class="col-md-6 col-lg-4 col-xl-3">
-									<div style = "border:1px solid lightgray" class="rounded position-relative fruite-item">
-										<div class="fruite-img">
-											 <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|" 
-		                                                style="width: 300px;" class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />
-										</div>
-										<div
-											class="bg-secondary px-3 py-1 rounded position-absolute"
-											style="top: 10px; left: 10px; color: black;">[[${goodsDTO.goodsKind}]]</div>
-										<div style = "border-top: 1px solid lightgray;" class="p-4 border-secondary rounded-bottom">
-											<h4>[[${goodsDTO.goodsName}]]</h4>
-											<p>
-												상품가격 : [[${#numbers.formatCurrency(goodsDTO.goodsPrice)}]]<br />
-											</p>
-											<div class="d-flex justify-content-between flex-lg-wrap">
-												<a
-													th:href="|/goods/goodsDetail?goodsNum=${goodsDTO.goodsNum}|"
-													class="btn border border-secondary rounded-pill px-3 text-primary">
-													<i class="fa fa-info-circle" style="margin-right: 5px;"></i>
-													상세정보 보기
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</th:block>
-						</div>
-					</div>
-					<div class="col-12">
-                    <input type="hidden" id = "page" th:value = ${page}>
-                        <div class="pagination d-flex justify-content-center mt-5">
-                            <th:block th:if="${page <= 1}">
-                                <a href="#" class="rounded">&laquo;</a>
-                            </th:block>
-                            <th:block th:if="${page > 1}">
-								<a th:href="@{goodsList(page=${page - 1},
-									searchWord=${searchWord})}" class="rounded">&laquo;</a>
-							</th:block>
-							<th:block th:each=" i, idx : ${#numbers.sequence(startPageNum, endPageNum)}">
-								<a th:href="@{goodsList(page=${i},searchWord=${searchWord})}" class="rounded" th:id="|page_${idx.count}|">[[${i}]]</a> 
-							</th:block>
-                            <th:block th:if="${page >= maxPage}">
-                                <a href="#" class="rounded">&raquo;</a>
-                            </th:block>
-                            <th:block th:if="${page < maxPage}">
-								<a th:href="@{goodsList(page=${page + 1},
-									searchWord=${searchWord})}" class="rounded">&raquo;</a>
-							</th:block>
-                        </div>
-                    </div>
-                    <div class="col-xl-3" style = "width:100%">
-                        <form action="goodsList" method="get" style = "width: 60%; place-self: center">
-                        	<div class="input-group w-100 mx-auto d-flex">
-                            <input type="search" name="searchWord" size="60" th:value="${searchWord}" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <button type="submit" class="input-group-text p-3">
-                            	<i class='fa fa-search'></i>
-                            </button>
-                        </div>
-                        </form>
-                    </div>
-				</div>
-			</div>
 
+	<!-- Modal Search Start -->
+	<div class="modal fade" id="searchModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-fullscreen">
+			<div class="modal-content rounded-0">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Search by
+						keyword</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body d-flex align-items-center">
+					<div class="input-group w-75 mx-auto d-flex">
+						<input type="search" class="form-control p-3"
+							placeholder="keywords" aria-describedby="search-icon-1">
+						<span id="search-icon-1" class="input-group-text p-3"><i
+							class="fa fa-search"></i></span>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-	<!-- Fruits Shop End-->
+	<!-- Modal Search End -->
+
+
+	<!-- Single Page Header start -->
+	<div class="container-fluid page-header py-5">
+		<h1 class="text-center text-white display-6">공급업체 상세정보</h1>
+		<ol class="breadcrumb justify-content-center mb-0">
+			<li class="breadcrumb-item"><a href="/">홈</a></li>
+			<li class="breadcrumb-item"><a href="/supply/supplyList">공급업체
+					리스트</a></li>
+			<li class="breadcrumb-item active text-white">공급업체 상세보기</li>
+		</ol>
+	</div>
+	<!-- Single Page Header End -->
+
+
+	<!-- Single Product Start -->
+	<div class="container-fluid py-5 mt-5">
+		<div class="container py-5">
+			<div class="row g-4 mb-5 justify-content-center">
+				<div class="col-lg-8 col-xl-9">
+					<div class="row g-4">
+						<div class="col-lg-6">
+							<div class="border rounded" style = " text-align : center;">
+								<i class="fa-solid fa-building" style="font-size : 300px;"></i>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<h4 class="fw-bold mb-3">[[${supplyContractDTO.supplyDTO.supName}]]</h4>
+							<p class="mb-4">업체번호 : [[${supplyContractDTO.supplyDTO.supNum}]]</p>
+							<p class="mb-4">주소 : [[${supplyContractDTO.supplyDTO.supAddr}]]</p>
+							<p class="mb-4">사업자등록번호 : [[${supplyContractDTO.supplyDTO.businessNum}]]</p>
+							<p class="mb-4">전화번호 : [[${supplyContractDTO.supplyDTO.supTel}]]</p>
+							<p class="mb-4">담당자 이름 : [[${supplyContractDTO.supplyDTO.managerName}]]</p>
+							<p class="mb-4">담당자 연락처 : [[${supplyContractDTO.supplyDTO.managerPhone}]]</p>
+							<p class="mb-4">계약번호 : [[${supplyContractDTO.contractDTO.contractNum}]]</p>
+							<p class="mb-4">계약기간: [[${supplyContractDTO.contractDTO.contractPeriod}]]</p>
+							<p class="mb-4">납입계좌 : [[${supplyContractDTO.contractDTO.payaccount}]]</p>
+							<p class="mb-4">납입일 : 매달 [[${supplyContractDTO.contractDTO.duedate}]]일</p>
+							<p class="mb-4">계약 상품 : [[${supplyContractDTO.contractDTO.goodsNum}]]</p>
+							<a
+								th:href="|/supply/supplyUpdate?supNum=${supplyContractDTO.supplyDTO.supNum}|"
+								class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+								<i class="fa-solid fa-pen" style="margin-right: 10px;"></i>수정하기
+							</a> <a
+								th:href="|/supply/supplyDelete?supNum=${supplyContractDTO.supplyDTO.supNum}|"
+								class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+								<i class="fa-solid fa-circle-xmark" style="margin-right: 10px;"></i>삭제하기
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Single Product End -->
+
 
 	<!-- Footer Start -->
 	<div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
@@ -285,8 +272,8 @@
 					<!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
 					<!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
 					Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML
-					Codex</a> Distributed By <a class="border-bottom"
-					href="https://themewagon.com">ThemeWagon</a>
+						Codex</a> Distributed By <a class="border-bottom"
+						href="https://themewagon.com">ThemeWagon</a>
 				</div>
 			</div>
 		</div>

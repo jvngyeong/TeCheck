@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="DDL.mapper.SupplyMapper">
+	<resultMap type="supplyContractDTO" id="supplyContractDTO">
+		<association property="supplyDTO">
+			<id column="sup_num" javaType="String" jdbcType="VARCHAR" property="supNum"></id>
+			<result column="sup_name" javaType="String" jdbcType="VARCHAR" property="supName"/>
+			<result column="business_num" javaType="String" jdbcType="VARCHAR" property="businessNum"/>
+			<result column="sup_tel" javaType="String" jdbcType="VARCHAR" property="supTel"/>
+			<result column="sup_addr" javaType="String" jdbcType="VARCHAR" property="supAddr"/>
+			<result column="manager_name" javaType="String" jdbcType="VARCHAR" property="managerName"/>
+			<result column="manager_phone" javaType="String" jdbcType="VARCHAR" property="managerPhone"/>
+		</association>
+		
+		<association property="contractDTO">
+			<id column="contract_num" javaType="String" jdbcType="VARCHAR" property="contractNum"/>
+			<result column="sup_num" javaType="String" jdbcType="VARCHAR" property="supNum"/>
+			<result column="contract_period" javaType="String" jdbcType="VARCHAR" property="contractPeriod"/>
+			<result column="payaccount" javaType="String" jdbcType="VARCHAR" property="payaccount"/>
+			<result column="duedate" javaType="String" jdbcType="VARCHAR" property="duedate"/>
+			<result column="goods_num" javaType="String" jdbcType="VARCHAR" property="goodsNum" />
+		</association>
+		
+		<association property="goodsDTO">
+			<id column= "goods_num" javaType="String" jdbcType="VARCHAR" property="goodsNum" />
+			<result column="goods_name" javaType="String" jdbcType="VARCHAR" property="goodsName"/>
+		</association>
+	</resultMap>
+
+	<sql id="supplierColumns">
+		sup_num, sup_name, business_num, sup_tel, sup_addr, manager_name, manager_phone
+	</sql>
+	
+	<sql id="contractColumns">
+		contract_num, sup_num, contract_period, payaccount, duedate, goods_num
+	</sql>
+
+	<insert id="supplyInsert">
+		insert into supplier(<include refid="supplierColumns"></include>)
+		values(#{supNum}, #{supName}, #{businessNum}, #{supTel}, #{supAddr}, #{managerName}, #{managerPhone})
+	</insert>
+	
+	<insert id="contractInsert">
+		insert into contract(<include refid="contractColumns"></include>)
+		values(#{contractNum}, #{supNum}, #{contractPeriod}, #{payaccount}, #{duedate}, #{goodsNum})
+	</insert>
+	
+	<select id="supplyListSelect" resultMap = "supplyContractDTO">
+		select s.sup_num, sup_name, business_num, sup_tel, sup_addr, manager_name, manager_phone,
+		contract_num, c.sup_num, contract_period, payaccount, duedate, c.goods_num,
+		goods_name
+		from supplier s join contract c
+		on s.sup_num = c.sup_num
+		join goods g
+		on c.goods_num = g.goods_num
+	</select>
+	
+	<select id="supplySelectOne" resultMap = "supplyContractDTO">
+		select s.sup_num, sup_name, business_num, sup_tel, sup_addr, manager_name, manager_phone,
+		contract_num, c.sup_num, contract_period, payaccount, duedate, c.goods_num,
+		goods_name
+		from supplier s join contract c
+		on s.sup_num = c.sup_num
+		join goods g
+		on c.goods_num = g.goods_num
+		where s.sup_num = #{supNum}
+	</select>
+	
+	<update id="supplyUpdate">
+		update supplier set sup_name = #{supName}, business_num = #{businessNum}, sup_tel = #{supTel},
+		sup_addr = #{supAddr}, manager_name = #{managerName}, manager_phone = #{managerPhone} where sup_num = #{supNum}
+	</update>
+	
+	<update id="contractUpdate">
+		update contract set contract_period = #{contractPeriod}, payaccount = #{payaccount}, duedate = #{duedate}, goods_num = #{goodsNum}
+		where contract_num = #{contractNum}
+	</update>
+	
+	<delete id="contractDelete">
+		delete from contract where sup_num = #{supNum}
+	</delete>
+	
+	<delete id="supplyDelete">
+		delete from supplier where sup_num = #{supNum}
+	</delete>
+</mapper>

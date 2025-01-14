@@ -2,19 +2,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>숙소 검색</title>
+<title>테크체크 - 실시간 주식 데이터 기반 제품 구매 추천 서비스</title>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script type="text/javascript">
 function goodsItem(element) {
-    // 데이터 속성에서 값을 가져옴
     const goodsNum = element.dataset.goodsnum;
     const goodsName = element.dataset.goodsname;
 
-    // 부모 창의 input 필드에 값 설정
     $(opener.document).find("#goodsNum").val(goodsNum);
     $(opener.document).find("#goodsName").val(goodsName);
 
-    // 팝업 창 닫기
     window.self.close();
 }
 </script>

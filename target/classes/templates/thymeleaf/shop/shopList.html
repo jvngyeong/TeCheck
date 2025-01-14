@@ -223,7 +223,7 @@
                                 	<th:block th:each="goodsDTO , idx : ${list}">
                                     	<a style = "padding:0px;width:0px;display:inline;" th:href = "|/shop/shopDetail?goodsNum=${goodsDTO.goodsNum}|">
                                     		<div class="col-md-6 col-lg-6 col-xl-4">
-	                                        	<div style = "border:1px solid lightgray"class="rounded position-relative fruite-item">
+	                                        	<div style = "border:1px solid lightgray" class="rounded position-relative fruite-item">
 		                                            <div class="fruite-img">
 		                                                <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|" 
 		                                                style="width: 300px;" class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />

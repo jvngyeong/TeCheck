@@ -64,7 +64,6 @@ public class ChattingServerService extends WebSocketServer {
     			System.out.println("채팅 서버의 자원 및 포트를 정리했습니다.");
 				this.stop();
 			} catch (InterruptedException e) {
-				System.out.println("채팅에서남");
 				e.printStackTrace();
 			}
     	}

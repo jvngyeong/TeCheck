@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>숙소 검색</title>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+function supSearch(element) {
+    // 데이터 속성에서 값을 가져옴
+    const supNum = element.dataset.supnum;
+    const goodsNum = element.dataset.goodsnum;
+    const goodsName = element.dataset.goodsname;
+    const contractNum = element.dataset.contractnum;
+    // 부모 창의 input 필드에 값 설정
+    $(opener.document).find("#supNum").val(supNum);
+    $(opener.document).find("#goodsNum").val(goodsNum);
+    $(opener.document).find("#goodsName").val(goodsName);
+    $(opener.document).find("#contractNum").val(contractNum);
+    // 팝업 창 닫기
+    window.self.close();
+}
+</script>
+<link href="/static/css/goodsSelect.css" rel="stylesheet">
+</head>
+<body>
+<table border="1" width="600" align="center">
+    <thead>
+        <tr>
+            <th>업체번호</th>
+            <th>업체이름</th>
+            <th>사업자등록번호</th>
+            <th>제공 상품</th>
+            <th>제공 상품이름</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="supplyContractDTO : ${supplyList}">
+            <td>
+                <a href="javascript:void(0);"
+                   th:data-supnum="${supplyContractDTO.supplyDTO.supNum}"
+                   th:data-goodsnum="${supplyContractDTO.goodsDTO.goodsNum}"
+                   th:data-goodsname="${supplyContractDTO.goodsDTO.goodsName}"
+                   th:data-contractNum="${supplyContractDTO.contractDTO.contractNum}"
+                   onclick="supSearch(this)">
+                   [[${supplyContractDTO.supplyDTO.supNum}]]
+                </a>
+            </td>
+            <td>[[${supplyContractDTO.supplyDTO.supName}]]</td>
+            <td>[[${supplyContractDTO.supplyDTO.businessNum}]]</td>
+            <td>[[${supplyContractDTO.goodsDTO.goodsNum}]]</td>
+            <td>[[${supplyContractDTO.goodsDTO.goodsName}]]</td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
