@@ -14,12 +14,15 @@ public class InquireDTO {
 	String inquireContents;
 	Date inquireDate;
 	String inquireKind;
+	String inquireAnswer;
+	Date inquireAnswerDate;
 	
 	String goodsNum;
 	String expNum;
 	String goodsName;
 	String expName;
 	
+	String memberId;
 	String memberNum;
 	String empNum;
 }

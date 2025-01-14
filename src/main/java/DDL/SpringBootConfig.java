@@ -45,18 +45,20 @@ public class SpringBootConfig implements WebMvcConfigurer {
         registry.addInterceptor(sessionInterceptor)
                 .addPathPatterns("/**") // 모든 요청에 적용
                 .excludePathPatterns("/",
-                					"/login/**",	// 로그인 창
-                					"/static/**", 	//css, js, img 등을 가져오기 위해 static 폴더 제외
-                					"/regist/**", 	//회원 가입 - 회원 정보 입력 창
-                					"/shop/shopList",
-                					"/shop/shopDetail",
-                					"/wish/**",
-                					"/cart/cartInsert",
-                					"/stock/**",
-                					"/community/communityList",
-                					"/community/communityDetail",
-                					"/help/**",
-                					"/userConfirm",
-                					"/user/welcome"); // 제외 경로 수정
+                               "/login/**",   // 로그인 창
+                               "/static/**",    //css, js, img 등을 가져오기 위해 static 폴더 제외
+                               "/regist/**",    //회원 가입 - 회원 정보 입력 창
+                               "/shop/shopList",
+                               "/shop/shopDetail",
+                               "/wish/**",
+                               "/cart/cartInsert",
+                               "/stock/**",
+                               "/community/communityList",
+                               "/community/communityDetail",
+                               "/help/**",
+                               "/userConfirm",
+                               "/user/welcome",
+                               "/supply/**",
+                               "/inquire/inquireList"); // 제외 경로 수정
     }
 }
