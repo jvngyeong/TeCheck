@@ -23,6 +23,7 @@ import DDL.mapper.EmployeeMapper;
 import DDL.mapper.MemberMapper;
 import DDL.service.GetUserIdService;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 
 @Service
 public class ChattingServerService extends WebSocketServer {
@@ -55,7 +56,19 @@ public class ChattingServerService extends WebSocketServer {
         this.start();
         System.out.println("WebSocket server started successfully on " + this.getAddress());
     }
-
+    
+    @PreDestroy
+    public void stopServer() {
+    	if(this != null) {
+    		try {
+    			System.out.println("채팅 서버의 자원 및 포트를 정리했습니다.");
+				this.stop();
+			} catch (InterruptedException e) {
+				System.out.println("채팅에서남");
+				e.printStackTrace();
+			}
+    	}
+    }
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
     	// URL에서 쿼리 파라미터 부분만 추출

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import DDL.domain.StockDTO;
 import DDL.stock.dao.StockDAO;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 @Service
 public class KafkaWebSocketServer extends WebSocketServer {
     private final Set<WebSocket> connections = ConcurrentHashMap.newKeySet();
@@ -35,6 +36,19 @@ public class KafkaWebSocketServer extends WebSocketServer {
         this.start();
         this.startKafkaConsumer();
         System.out.println("WebSocket server started successfully on " + this.getAddress());
+    }
+    
+    @PreDestroy
+    public void stopServer() {
+    	if(this != null) {
+    		try {
+    			System.out.println("Kafka WebSocket 서버의 자원 및 포트를 정리했습니다.");
+				this.stop();
+			} catch (InterruptedException e) {
+				System.out.println("카프카에서남");
+				e.printStackTrace();
+			}
+    	}
     }
 
     @Override

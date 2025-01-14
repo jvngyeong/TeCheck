@@ -20,10 +20,12 @@ import org.springframework.stereotype.Service;
 
 import DDL.vo.StockA3;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 @Service
 public class MultiThreadedUDPServer {
     private static final MultiThreadedUDPServer instance = new MultiThreadedUDPServer();
     private KafkaProducer<String, String> producer;
+    DatagramAcceptor acceptor;
     public static MultiThreadedUDPServer getInstance() {
         return instance;
     }
@@ -38,7 +40,7 @@ public class MultiThreadedUDPServer {
     }
     @PostConstruct
     public void startServer() {
-        DatagramAcceptor acceptor = new NioDatagramAcceptor();
+        acceptor = new NioDatagramAcceptor();
         acceptor.setHandler(new UDPHandler(producer));
         DatagramSessionConfig dcfg = acceptor.getSessionConfig();
         dcfg.setReuseAddress(true);
@@ -48,6 +50,15 @@ public class MultiThreadedUDPServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    @PreDestroy
+    public void stopServer() {
+    	if(acceptor != null && acceptor.isActive()) {
+    		System.out.println("주식 데이터 서버의 자원 및 포트를 정리했습니다.");
+    		acceptor.unbind();
+    		acceptor.dispose();
+    	}
     }
     private static class UDPHandler extends IoHandlerAdapter {
         private final ExecutorService threadPool = Executors.newCachedThreadPool();

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class StockConfig {
 	@Bean
     public InetSocketAddress stockAddress() {
-        return new InetSocketAddress("172.16.105.174", 10120);
+        //return new InetSocketAddress("172.16.105.174", 10120);
+		return new InetSocketAddress("localhost", 10120);
     }
 }
