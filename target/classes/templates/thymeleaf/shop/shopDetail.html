@@ -114,9 +114,24 @@
 	        }
 	    });
 	}
+	function inquire(){
+		$.ajax({
+			type : "POST",
+			url : "/inquire/inquireList",
+			dataType : "html",
+			data : {"goodsNum":"[[${goodsDTO.goodsNum}]]"},
+			success : function(item){
+				$("content").html(item);
+			},
+			error : function(){
+				alert("에러!")
+			}
+		});
+	}
 	$(function() {
 	    wishCheck();
 	    $("#inquire").click(function(){
+	    	inquire();
 	    	alert("문의");
 	    });
 	    $("#wishBtn").click(function() {
