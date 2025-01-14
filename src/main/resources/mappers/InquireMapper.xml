@@ -3,5 +3,52 @@
    "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="DDL.mapper.InquireMapper">
+	<insert id="inquireInsert" parameterType="inquireDTO">
+		insert into inquire(INQUIRE_NUM, MEMBER_NUM, GOODS_NUM, INQUIRE_TITLE
+			,INQUIRE_KIND, INQUIRE_CONTENTS, INQUIRE_DATE)
+		VALUES(#{inquireNum}, #{memberNum}, #{goodsNum}, #{inquireTitle}
+			, #{inquireKind}, #{inquireContents}, sysdate)
+	</insert>
 	
+	<select id="inquireInfo" parameterType="hashmap" resultType="inquireDTO">
+	select INQUIRE_NUM, INQUIRE_TITLE, INQUIRE_CONTENTS , INQUIRE_DATE
+			, INQUIRE_KIND, i.GOODS_NUM, i.EXP_NUM, i.MEMBER_NUM, i.EMP_NUM
+			, INQUIRE_ANSWER, INQUIRE_ANSWER_DATE, exp_name, goods_name, member_id
+	from inquire i left outer join members m 
+	on i.member_num = m.member_num join goods g 
+	on i.goods_num = g.goods_num left outer join experience e
+	on i.exp_num = e.exp_num
+	<trim prefix="where" prefixOverrides="AND | OR">
+		<if test="goodsNum != null">
+			 i.goods_num = #{goodsNum}
+		</if>
+		<if test="inquireNum != null">
+			and inquire_num = #{inquireNum}
+		</if>
+		<if test="expNum != null">
+			and i.exp_num = #{expNum}
+		</if>
+	</trim> 
+	</select>
+	
+	<update id="inquireUpdate" parameterType="inquireDTO">
+		update inquire set
+		INQUIRE_TITLE = #{inquireTitle}
+		, INQUIRE_CONTENTS = #{inquireContents}
+		, INQUIRE_KIND = #{inquireKind}
+		where INQUIRE_NUM = #{inquireNum}
+	</update>
+	
+	<delete id="inquireDelete" parameterType="string">
+		delete from inquire
+		where inquire_num = #{inquireNum}
+	</delete>
+	
+	<update id="inquireAnswerUpdate" parameterType="inquireDTO">
+		update inquire
+		set EMP_NUM = #{empNum},
+			INQUIRE_ANSWER = #{inquireAnswer},
+			inquire_answer_date = sysdate
+		where INQUIRE_NUM = #{inquireNum}
+	</update>
 </mapper>

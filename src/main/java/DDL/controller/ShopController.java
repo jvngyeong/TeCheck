@@ -57,4 +57,5 @@ public class ShopController {
 		
 		return "thymeleaf/shop/shopDetail";
 	}
+	
 }

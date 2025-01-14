@@ -3,8 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#inquire1").click(function(){
+			popupWindow  = window.open("/inquire/inquireWrite?goodsNum=[[${goodsNum}]]","상품문의"
+					,"width=700, height=650, top = 100, left=100");
+			let popupCheckInterval = setInterval(function(){
+				if (popupWindow.closed) {
+					clearInterval(popupCheckInterval); 
+					inquire(); 
+				}
+			}, 500);
+		});
+	});	
+	function inquireUpdate(inquireNum){
+		window.open("/inquire/inquireUpdate?inquireNum="+inquireNum,
+				"","width=700, height=650, top = 100, left=100");
+	}
+
+	function inquireDelete(inquireNum){
+		$.ajax({
+			type:'post',
+			url:'/inquire/inquireDelete',
+			data: {'inquireNum':inquireNum},
+			success:function(){
+				inquire();
+			}
+		});
+	}
+	function contentOpen(id){
+		if($("."+id).css("display") == "none"){
+			$("."+id).css("display", ""); 
+			$("#"+id).text("답변닫기");
+		}else{
+			$("."+id).css("display", "none"); 
+			$("#"+id).text("답변열기"); 
+		}
+	}
+</script>
 </head>
 <body>
-asd
+<table style="width: 100%; margin: 20px auto; border-collapse: separate; border-spacing: 0; background-color: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
+	<tr>
+		<td colspan="3" align="right" style="padding: 10px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;">
+			<button type="button" id="inquire1" style="padding: 10px 15px; font-size: 14px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; background-color: #007bff; color: #fff; transition: all 0.3s ease;">문의 하기</button>
+		</td>
+	</tr>
+	<tr>
+		<th style="padding: 12px; text-align: center; background-color: #f8f9fa; font-weight: bold; border-bottom: 1px solid #ddd;">답변 상태</th>
+		<th style="padding: 12px; text-align: center; background-color: #f8f9fa; font-weight: bold; border-bottom: 1px solid #ddd;">작성자</th>
+		<th style="padding: 12px; text-align: center; background-color: #f8f9fa; font-weight: bold; border-bottom: 1px solid #ddd;">질문일자</th>
+	</tr>
+	<th:block th:each="dto, idx : ${list}">
+		<tr><td style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd;">
+				<span th:if="${dto.inquireAnswer == null}">검토중</span>  
+				<span th:if="${dto.inquireAnswer != null}">답변완료</span>
+			</td>
+			<td style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd;">[[${dto.memberId}]]</td>
+			<td style="padding: 12px; border-bottom: 1px solid #ddd; display: flex; align-items: center;     justify-content: right;">
+			    [[${#dates.format(dto.inquireDate,'yyyy-MM-dd')}]]
+			    <div style="text-align: right; display: flex;">
+			        <th:block th:if="${session.auth != null}">
+			            <th:block th:if="${session.auth.userId == dto.memberId}">
+			                <button type="button" style="margin-left: 5px; padding: 8px 12px; font-size: 14px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; background-color: #007bff; color: #fff; transition: all 0.3s ease;" th:attr="onclick=|inquireUpdate('${dto.inquireNum}');|">문의수정</button>
+			                <button type="button" style="margin-left: 5px; padding: 8px 12px; font-size: 14px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; background-color: #dc3545; color: #fff; transition: all 0.3s ease;" th:attr="onclick=|inquireDelete('${dto.inquireNum}');|">문의삭제</button>
+			            </th:block>
+			        </th:block>
+			    </div>
+			</td>
+		</tr>
+		<tr><td colspan="3" style="padding: 12px; border-bottom: 1px solid #ddd;">
+		        <div style="display: flex; justify-content: space-between; align-items: center;">
+		            <div style="flex: 1; text-align: left;">
+		                <span th:utext="${#strings.replace(dto.inquireContents, newLineChar,'&lt;br /&gt;')}"></span>
+		            </div>
+		            <div style="text-align: right;">
+		                <button type="button" style="margin-left: 5px; padding: 8px 12px; font-size: 14px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; background-color: #007bff; color: #fff; transition: all 0.3s ease;" th:id="inq_+${dto.inquireNum}" th:if="${dto.inquireAnswer != null}" th:attr="onclick=|contentOpen('inq_${dto.inquireNum}');|">답변열기</button>
+		            </div>
+		        </div>
+		    </td>
+		</tr>
+		<tr th:if="${dto.inquireAnswer != null}" style="display:none;" th:class="inq_+${dto.inquireNum}">
+			<td colspan="3" style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">답변일 : [[${#dates.format(dto.inquireAnswerDate,'yyyy-MM-dd')}]]<br />
+			<span th:utext="${#strings.replace(dto.inquireAnswer,newLineChar,'&lt;br /&gt;')}"></span>
+			</td>                 
+		</tr>
+	</th:block>
+</table>
 </body>
 </html>
