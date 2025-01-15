@@ -19,6 +19,10 @@
 		<result column="gender" property="gender" javaType="String" jdbcType="CHAR"/>
 		<result column="member_Email" property="memberEmail" javaType="String" jdbcType="VARCHAR"/>	
 	</association>
+	<association property="employeeDTO">
+		<id column="emp_num" javaType="String" jdbcType="VARCHAR" property="empNum"/>
+		<result column="emp_id" javaType="String" jdbcType="VARCHAR" property="empId"/>
+	</association>
 	<association property="communityReplyDTO" javaType = "communityReplyDTO">
 		<id column = "member_Num" property = "memberNum" javaType = "String" jdbcType = "VARCHAR"/>
 		<result column="reply_Num" property="replyNum" javaType="String" jdbcType="VARCHAR"/>
@@ -68,14 +72,19 @@
 		</if>
 		<if test="memberNum != null">
 			insert into community(COMM_NUM, MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_CONTENTS)
-			values(#{commNum}, ${memberNum}, sysdate, #{commTitle}, #{commContents})
+			values(#{commNum}, #{memberNum}, sysdate, #{commTitle}, #{commContents})
 		</if>
 	</insert>
 
 	
 	<select id = "communitySelectOne" resultMap="communityMemberDTO">
-			select COMM_NUM, m.MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_CONTENTS , member_id from community c join members m 
+			select COMM_NUM, m.MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_CONTENTS , 
+			member_id,
+			e.emp_num, emp_id
+			 from community c left outer join members m 
 			on  c.member_num = m.member_num 
+			left outer join employees e
+			on c.emp_num = e.emp_num
 			where comm_num = #{commNum}
 	</select>
 	<update id = "communityUpdate">
@@ -88,21 +97,29 @@
 			REPLY_NUM, REPLY_DATE, REPLY_CONTENT, MEMBER_NUM, COMM_NUM
 	</sql>
 	<insert id="insertReply" parameterType="CommunityReplyDTO">
+		<if test="memberNum != null">
 		    INSERT INTO reply(REPLY_NUM, REPLY_DATE, REPLY_CONTENT, MEMBER_NUM, COMM_NUM)
-		    VALUES (#{replyNum} ,SYSDATE, #{replyContent}, #{memberNum}, #{commNum})
+		    VALUES (#{replyNum} ,SYSDATE, #{replyContent}, #{memberNum, jdbcType=VARCHAR}, #{commNum})
+		</if>
+		<if test="memberNum == null">
+			INSERT INTO reply(REPLY_NUM, REPLY_DATE, REPLY_CONTENT, EMP_NUM, COMM_NUM)
+		    VALUES (#{replyNum} ,SYSDATE, #{replyContent}, #{empNum}, #{commNum})
+		</if>
 	</insert>
 	
 	<select id="communityReplyListSelect" resultMap="communityReplyMemberDTO">
-		select rownum,REPLY_NUM, REPLY_DATE, REPLY_CONTENT, m.MEMBER_NUM, COMM_NUM, m.member_id 
-		from reply r join members m 
-		on r.member_num = m.member_num 
+		select rownum, REPLY_NUM, REPLY_DATE, REPLY_CONTENT, m.MEMBER_NUM, r.emp_num, emp_id, COMM_NUM, m.member_id 
+		from reply r left outer join members m
+		on r.member_num = m.member_num
+        left outer join employees e on
+        r.emp_num = e.emp_num
 		where COMM_NUM = #{commNum}
 	</select>
 	
 	<select id="communityListSelect" resultMap="communityMemberDTO">
-		select rownum, m.MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_NUM, COMM_CONTENTS, m.member_id, emp_id
-		from community c left outer join members m 
-		on c.member_Num = m.member_Num 
-		left outer join employees e on c.emp_num = e.emp_num
+			select rownum, m.MEMBER_NUM, COMM_DATE, COMM_TITLE, COMM_NUM, COMM_CONTENTS, m.member_id, emp_id
+			from community c left outer join members m 
+			on c.member_Num = m.member_Num 
+			left outer join employees e on c.emp_num = e.emp_num
 	</select>
 </mapper>

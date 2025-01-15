@@ -319,27 +319,64 @@ hr {
 							   		<tr>
 							        <td>[[${communityMemberDTO.communityDTO.commNum}]]</td>
 							        <td>[[${communityMemberDTO.communityDTO.commTitle}]]</td>
-							        <td>[[${communityMemberDTO.memberDTO.memberId}]]</td>
+							        
+							        <th:block th:if= "${communityMemberDTO.memberDTO != null}">
+							   	     <td>[[${communityMemberDTO.memberDTO.memberId}]]</td>
+							   	    </th:block>
+							   	    
+							   	    <th:block th:if= "${communityMemberDTO.employeeDTO != null}">
+							   	     <td>[[${communityMemberDTO.employeeDTO.empId}]]</td>
+							   	    </th:block>
+							   	    
 							        <td>[[${#dates.format(communityMemberDTO.communityDTO.commDate, 'yyyy-MM-dd')}]]</td>
 									</tr>
 									<tr><td colspan="4">[[${communityMemberDTO.communityDTO.commContents}]]</td></tr>
 								</tbody>
 							</table>
 						</div>
-		                        <a th:href="|/community/communityModify?commNum=${communityMemberDTO.communityDTO.commNum}|"
-		                            class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
-		                            <i class="fa-solid fa-pen" style="margin-right: 10px;"></i>수정하기
-		                        </a> 
-		                        <a th:href="|/community/communityDelete?commNum=${communityMemberDTO.communityDTO.commNum}|"
-		                            class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
-		                            <i class="fa-solid fa-circle-xmark" style="margin-right: 10px;"></i>삭제하기
-		                        </a>
-		                        
+							<th:block th:if= "${communityMemberDTO.memberDTO != null}">
+								<th:block th:if ="${session.auth.userId == communityMemberDTO.memberDTO.memberId }">
+			                        <a th:href="|/community/communityModify?commNum=${communityMemberDTO.communityDTO.commNum}|"
+			                            class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+			                            <i class="fa-solid fa-pen" style="margin-right: 10px;"></i>수정하기
+			                        </a> 
+			                        <a th:href="|/community/communityDelete?commNum=${communityMemberDTO.communityDTO.commNum}|"
+			                            class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+			                            <i class="fa-solid fa-circle-xmark" style="margin-right: 10px;"></i>삭제하기
+			                        </a>
+			                      </th:block>
+		                      </th:block>
+		                      
+		                      <th:block th:if= "${communityMemberDTO.employeeDTO != null}">
+								  <th:block th:if ="${session.auth.userId == communityMemberDTO.employeeDTO.empId }">
+			                        <a th:href="|/community/communityModify?commNum=${communityMemberDTO.communityDTO.commNum}|"
+			                            class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+			                            <i class="fa-solid fa-pen" style="margin-right: 10px;"></i>수정하기
+			                        </a> 
+			                        <a th:href="|/community/communityDelete?commNum=${communityMemberDTO.communityDTO.commNum}|"
+			                            class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+			                            <i class="fa-solid fa-circle-xmark" style="margin-right: 10px;"></i>삭제하기
+			                        </a>
+			                      </th:block>
+		                      </th:block>
 		                        <div class="replys-list border-top pt-3">
 								    <h6 class="mb-3">전체 댓글 <span class="badge bg-secondary">[[${#lists.size(replyList)}]]개</span></h6>
 								    <div th:each="reply : ${replyList}">
 								        <div class="reply-item border-bottom pb-2 mb-2">
-								            <p class="mb-1"><strong th:text="${reply.memberDTO.memberId}"></strong></p>
+								            <p class="mb-1">
+								            <th:block th:if = "${communityMemberDTO.employeeDTO != null}">
+								            	<th:block th:if="${reply.employeeDTO != null}">
+								            		<b th:if = "${reply.employeeDTO.empId == communityMemberDTO.employeeDTO.empId}">글쓴이 </b>
+								            	</th:block>
+								            </th:block>
+								            <th:block th:if = "${communityMemberDTO.memberDTO != null}">
+								            	<th:block th:if="${reply.memberDTO  != null}">
+								            		<b th:if = "${reply.memberDTO.memberId == communityMemberDTO.memberDTO.memberId}">글쓴이 </b>
+								            	</th:block>
+								            </th:block>
+								            <strong th:if="${reply.memberDTO != null}" th:text="${reply.memberDTO.memberId}"></strong>
+								            <strong th:if="${reply.employeeDTO != null}" th:text="${reply.employeeDTO.empId}"></strong>
+								            </p>
 								            <p th:text="${reply.communityReplyDTO.replyContent}"></p>
 								            <p class="text-muted small mb-1" th:text="${#dates.format(reply.communityReplyDTO.replyDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
 								        </div>
