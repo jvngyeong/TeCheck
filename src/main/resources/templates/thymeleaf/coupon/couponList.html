@@ -16,13 +16,16 @@
 
 <!-- Icon Font Stylesheet -->
 <link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
 	rel="stylesheet">
 
 <!-- Libraries Stylesheet -->
 <link href="/static/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+<link href="/static/css/form.css" rel="stylesheet">
+<link href="/static/css/table.css" rel="stylesheet">
 <link href="/static/lib/owlcarousel/assets/owl.carousel.min.css"
 	rel="stylesheet">
 
@@ -32,18 +35,28 @@
 
 <!-- Template Stylesheet -->
 <link href="/static/css/style.css" rel="stylesheet">
+
+<style type="text/css">
+ .formBtn{
+	 padding: 10px 15px; 
+	 font-size: 14px; 
+	 font-weight: bold; 
+	 border-radius: 8px; 
+	 border: none; 
+	 cursor: pointer; 
+	 background-color: #007bff; 
+	 color: #fff; 
+	 transition: all 0.3s ease;
+ }
+</style>
 </head>
-
 <body>
-
 	<!-- Spinner Start -->
 	<div id="spinner"
 		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
 		<div class="spinner-grow text-primary" role="status"></div>
 	</div>
 	<!-- Spinner End -->
-
-
 	<!-- Navbar start -->
 	<div class="container-fluid fixed-top">
 		<div class="container px-0">
@@ -56,26 +69,31 @@
 				</button>
 				<div class="collapse navbar-collapse bg-white" id="navbarCollapse">
 					<div class="navbar-nav mx-auto">
-						<a href="index" class="nav-item nav-link active">Home</a> <a
-							href="shop" class="nav-item nav-link">Shop</a> <a
-							href="shop-detail" class="nav-item nav-link">Shop Detail</a>
+						<a href="/" class="nav-item nav-link active">홈</a> 
+						<a href="/shop/shopList" class="nav-item nav-link">상점</a>  
+						<a href="/cart/cart"  class="nav-item nav-link">장바구니</a>
 						<div class="nav-item dropdown">
 							<a style="display: block" href="#"
 								class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
 							<div class="dropdown-menu m-0 bg-secondary rounded-0">
-								<a href="cart.html" class="dropdown-item">Cart</a> <a
-									href="chackout.html" class="dropdown-item">Chackout</a> <a
-									href="testimonial.html" class="dropdown-item">Testimonial</a> <a
-									href="404.html" class="dropdown-item">404 Page</a>
+								<a href="chackout.html" class="dropdown-item">Chackout</a>
+								<a href="testimonial.html" class="dropdown-item">Testimonial</a>
+								<a href="404.html" class="dropdown-item">404 Page</a>
 							</div>
 						</div>
-						<a href="contact.html" class="nav-item nav-link">Contact</a> <a
-							href="/member/memberList" class="nav-item nav-link">회원 관리</a> <a
-							href="contact.html" class="nav-item nav-link">직원 관리</a> <a
-							href="contact.html" class="nav-item nav-link">상품 관리</a>
+						<a href="/community/communityList" class="nav-item nav-link">커뮤니티</a> 
+						<a href="contact.html" class="nav-item nav-link">Contact</a>
+						<th:block th:if="${session.auth != null}">
+							<th:block th:if="${session.auth.grade == 'emp'}">
+								<a href="/member/memberList" class="nav-item nav-link">회원 관리</a> 
+								<a href="/employee/employeeList" class="nav-item nav-link">직원 관리</a>
+								<a href="/goods/goodsList" class="nav-item nav-link">상품 관리</a> 
+								<a href="/department/departmentList" class="nav-item nav-link">부서 관리</a>
+							</th:block>
+						</th:block>
 					</div>
-					<div class="d-flex m-3 me-0">
-						<button
+					<div class="d-flex m-3 me-0" style="align-content: stretch;">
+						<button style="margin-left: 8px; margin-top: 3px;"
 							class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
 							data-bs-toggle="modal" data-bs-target="#searchModal">
 							<i class="fas fa-search text-primary"></i>
@@ -84,8 +102,34 @@
 							class="fa fa-shopping-bag fa-2x"></i> <span
 							class="cartBtn position-absolute rounded-circle d-flex align-items-center justify-content-center text-white px-1"
 							style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
-						</a> <a href="#" class="my-auto"> <i class="fas fa-user fa-2x"></i>
 						</a>
+						<div class="nav-item dropdown">
+							<a style="display: block; padding-left: 4px;" href="#"
+								class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+								<i class="fas fa-user fa-2x"></i>
+							</a>
+							<div class="dropdown-menu m-0 bg-secondary rounded-0">
+								<th:block th:if="${session.auth == null}">
+								<a href="/login/loginForm" class="dropdown-item">로그인</a>
+								<a href="/regist/registForm" class="dropdown-item">회원가입</a>
+								</th:block>
+								<th:block th:if="${session.auth != null}">
+									<th:block th:if="${session.auth.grade == 'mem'}">
+									<a href="#" class="dropdown-item">회원 로그인 성공</a>
+									<a href="/myPage/memberMyPage" class="dropdown-item">마이페이지</a>
+									</th:block>
+									<th:block th:if="${session.auth.grade == 'emp'}">
+									<a href="#" class="dropdown-item">직원 로그인 성공</a>
+									<a href="/myPage/empMyPage" class="dropdown-item">마이페이지</a>
+									</th:block>
+									<a href="/login/logout" class="dropdown-item">로그아웃</a>
+								</th:block>
+									
+								
+							</div>
+						</div>
+
+						<a href="#" class="my-auto"> </a>
 					</div>
 				</div>
 			</nav>
@@ -93,47 +137,81 @@
 	</div>
 	<!-- Navbar End -->
 
-	<!-- memberList Start-->
-	<div class="container-fluid fruite py-5" style="padding-top: 7rem !important;">
-		<div class="container py-5">
-			<div class="tab-class text-center">
-				<div class="row g-4">
-					<div class="col-lg-4 text-start">
-						<h1 style="display: inline-block">회원 목록</h1>
-						<a href="/member/memberWrite" style="margin: 0 0 8px 30px;"
-							class="btn border border-secondary rounded-pill px-3 text-primary">회원가입</a>
-					</div>
+
+	<!-- Modal Search Start -->
+	<div class="modal fade" id="searchModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-fullscreen">
+			<div class="modal-content rounded-0">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Search by
+						keyword</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
 				</div>
-			</div>
-			<div class="container-fluid py-5" style="padding: 1em 0 0 0 !important;">
-				<div class="container" style = "padding: 0;">
-					<div class="bg-light p-5 rounded">
-						<div class="row g-4 ">
-							<th:block th:each="dto : ${list}">
-								<div class="col-md-6 col-lg-6 col-xl-3">
-									<div class="counter bg-white rounded p-5">
-										<img src="/static/img/default-profile.png" class="img-fluid rounded" alt="Image" width="100"/><br><br>
-										<h4>[[${dto.memberName}]] 회원님</h4>
-										<p><b>회원번호</b> <br/> [[${dto.memberNum}]]</p>
-										<p><b>아이디</b> <br/> [[${dto.memberId}]]</p>
-										<p><b>연락처</b> <br/> [[${dto.memberPhone}]]</p>
-										<p><b>가입일</b> <br/> [[${#dates.format(dto.memberRegist,'yyyy-MM-dd')}]]</p>
-										<div style="margin-top: 50px; justify-self: center;"
-											class="d-flex justify-content-between flex-lg-wrap">
-											<a th:href="|/member/memberDetail?memberNum=${dto.memberNum}|"
-												class="btn border border-secondary rounded-pill px-3 text-primary">
-												<i class="fa fa-info-circle" style="font-size: 20px; margin-bottom: 0;"></i> 회원 상세보기</a>
-										</div>
-									</div>
-								</div>
-							</th:block>
-						</div>
+				<div class="modal-body d-flex align-items-center">
+					<div class="input-group w-75 mx-auto d-flex">
+						<input type="search" class="form-control p-3"
+							placeholder="keywords" aria-describedby="search-icon-1">
+						<span id="search-icon-1" class="input-group-text p-3"><i
+							class="fa fa-search"></i></span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- memberList End-->
+	<!-- Modal Search End -->
+
+
+	<!-- Single Page Header start -->
+	<div class="container-fluid page-header py-5">
+		<h1 class="text-center text-white display-6">쿠폰 관리</h1>
+		<ol class="breadcrumb justify-content-center mb-0">
+			<li class="breadcrumb-item"><a href="/">홈</a></li>
+			<li class="breadcrumb-item active text-white">쿠폰 관리</li>
+		</ol>
+	</div>
+	<!-- Single Page Header End -->
+	
+	<!-- Single Product Start -->
+	
+	<div class="container">
+	  <table class="responsive-table">
+	    <caption style="caption-side: top;">쿠폰 목록</caption>
+	    <caption style="caption-side: top; text-align: right !important">
+	    	<a href="/coupon/memberCouponList"
+			class="btn border border-secondary rounded-pill px-3 text-primary">쿠폰 발급현황</a>
+		    <a href="/coupon/couponWrite"
+			class="btn border border-secondary rounded-pill px-3 text-primary">쿠폰 등록</a>
+		</caption>
+	    <thead>
+	      <tr>
+	        <th style = "text-align:center;" scope="col">쿠폰번호</th>
+	        <th scope="col">쿠폰이름</th>
+	        <th scope="col">할인율</th>
+	        <th scope="col"></th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	       <tr th:each="dto , idx : ${couponList}" >
+				<td>[[${dto.couponNum}]]</td>
+				<td>
+					[[${dto.couponName}]]
+				</td>
+				<td>
+					[[${dto.discount}]]%
+				</td>
+				<td>
+					<button type="button" class = "formBtn" th:attr="onclick=|location.href='/coupon/couponUpdate?couponNum=${dto.couponNum}'|">수정/삭제</button>
+				</td>
+			</tr>
+	      
+	    </tbody>
+	  </table>
+	</div>
+	
+	<!-- Single Product End -->
+
 
 	<!-- Footer Start -->
 	<div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
@@ -239,7 +317,6 @@
 		</div>
 	</div>
 	<!-- Copyright End -->
-
 
 
 

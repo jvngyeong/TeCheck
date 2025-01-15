@@ -16,8 +16,10 @@ import DDL.service.StartEndPageService;
 public class GoodsListService {
 	@Autowired
 	GoodsMapper goodsMapper;
+	
 	@Autowired
 	StartEndPageService startEndPageService;
+	
 	public void execute(String searchWord, Model model, int page) {
 		if(searchWord == null && page < 0) {
 			List<GoodsDTO> list = goodsMapper.goodsAllSelect();
@@ -31,6 +33,20 @@ public class GoodsListService {
 			List<GoodsDTO> list = goodsMapper.goodsListSelect(sepDTO);
 			int count = goodsMapper.goodsCount(searchWord);
 			// 페이징
+			startEndPageService.execute(page, limit, count, searchWord, list, model);
+		}
+	}
+	
+	public void execute(String searchWord, Model model, int page, String sortValue) {
+		if(searchWord == null && page < 0) {
+			List<GoodsDTO> list = goodsMapper.goodsAllSelect();
+			model.addAttribute("list", list);
+		}else {
+			int limit = 6;
+			StartEndPageDTO sepDTO = startEndPageService.execute(page, limit, searchWord);
+			sepDTO.setSortValue(sortValue);
+			List<GoodsDTO> list = goodsMapper.goodsSortedListSelect(sepDTO);
+			int count = goodsMapper.goodsCount(searchWord);
 			startEndPageService.execute(page, limit, count, searchWord, list, model);
 		}
 	}

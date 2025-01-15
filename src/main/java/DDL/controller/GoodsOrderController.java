@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import DDL.command.GoodsOrderCommand;
+import DDL.service.goodsOrder.GoodsOrderDeleteService;
+import DDL.service.goodsOrder.GoodsOrderDetailService;
+import DDL.service.goodsOrder.GoodsOrderListService;
 import DDL.service.goodsOrder.GoodsOrderService;
+import DDL.service.goodsOrder.GoodsOrderUpdateService;
 import DDL.service.supply.SupplyListService;
 import jakarta.servlet.http.HttpSession;
 
@@ -23,8 +27,21 @@ public class GoodsOrderController {
 	@Autowired
 	GoodsOrderService goodsOrderService;
 	
+	@Autowired
+	GoodsOrderListService goodsOrderListService;
+	
+	@Autowired
+	GoodsOrderDetailService goodsOrderDetailService;
+	
+	@Autowired
+	GoodsOrderUpdateService goodsOrderUpdateService;
+	
+	@Autowired
+	GoodsOrderDeleteService goodsOrderDeleteService;
+	
 	@GetMapping("goodsOrderList")
-	public String goodsOrderList() {
+	public String goodsOrderList(Model model) {
+		goodsOrderListService.execute(model);
 		return "thymeleaf/goodsOrder/goodsOrderList";
 	}
 	
@@ -49,6 +66,28 @@ public class GoodsOrderController {
 			return "thymeleaf/goodsOrder/goodsOrder";
 		}
 		goodsOrderService.execute(goodsOrderCommand, session);
+		return "redirect:/goodsOrder/goodsOrderList";
+	}
+	
+	@GetMapping("goodsOrderUpdate")
+	public String goodsOrderUpdate(String goodsOrderNum, Model model) {
+		goodsOrderDetailService.execute(goodsOrderNum, model);
+		return "thymeleaf/goodsOrder/goodsOrderUpdate";
+	}
+	
+	@PostMapping("goodsOrderUpdate")
+	public String goodsOrderUpdate(@Validated GoodsOrderCommand goodsOrderCommand, BindingResult result, Model model, HttpSession session) {
+		if(result.hasErrors()) {
+			model.addAttribute("goodsOrderCommand", goodsOrderCommand);
+			return "thymeleaf/goodsOrder/goodsOrderUpdate";
+		}
+		goodsOrderUpdateService.execute(goodsOrderCommand, session);
+		return "redirect:/goodsOrder/goodsOrderList";
+	}
+	
+	@GetMapping("goodsOrderDelete")
+	public String goodsOrderDelete(String goodsOrderNum) {
+		goodsOrderDeleteService.execute(goodsOrderNum);
 		return "redirect:/goodsOrder/goodsOrderList";
 	}
 }

@@ -4,8 +4,58 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
    
 <mapper namespace="DDL.mapper.GoodsOrderMapper">
+	<resultMap type="goodsOrderDetailDTO" id="goodsOrderDetailDTO">
+		<association property="goodsOrderDTO">
+			<id column="goods_order_num" javaType="String" jdbcType="VARCHAR" property="goodsOrderNum"/>
+			<result column="goods_order_date" javaType="date" jdbcType="DATE" property="goodsOrderDate"/>
+			<result column="emp_num" javaType="String" jdbcType="VARCHAR" property="empNum"/>
+			<result column="contract_num" javaType="String" jdbcType="VARCHAR" property="contractNum"/>
+			<result column="sup_num" javaType="String" jdbcType="VARCHAR" property="supNum"/>
+			<result column="goods_order_qty" javaType="Integer" jdbcType="BIGINT" property="goodsOrderQty"/>
+		</association>
+		
+		<association property="goodsDTO" javaType="goodsDTO">
+	        <id column="goods_num" property="goodsNum" javaType="String" jdbcType="VARCHAR"/>
+	        <result column="goods_name" property="goodsName" javaType="String" jdbcType="VARCHAR"/>
+	    </association>
+	    		
+		<association property="contractDTO" javaType="contractDTO">
+			<id column="CONTRACT_NUM" property="contractNum" javaType="String" jdbcType="VARCHAR"/>
+	        <result column="GOODS_NUM" property="goodsNum" javaType="String" jdbcType="VARCHAR"/>
+		</association>
+	</resultMap>
+
 	<insert id="goodsOrderInsert">
 		insert into goods_order(goods_order_num, goods_order_date, emp_num, contract_num, sup_num, goods_order_qty)
 		values(#{goodsOrderNum}, sysdate, #{empNum}, #{contractNum}, #{supNum}, #{goodsOrderQty})
 	</insert>
+	
+	<select id="goodsOrderSelectList" resultMap="goodsOrderDetailDTO">
+		select goods_order_num, goods_order_date, emp_num, go.sup_num, goods_order_qty,
+        g.goods_num, goods_name
+		from goods_order go join contract c
+		on go.contract_num = c.contract_num
+		join goods g
+		on c.goods_num = g.goods_num
+	</select>
+	
+	<select id="goodsOrderSelectOne" resultMap="goodsOrderDetailDTO">
+		select goods_order_num, goods_order_date, emp_num, c.contract_num, go.sup_num, goods_order_qty,
+        g.goods_num, goods_name
+		from goods_order go join contract c
+		on go.contract_num = c.contract_num
+		join goods g
+		on c.goods_num = g.goods_num
+		where goods_order_num = #{goodsOrderNum}
+	</select>
+	
+	<update id="goodsOrderUpdate">
+		update goods_order set goods_order_date = sysdate, emp_num = #{empNum}, contract_num = #{contractNum}, 
+		goods_order_qty = ${goodsOrderQty}, sup_num = #{supNum}
+		where goods_order_num = #{goodsOrderNum}
+	</update>
+	
+	<delete id="goodsOrderDelete">
+		delete from goods_order where goods_order_num = #{goodsOrderNum}
+	</delete>
 </mapper>

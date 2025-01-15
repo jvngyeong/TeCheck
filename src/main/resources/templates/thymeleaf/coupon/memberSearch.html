@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>숙소 검색</title>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+function memSearch(element) {
+    // 데이터 속성에서 값을 가져옴
+    const memberNum = element.dataset.membernum;
+    // 부모 창의 input 필드에 값 설정
+    $(opener.document).find("#memberNum").val(memberNum);
+    // 팝업 창 닫기
+    window.self.close();
+}
+</script>
+<link href="/static/css/goodsSelect.css" rel="stylesheet">
+</head>
+<body>
+<table border="1" width="600" align="center">
+    <thead>
+        <tr>
+            <th>회원번호</th>
+            <th>아이디</th>
+            <th>이름</th>
+            <th>전화번호</th>
+            <th>생년월일</th>
+            <th>이메일</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="memberDTO : ${list}">
+            <td>
+                <a href="javascript:void(0);"
+                   th:data-membernum="${memberDTO.memberNum}"
+                   onclick="memSearch(this)">
+                   [[${memberDTO.memberNum}]]
+                </a>
+            </td>
+            <td>[[${memberDTO.memberId}]]</td>
+            <td>[[${memberDTO.memberName}]]</td>
+            <td>[[${memberDTO.memberPhone}]]</td>
+            <td>[[${#dates.format(memberDTO.memberBirth, 'yyyy-MM-dd')}]]</td>
+            <td>[[${memberDTO.memberEmail}]]</td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -37,6 +37,24 @@
 		where rn between #{startRow} and #{endRow}
 	</select>
 	
+	<select id="goodsSortedListSelect" parameterType="string">
+		select * from (
+			select ROW_NUMBER() over (order by goods_num desc) as rn,
+					<include refid="goodsColumns" />
+			from goods
+			<where>
+				<if test="searchWord != null">
+					goods_name like '%' || #{searchWord} || '%'
+					or goods_kind like '%' || #{searchWord} || '%'
+				</if>
+			</where>
+		)
+		where rn between #{startRow} and #{endRow} 
+		<if test="sortValue != null">
+        	${sortValue}
+    	</if>
+	</select>
+	
 	<select id="goodsCount" parameterType="string" resultType="integer">
 		select count(*) from goods
 		<where>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>숙소 검색</title>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+function couponSearch(element) {
+    // 데이터 속성에서 값을 가져옴
+    const couponNum = element.dataset.couponnum;
+    const couponName = element.dataset.couponname;
+    const discount = element.dataset.discount;
+    // 부모 창의 input 필드에 값 설정
+    $(opener.document).find("#couponNum").val(couponNum);
+    $(opener.document).find("#couponName").val(couponName);
+    $(opener.document).find("#discount").val(discount);
+    // 팝업 창 닫기
+    window.self.close();
+}
+</script>
+<link href="/static/css/goodsSelect.css" rel="stylesheet">
+</head>
+<body>
+<table border="1" width="600" align="center">
+    <thead>
+        <tr>
+            <th>쿠폰번호</th>
+            <th>쿠폰이름</th>
+            <th>할인율</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="couponDTO : ${couponList}">
+            <td>
+                <a href="javascript:void(0);"
+                   th:data-couponnum="${couponDTO.couponNum}"
+                   th:data-couponname="${couponDTO.couponName}"
+                   th:data-discount="${couponDTO.discount}"
+                   onclick="couponSearch(this)">
+                   [[${couponDTO.couponNum}]]
+                </a>
+            </td>
+            <td>[[${couponDTO.couponName}]]</td>
+            <td>[[${couponDTO.discount}]]%</td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
