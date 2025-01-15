@@ -9,6 +9,7 @@ import DDL.domain.AuthInfoDTO;
 import DDL.domain.CommunityReplyDTO;
 import DDL.mapper.AutoNumMapper;
 import DDL.mapper.CommunityMapper;
+import DDL.mapper.EmployeeMapper;
 import DDL.mapper.MemberMapper;
 import jakarta.servlet.http.HttpSession;
 
@@ -20,17 +21,23 @@ public class CommunityReplyService {
 	MemberMapper memberMapper;
 	@Autowired
 	AutoNumMapper autoNumMapper;
+	@Autowired
+	EmployeeMapper employeeMapper;
 	public void execute(CommunityReplyCommand communityReplyCommand, HttpSession session) {
 		AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
 		String memberId = auth.getUserId();
 		String memberNum = memberMapper.getMemberNum(memberId);
+		
+		String empId = auth.getUserId();
+		String empNum = employeeMapper.getEmpNum(empId);
+		
 		CommunityReplyDTO communityReplyDTO = new CommunityReplyDTO();
 		BeanUtils.copyProperties(communityReplyCommand, communityReplyDTO);
 		String replyNum = autoNumMapper.getAutoNum("rep_", "5", "reply_num", "reply");
 		communityReplyDTO.setMemberNum(memberNum);
 		communityReplyDTO.setReplyNum(replyNum);
+		communityReplyDTO.setEmpNum(empNum);
 		// 댓글 저장 (Mapper 호출)
         communityMapper.insertReply(communityReplyDTO);
     }
-
 }
