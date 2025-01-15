@@ -17,7 +17,7 @@ public class GoodsReviewWriteService {
 	@Autowired
 	ReviewMapper reviewMapper;
 	public void execute(ReviewCommand reviewCommand) {
-		if(reviewCommand.getReviewNum() == null) {
+		if(reviewCommand.getReviewNum() == null || reviewCommand.getReviewNum().equals("")) {
 			String reviewNum = autoNumMapper.getAutoNum("review_", "8", "review_num", "review");
 			reviewCommand.setReviewNum(reviewNum);
 		}

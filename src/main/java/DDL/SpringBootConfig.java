@@ -50,6 +50,8 @@ public class SpringBootConfig implements WebMvcConfigurer {
                                "/regist/**",    //회원 가입 - 회원 정보 입력 창
                                "/shop/shopList",
                                "/shop/shopDetail",
+                               "/shop/sortedList",
+                               "/shop/itemDescript",
                                "/wish/**",
                                "/cart/cartInsert",
                                "/stock/**",
@@ -59,6 +61,9 @@ public class SpringBootConfig implements WebMvcConfigurer {
                                "/userConfirm",
                                "/user/welcome",
                                "/supply/**",
-                               "/inquire/inquireList"); // 제외 경로 수정
+                               "/inquire/inquireList",
+                               "/book/**",
+                               "/inquire/inquireExpList",
+                               "/review/reviewInfo"); // 제외 경로 수정
     }
 }

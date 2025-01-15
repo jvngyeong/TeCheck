@@ -1,6 +1,7 @@
 package DDL.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,8 +13,11 @@ public interface ReviewMapper {
 
 	void reviewWrite(ReviewDTO reviewDTO);
 
-	List<GoodsReviewDTO> selectReviewList();
-
 	ReviewDTO reviewSelectOne(String orderNum, String goodsNum);
+
+	List<GoodsReviewDTO> selectReviewList(Map<String, Object> map);
+
+	void reviewDelete(String reviewNum);
+
 
 }

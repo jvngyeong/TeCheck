@@ -181,7 +181,13 @@ function inquireAnswer(inquireNum){
 	      <tr th:each="dto  , idx : ${list}" ><td>[[${idx.count }]]</td>
 		  <td><a th:href="|javascript:inquireAnswer('${dto.inquireNum }');|">
 					[[${dto.inquireKind}]] : [[${dto.inquireTitle }]]</a></td>
-		  <td><a th:href="|javascript:goodsDetail('${dto.goodsNum }');|">[[${dto.goodsNum }]]</a></td>
+		  <td><th:block th:if="${dto.goodsNum != null}">
+		  		<a th:href="|javascript:goodsDetail('${dto.goodsNum }');|">[[${dto.goodsNum }]]</a>
+		  	  </th:block>
+		  	  <th:block th:if="${dto.expNum != null}">
+		  		[[${dto.expNum}]]</a>
+		  	  </th:block>
+		  </td>
 		  <td>[[${dto.memberId}]]</td></tr>
 	    </tbody>
 	  </table>

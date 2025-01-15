@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div class="tab-pane active" id="nav-about" role="tabpanel"
+	aria-labelledby="nav-about-tab">
+	<p>
+	[[${goodsDTO.goodsContents}]]
+	</p>
+	<th:block th:each="image : ${#strings.arraySplit(goodsDTO.goodsDetailStoreImage,'[`/]')}">
+		<img th:src="|/static/upload/${image}|" width="500px" alt="Image"/><br /><br />
+	</th:block>
+</div>
+</body>
+</html>

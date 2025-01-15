@@ -76,6 +76,7 @@
 		<tr><td colspan="3" style="padding: 12px; border-bottom: 1px solid #ddd;">
 		        <div style="display: flex; justify-content: space-between; align-items: center;">
 		            <div style="flex: 1; text-align: left;">
+		            	<b>제목 : [[${dto.inquireTitle}]]</b><br />
 		                <span th:utext="${#strings.replace(dto.inquireContents, newLineChar,'&lt;br /&gt;')}"></span>
 		            </div>
 		            <div style="text-align: right;">
