@@ -51,6 +51,7 @@ public class SpringBootConfig implements WebMvcConfigurer {
                                "/shop/shopList",
                                "/shop/shopDetail",
                                "/shop/sortedList",
+                               "/shop/itemDescript",
                                "/wish/**",
                                "/cart/cartInsert",
                                "/stock/**",

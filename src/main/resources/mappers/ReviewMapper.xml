@@ -18,11 +18,21 @@
 			<result column="order_num" property="orderNum" javaType="String" jdbcType="VARCHAR"/>
 			<result column="goods_num" property="goodsNum" javaType="String" jdbcType="VARCHAR"/>
 		</association>
+		
+		<association property="orderDTO">
+			<id column="order_num" property="orderNum" javaType="String" jdbcType="VARCHAR"/>
+			<result column="member_num" property="memberNum" javaType="String" jdbcType="VARCHAR"/>
+		</association>
+		
+		<association property="memberDTO">
+			<id column="member_num" property="memberNum" javaType="String" jdbcType="VARCHAR"/>
+			<id column="member_id" property="memberId" javaType="String" jdbcType="VARCHAR"/>
+		</association>
 	</resultMap>
 	<insert id="reviewWrite" parameterType = "reviewDTO">
 		MERGE INTO review r
 		USING (SELECT goods_num FROM goods WHERE goods_num = #{goodsNum}) g
-		ON (r.goods_num = g.goods_num)
+		ON (r.goods_num = g.goods_num and r.order_num = #{orderNum})
 		WHEN MATCHED THEN
 		    UPDATE
 		        SET r.book_num = #{bookNum}, 
@@ -34,14 +44,29 @@
 	</insert>
 	
 	<select id="selectReviewList" resultMap="goodsReviewDTO">
-		select review_num, book_num, review_date, review_content, order_num, r.goods_num,
-		g.goods_name
+		select review_num, book_num, review_date, review_content, r.order_num, r.goods_num,
+		g.goods_name, o.member_num, member_id
 		from review r join goods g
-		on r.goods_num = g.goods_num
+		on r.goods_num = g.goods_num join orders o
+		on r.order_num = o.order_num join members m
+		on o.member_num = m.member_num
+		<trim prefix="where" prefixOverrides="AND | OR">
+			<if test="goodsNum != null">
+				 r.goods_num = #{goodsNum}
+			</if>
+			<if test="memberNum != null">
+				and o.member_num = #{memberNum}
+			</if>
+		</trim> 
 	</select>
 	
 	<select id="reviewSelectOne">
 		select review_num, book_num, review_date, review_content, order_num, goods_num
 		from review where order_num = #{orderNum} and goods_num = #{goodsNum}
 	</select>
+	
+	<delete id="reviewDelete" parameterType="string">
+		delete from review
+		where review_num = #{reviewNum}
+	</delete>
 </mapper>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div class="d-flex" th:each="dto:${list}">
+	<img src="/static/img/avatar.jpg"
+		class="img-fluid rounded-circle p-3"
+		style="width: 100px; height: 100px;" alt="">
+	<div class="">
+		<p class="mb-2" style="font-size: 14px;">[[${#dates.format(dto.reviewDTO.reviewDate, 'yyyy-MM-dd')}]]</p>
+		<div class="d-flex justify-content-between">
+			<h5>[[${dto.memberDTO.memberId}]]</h5>
+		</div>
+		<p class="text-dark">[[${dto.reviewDTO.reviewContent}]]</p>
+	</div>
+</div>
+</body>
+</html>

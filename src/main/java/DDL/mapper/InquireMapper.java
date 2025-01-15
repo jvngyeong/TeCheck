@@ -14,4 +14,7 @@ public interface InquireMapper {
 	public Integer inquireUpdate(InquireDTO inquireDTO);
 	public Integer inquireDelete(String inquireNum);
 	public Integer inquireAnswerUpdate(InquireDTO inquireDTO);
+	public List<InquireDTO> inquireMine(String memberNum);
+	public List<InquireDTO> inquireExp(String expNum);
+	public Integer inquireExpInsert(InquireDTO inquireDTO);
 }

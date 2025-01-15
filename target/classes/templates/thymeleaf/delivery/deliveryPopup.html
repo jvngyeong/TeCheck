@@ -86,17 +86,17 @@
 				<th:block th:each = "list, idx : ${list}">
 						<tr>
 							<th style="text-align-last: center">
-								<img th:src="|/static/upload/${list.goodsDTO[idx.index].goodsMainStoreImage}|" style="object-fit: contain" width="100px" height="100px"/>
+								<img th:src="|/static/upload/${list.goodsDTO[0].goodsMainStoreImage}|" style="object-fit: contain" width="100px" height="100px"/>
 							</th>
 							<th>
-								제품명 :  [[${list.goodsDTO[idx.index].goodsName}]] | 제품 가격 : [[${list.purchaseListDTO[idx.index].goodsUnitPrice}]] | 주문수량 : [[${list.purchaseListDTO[idx.index].purchaseQty}]]
+								제품명 :  [[${list.goodsDTO[0].goodsName}]] | 제품 가격 : [[${list.purchaseListDTO[0].goodsUnitPrice}]] | 주문수량 : [[${list.purchaseListDTO[0].purchaseQty}]]
 							</th>
 						</tr>
 							
 						<tr>
 							<th colspan = '2' style="text-align-last: center">
 								상품 설명 : 
-								<span>[[${list.goodsDTO[idx.index].goodsContents}]]</span>
+								<span>[[${list.goodsDTO[0].goodsContents}]]</span>
 							</th>
 						</tr>
 				</th:block>

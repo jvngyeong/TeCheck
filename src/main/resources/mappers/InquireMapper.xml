@@ -9,26 +9,53 @@
 		VALUES(#{inquireNum}, #{memberNum}, #{goodsNum}, #{inquireTitle}
 			, #{inquireKind}, #{inquireContents}, sysdate)
 	</insert>
+	<insert id="inquireExpInsert" parameterType="inquireDTO">
+		insert into inquire(INQUIRE_NUM, MEMBER_NUM, EXP_NUM, INQUIRE_TITLE
+			,INQUIRE_KIND, INQUIRE_CONTENTS, INQUIRE_DATE)
+		VALUES(#{inquireNum}, #{memberNum}, #{expNum}, #{inquireTitle}
+			, #{inquireKind}, #{inquireContents}, sysdate)
+	</insert>
 	
 	<select id="inquireInfo" parameterType="hashmap" resultType="inquireDTO">
-	select INQUIRE_NUM, INQUIRE_TITLE, INQUIRE_CONTENTS , INQUIRE_DATE
-			, INQUIRE_KIND, i.GOODS_NUM, i.EXP_NUM, i.MEMBER_NUM, i.EMP_NUM
-			, INQUIRE_ANSWER, INQUIRE_ANSWER_DATE, exp_name, goods_name, member_id
-	from inquire i left outer join members m 
-	on i.member_num = m.member_num join goods g 
-	on i.goods_num = g.goods_num left outer join experience e
-	on i.exp_num = e.exp_num
-	<trim prefix="where" prefixOverrides="AND | OR">
-		<if test="goodsNum != null">
-			 i.goods_num = #{goodsNum}
-		</if>
-		<if test="inquireNum != null">
-			and inquire_num = #{inquireNum}
-		</if>
-		<if test="expNum != null">
-			and i.exp_num = #{expNum}
-		</if>
-	</trim> 
+		select INQUIRE_NUM, INQUIRE_TITLE, INQUIRE_CONTENTS , INQUIRE_DATE
+				, INQUIRE_KIND, i.GOODS_NUM, i.EXP_NUM, i.MEMBER_NUM, i.EMP_NUM
+				, INQUIRE_ANSWER, INQUIRE_ANSWER_DATE, exp_name, goods_name, member_id
+		from inquire i left outer join members m 
+		on i.member_num = m.member_num left outer join goods g 
+		on i.goods_num = g.goods_num left outer join experience e
+		on i.exp_num = e.exp_num
+		<trim prefix="where" prefixOverrides="AND | OR">
+			<if test="goodsNum != null">
+				 i.goods_num = #{goodsNum}
+			</if>
+			<if test="inquireNum != null">
+				and inquire_num = #{inquireNum}
+			</if>
+			<if test="expNum != null">
+				and i.exp_num = #{expNum}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="inquireMine" parameterType="string" resultType="inquireDTO">
+		select INQUIRE_NUM, INQUIRE_TITLE, INQUIRE_CONTENTS , INQUIRE_DATE
+				, INQUIRE_KIND, i.GOODS_NUM, i.EXP_NUM, i.MEMBER_NUM, i.EMP_NUM
+				, INQUIRE_ANSWER, INQUIRE_ANSWER_DATE, exp_name, goods_name, member_id
+		from inquire i left outer join members m 
+		on i.member_num = m.member_num left outer join goods g 
+		on i.goods_num = g.goods_num left outer join experience e
+		on i.exp_num = e.exp_num
+		where i.member_num = #{member_num}
+	</select>
+	
+	<select id="inquireExp" parameterType="string" resultType="inquireDTO">
+		select INQUIRE_NUM, INQUIRE_TITLE, INQUIRE_CONTENTS , INQUIRE_DATE
+				, INQUIRE_KIND, GOODS_NUM, i.EXP_NUM, i.MEMBER_NUM, i.EMP_NUM
+				, INQUIRE_ANSWER, INQUIRE_ANSWER_DATE, exp_name, member_id
+		from inquire i left outer join members m 
+		on i.member_num = m.member_num join experience e
+		on i.exp_num = e.exp_num
+		where i.EXP_NUM is not null
 	</select>
 	
 	<update id="inquireUpdate" parameterType="inquireDTO">

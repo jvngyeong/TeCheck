@@ -3,6 +3,33 @@
 <head>
 <meta charset="utf-8">
 <title>테크체크 - 실시간 주식 데이터 기반 제품 구매 추천 서비스</title>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	function inquireUpdate(inquireNum){
+		window.open("/inquire/inquireMineUpdate?inquireNum="+inquireNum,
+				"","width=700, height=650, top = 100, left=100");
+	}
+
+	function inquireDelete(inquireNum){
+		$.ajax({
+			type:'post',
+			url:'/inquire/inquireDelete',
+			data: {'inquireNum':inquireNum},
+			success:function(){
+		         window.location.reload(); // 페이지 새로고침
+			}
+		});
+	}
+	function contentOpen(id){
+		if($("."+id).css("display") == "none"){
+			$("."+id).css("display", ""); 
+			$("#"+id).text("답변닫기");
+		}else{
+			$("."+id).css("display", "none"); 
+			$("#"+id).text("답변열기"); 
+		}
+	}
+</script>
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <meta content="" name="keywords">
 <meta content="" name="description">
@@ -123,57 +150,73 @@
       <h1 class="text-center text-white display-6">마이페이지</h1>
       <ol class="breadcrumb justify-content-center mb-0">
          <li class="breadcrumb-item"><a href="/">홈</a></li>
-         <li class="breadcrumb-item active text-white">마이페이지</li>
+         <li class="breadcrumb-item"><a href="/myPage/memberMyPage">마이페이지</a></li>
+         <li class="breadcrumb-item active text-white">내 문의 내역</li>
       </ol>
    </div>
    <!-- Single Page Header End -->
 
 
    <!-- Single Product Start -->
-   <div class="container-fluid py-5 mt-5">
-      <div class="container py-5">
-         <div class="row g-4 mb-5 justify-content-center">
-            <div class="col-lg-8 col-xl-9">
-               <div class="row g-4">
-               <a href="/book/bookList" style="margin: 25px 0 8px 0;" class="memInfoBtn btn border border-secondary px-3 text-primary">예약 내역</a>
-               <a th:href="|/order/orderList?memberNum=${memberCommand.memberNum}|" style="margin: 75px 0 8px 0;" class="memInfoBtn btn border border-secondary px-3 text-primary">주문 목록</a>
-               <a href="/review/reviewList" style="margin: 125px 0 8px 0;" class="memInfoBtn btn border border-secondary px-3 text-primary">리뷰 목록</a>
-               <a th:href="|/inquire/inquireMine?memberNum=${memberCommand.memberNum}|" style="margin: 175px 0 8px 0;" class="memInfoBtn btn border border-secondary px-3 text-primary">문의 내역</a>
-                  <div class="col-lg-6">
-                     <div class="border rounded">
-                        <a href="#"> <img src="/static/img/default-profile.png" class="img-fluid rounded" alt="Image">
-                        </a>
-                     </div>
-                  </div>
-                  
-                  <div class="col-lg-6">
-                     <h4 class="fw-bold mb-3">[[${memberCommand.memberName}]]님 상세정보</h4>
-                     <p class="mb-4">회원번호 : [[${memberCommand.memberNum}]]</p>
-                     <p class="mb-4">아이디 : [[${memberCommand.memberId}]]</p>
-                     <p class="mb-4">성별 : <th:block th:if="${memberCommand.gender} == 'M'">남자</th:block>
-                     						<th:block th:if="${memberCommand.gender} == 'F'">여자</th:block></p>
-                     <p class="mb-4">나이 : [[${memberCommand.memberAge}]]</p>
-                     <p class="mb-4">연락처 : [[${memberCommand.memberPhone}]]</p>
-                     <p class="mb-4">이메일 : [[${memberCommand.memberEmail}]]</p>
-                     <p class="mb-4">주소 : [[${memberCommand.memberAddr}]] [[${memberCommand.memberAddrDetail}]]</p>
-                     <p class="mb-4">우편번호 : [[${memberCommand.memberPost}]]</p>
-                     
-                     <p class="mb-4">생년월일 : [[${#dates.format(memberCommand.memberBirth, 'yyyy-MM-dd')}]]</p>
-                     <p class="mb-4">가입일 : [[${#dates.format(memberCommand.memberRegist, 'yyyy-MM-dd')}]]</p>
-                     <a href="/myPage/myPagePwCon?page=memberModify"
-                        class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
-                        <i class="fa-solid fa-pen" style = "margin-right : 10px;"></i>수정하기
-                     </a>
-                     <a href="/myPage/myPagePwCon?page=memberDelete"
-                        class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
-                        <i class="fa-solid fa-circle-xmark" style = "margin-right : 10px;"></i>탈퇴하기
-                     </a>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-   </div>
+   <div class="container-fluid fruite py-5"
+		style="padding-top: 7rem !important;">
+		<div class="container py-5">
+			<div class="tab-class text-center">
+				<div class="row g-4">
+					<div class="col-lg-4 text-start">
+						<h1 style="display: inline-block">[[${list[0].memberId}]]님 문의 내역</h1>
+					</div>
+				</div>
+			</div>
+			<div class="board-list">
+                    <table style="width: 100%; margin: 20px auto; border-collapse: separate; border-spacing: 0; background-color: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: 1px solid #ddd;">
+
+					<tr>
+						<th style="padding: 12px; text-align: center; background-color: #f8f9fa; font-weight: bold; border-bottom: 1px solid #ddd;">답변 상태</th>
+						<th style="padding: 12px; text-align: center; background-color: #f8f9fa; font-weight: bold; border-bottom: 1px solid #ddd;">작성자</th>
+						<th style="padding: 12px; text-align: center; background-color: #f8f9fa; font-weight: bold; border-bottom: 1px solid #ddd;">질문일자</th>
+					</tr>
+					<th:block th:each="dto, idx : ${list}">
+						<tr><td style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd;">
+								<span th:if="${dto.inquireAnswer == null}">검토중</span>  
+								<span th:if="${dto.inquireAnswer != null}">답변완료</span>
+							</td>
+							<td style="padding: 12px; text-align: center; border-bottom: 1px solid #ddd;">[[${dto.memberId}]]</td>
+							<td style="padding: 12px; border-bottom: 1px solid #ddd; display: flex; align-items: center;     justify-content: right;">
+							    [[${#dates.format(dto.inquireDate,'yyyy-MM-dd')}]]
+							    <div style="text-align: right; display: flex;">
+							        <th:block th:if="${session.auth != null}">
+							            <th:block th:if="${session.auth.userId == dto.memberId}">
+							                <button type="button" style="margin-left: 5px; padding: 8px 12px; font-size: 14px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; background-color: #007bff; color: #fff; transition: all 0.3s ease;" th:attr="onclick=|inquireUpdate('${dto.inquireNum}');|">문의수정</button>
+							                <button type="button" style="margin-left: 5px; padding: 8px 12px; font-size: 14px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; background-color: #dc3545; color: #fff; transition: all 0.3s ease;" th:attr="onclick=|inquireDelete('${dto.inquireNum}');|">문의삭제</button>
+							            </th:block>
+							        </th:block>
+							    </div>
+							</td>
+						</tr>
+						<tr><td colspan="3" style="padding: 12px; border-bottom: 1px solid #ddd;">
+						        <div style="display: flex; justify-content: space-between; align-items: center;">
+						            <div style="flex: 1; text-align: left;">
+						            	<b>제목 : [[${dto.inquireTitle}]]</b><br />
+						                <span th:utext="${#strings.replace(dto.inquireContents, newLineChar,'&lt;br /&gt;')}"></span>
+						            </div>
+						            <div style="text-align: right;">
+						                <button type="button" style="margin-left: 5px; padding: 8px 12px; font-size: 14px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; background-color: #007bff; color: #fff; transition: all 0.3s ease;" th:id="inq_+${dto.inquireNum}" th:if="${dto.inquireAnswer != null}" th:attr="onclick=|contentOpen('inq_${dto.inquireNum}');|">답변열기</button>
+						            </div>
+						        </div>
+						    </td>
+						</tr>
+						<tr th:if="${dto.inquireAnswer != null}" style="display:none;" th:class="inq_+${dto.inquireNum}">
+							<td colspan="3" style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">답변일 : [[${#dates.format(dto.inquireAnswerDate,'yyyy-MM-dd')}]]<br />
+							<span th:utext="${#strings.replace(dto.inquireAnswer,newLineChar,'&lt;br /&gt;')}"></span>
+							</td>                 
+						</tr>
+					</th:block>
+				</table>
+			</div>
+		</div>
+	</div>
+
    <!-- Single Product End -->
 
 
