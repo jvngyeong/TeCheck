@@ -31,6 +31,7 @@ target/maven-status/**
 target/surefire-reports/**
 target/classes/static/upload/**
 
+
 # Eclipse specific
 .externalToolBuilders/
 *.launch
@@ -68,4 +69,5 @@ TeCheck1-0.0.1-SNAPSHOT.war.original
 
 ### End ###
 src/main/resources/application.properties
+src/main/resources/static/upload
 .classpath
