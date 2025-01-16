@@ -185,6 +185,7 @@
 		</caption>
 	    <thead>
 	      <tr>
+	     	<th style = "text-align:center;" scope="col">발급번호</th>
 	        <th style = "text-align:center;" scope="col">쿠폰번호</th>
 	        <th scope="col">쿠폰이름</th>
 	        <th scope="col">할인율</th>
@@ -195,25 +196,26 @@
 	      </tr>
 	    </thead>
 	    <tbody>
-	       <tr th:each="dto , idx : ${couponList}" >
-				<td>[[${dto.couponNum}]]</td>
+	       <tr th:each="couponDetailDTO , idx : ${couponDetailList}" >
+	       		<td>[[${couponDetailDTO.memberCouponDTO.issueNum}]]</td>
+				<td>[[${couponDetailDTO.couponDTO.couponNum}]]</td>
 				<td>
-					[[${dto.couponName}]]
+					[[${couponDetailDTO.couponDTO.couponName}]]
 				</td>
 				<td>
-					[[${dto.discount}]]%
+					[[${couponDetailDTO.couponDTO.discount}]]%
 				</td>
 				<td>
-					[[${dto.memberNum}]]%
+					[[${couponDetailDTO.memberCouponDTO.memberNum}]]
 				</td>
 				<td>
-					[[${dto.couponStart}]]%
+					[[${#dates.format(couponDetailDTO.memberCouponDTO.couponStart, 'yyyy-MM-dd')}]]
 				</td>
 				<td>
-					[[${dto.couponExpire}]]%
+					[[${#dates.format(couponDetailDTO.memberCouponDTO.couponExpire, 'yyyy-MM-dd')}]]
 				</td>
 				<td>
-					<button type="button" class = "formBtn" th:attr="onclick=|location.href='/coupon/couponUpdate?couponNum=${dto.couponNum}'|">수정/삭제</button>
+					<button type="button" class = "formBtn" th:attr="onclick=|location.href='/coupon/memberCouponUpdate?issueNum=${couponDetailDTO.memberCouponDTO.issueNum}'|">수정/삭제</button>
 				</td>
 			</tr>
 	      

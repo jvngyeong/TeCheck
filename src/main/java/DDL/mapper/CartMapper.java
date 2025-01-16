@@ -17,4 +17,6 @@ public interface CartMapper {
 	int cartDelete(String goodsNum, String memberNum);
 
 	void cartUpdate(String cartQty, String goodsNum, String memberNum);
+
+	void cartListDelete(String orderNum, String memberNum);
 }

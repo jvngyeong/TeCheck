@@ -12,15 +12,26 @@ import com.inicis.std.util.HttpUtil;
 import com.inicis.std.util.ParseUtil;
 import com.inicis.std.util.SignatureUtil;
 
+import DDL.domain.AuthInfoDTO;
+import DDL.domain.MemberDTO;
 import DDL.domain.PayDTO;
+import DDL.mapper.CartMapper;
+import DDL.mapper.MemberMapper;
 import DDL.mapper.OrderMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class INIstdpayPcReturn {
 	@Autowired
 	OrderMapper orderMapper;
-	public void execute(HttpServletRequest request) {
+	
+	@Autowired
+	CartMapper cartMapper;
+	
+	@Autowired
+	MemberMapper memberMapper;
+	public void execute(HttpServletRequest request, HttpSession session) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		try{
 			//#############################
@@ -59,7 +70,6 @@ public class INIstdpayPcReturn {
 				String authUrl	= paramMap.get("authUrl");
 				String netCancel= paramMap.get("netCancelUrl");	
 				String merchantData = paramMap.get("merchantData");
-				
 				//#####################
 				// 2.signature 생성
 				//#####################
@@ -120,7 +130,17 @@ public class INIstdpayPcReturn {
 					dto.setResultmessage(resultMap.get("resultMsg"));
 					dto.setTid(resultMap.get("tid"));
 					dto.setTotalprice(resultMap.get("TotPrice"));
-					//dto.setPurchaseName(resultMap.get("goodsName"));
+					
+					MemberDTO memberDTO = memberMapper.memberSelectByOrderNum(dto.getOrderNum());
+					AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+					if(auth == null) {
+						auth.setUserId(memberDTO.getMemberId());
+						auth.setGrade("mem");
+						auth.setUserName(memberDTO.getMemberName());
+						auth.setUserPw(memberDTO.getMemberPw());
+						session.setAttribute("auth", auth);
+					}
+					cartMapper.cartListDelete(dto.getOrderNum(), memberDTO.getMemberNum());
 					orderMapper.payInsert(dto);
 					orderMapper.orderStatusUpdate(resultMap.get("MOID"));
 				} catch (Exception ex) {

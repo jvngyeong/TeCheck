@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import DDL.service.order.INIstdpayPcReturn;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("payment")
@@ -13,8 +14,8 @@ public class PayController {
 	INIstdpayPcReturn iNIstdpayPcReturn;
 	
 	@RequestMapping("INIstdpay_pc_return")
-	public String payReturn(HttpServletRequest req){
-		iNIstdpayPcReturn.execute(req);
+	public String payReturn(HttpServletRequest req, HttpSession session){
+		iNIstdpayPcReturn.execute(req, session);
 		return "redirect:/";
 	}
 	

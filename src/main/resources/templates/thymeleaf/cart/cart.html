@@ -36,6 +36,17 @@
 <link href="/static/css/style.css" rel="stylesheet">
 
 <script type="text/javascript">
+	function purchaseList(){
+		if ($("#couponNum").val() === "") {
+		    alert("Input is empty.");
+		}
+		location.href="/purchase/purchaseList?couponNum="+$("#couponNum").val();
+	}
+
+	function couponPopup(){
+		window.open("/coupon/couponPopup","내쿠폰함","width=1000,height=500,left=30, top=30" );
+	}
+	
 	function cartDelete(goodsNum, memberNum){
 		$.ajax({
 			url : "/cart/cartDelete",
@@ -52,11 +63,15 @@
 	}
 	function cartTotalUpdate(){
 		var cartTotal = 0;
+		var oldCartTotal = 0;
 		$("p[name='totalPrice']").each(function() {
 		    var price = $(this).text().replace(/[^0-9]/g, ""); 
 		    cartTotal = cartTotal + Number(price);
 		});
+		oldCartTotal = cartTotal;
+		cartTotal = cartTotal * (1 - ($("#couponDiscount").val() * 0.01));
 		$("#cartTotal").html(cartTotal.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' }));
+		$("#oldCartTotal").html(oldCartTotal.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' }));
 	}
 	$(function(){
 		cartTotalUpdate();
@@ -224,7 +239,7 @@
         <div class="container-fluid page-header py-5">
             <h1 class="text-center text-white display-6">장바구니</h1>
             <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item"><a href="/">홈</a></li>
+                <li class="breadcrumb-item"><a class = "navbarA" href="/">홈</a></li>
                 <li class="breadcrumb-item active text-white">장바구니</li>
             </ol>
         </div>
@@ -257,6 +272,7 @@
 	                                <td style = "align-content:center;">
 	                                	<input name = "goodsNum" type = "hidden" th:value = "${goodsCartDTO.cartDTO.goodsNum}" />
 	                                	<input name = "memberNum" type = "hidden" th:value = "${goodsCartDTO.cartDTO.memberNum}" />
+	                                	<input id = "couponNum" type = "hidden" />
 	                                    <p name = "goodsName" class="mb-0 mt-4" style = "margin-top:0 !important">
 	                                    <a th:href = "|/goods/goodsDetail?goodsNum=${goodsCartDTO.cartDTO.goodsNum}|">
 	                                    [[${goodsCartDTO.goodsDTO.goodsName}]]
@@ -290,29 +306,41 @@
 	                                    </button>
 	                                </td>
 	                            </tr>
-                            </th:block>
+	                            </th:block>
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-5">
-                    <input type="text" class="border-0 border-bottom rounded me-5 py-3 mb-4" placeholder="Coupon Code">
-                    <button class="btn border-secondary rounded-pill px-4 py-3 text-primary" type="button">Apply Coupon</button>
-                </div>
-                <div class="row g-4 justify-content-end">
-                    <div class="col-8"></div>
-                    <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
-                        <div class="bg-light rounded">
-                            <div class="p-4" style = "padding-bottom: 0px !important;">
-                                <h1 class="display-6 mb-4">Total</h1>
-                            </div>
-                            <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                                <h5 class="mb-0 ps-4 me-4">Total</h5>
-                                <p id = "cartTotal" class="mb-0 pe-4"></p>
-                            </div>
-                            <button onclick = "javascript:location.href='/purchase/purchaseList'" style = "border: 2px solid black !important;" class="btn border-secondary px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">결제하기</button>
-                        </div>
-                    </div>
-                </div>
+                <th:block th:if = "${goodsCartDTOList.size > 0}">
+	                <div class="justify-content-start">
+	                    <button onclick="couponPopup();" class="btn border-secondary rounded-pill px-4 py-3 text-primary" type="button">쿠폰 선택하기</button>
+	                <div class="row g-4 justify-content-end">
+	                    <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4" style = "width:50%">
+	                        <div class="bg-light rounded">
+	                            <div class="p-4" style = "padding-bottom: 0px !important;">
+	                                <h1 class="display-6 mb-4">총 금액</h1>
+	                            </div>
+	                            
+	                            <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+	                                <h5 class="mb-0 ps-4 me-4">총 금액</h5>
+	                                <p id = "oldCartTotal" class="mb-0 pe-4"></p>
+	                            </div>
+	                            
+	                            <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+	                                <h5 class="mb-0 ps-4 me-4" id = "isCoupon">쿠폰 적용 : X</h5>
+                         			<input type = "hidden" id = "couponDiscount" value = "0"/>
+	                                <p id = "couponName" class="mb-0 pe-4"></p>
+	                                <p id = "discount" class="mb-0 pe-4"></p>
+	                            </div>
+	                            <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+	                                <h5 class="mb-0 ps-4 me-4">결제 금액</h5>
+	                                <p id = "cartTotal" class="mb-0 pe-4"></p>
+	                            </div>
+	                            <button onclick = "purchaseList();" style = "border: 2px solid black !important;" class="btn border-secondary px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">결제하기</button>
+	                        </div>
+	                    </div>
+	                </div>
+	                </div>
+                </th:block>
             </div>
         </div>
         <!-- Cart Page End -->

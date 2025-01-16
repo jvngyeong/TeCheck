@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import DDL.command.OrderCommand;
 import DDL.domain.CartDTO;
+import DDL.domain.CouponDTO;
 import DDL.domain.GoodsCartDTO;
 import DDL.domain.GoodsDTO;
+import DDL.mapper.CouponMapper;
 import DDL.mapper.GoodsMapper;
 import DDL.service.IniPayReqService;
 import DDL.service.cart.CartListService;
@@ -36,8 +38,11 @@ public class PurchaseController {
 	@Autowired
 	GoodsMapper goodsMapper;
 	
+	@Autowired
+	CouponMapper couponMapper;
+	
 	@GetMapping("purchaseList")
-	public String purchaseList(Model model, HttpSession session, String goodsNum, String memberNum, String cartQty, String goodsPrice, String goodsName) {
+	public String purchaseList(Model model, HttpSession session, String goodsNum, String memberNum, String cartQty, String goodsPrice, String goodsName, String couponNum) {
 		if(goodsNum == null) {
 			cartListService.execute(model, session);
 		}
@@ -53,6 +58,10 @@ public class PurchaseController {
 			goodsCartDTOList.add(goodsCartDTO);
 			model.addAttribute("goodsCartDTOList", goodsCartDTOList);
 			model.addAttribute("totalPrice", goodsPrice);
+		}
+		if(!couponNum.isEmpty()) {
+			CouponDTO couponDTO = couponMapper.couponSelectOne(couponNum);
+			model.addAttribute("couponDTO", couponDTO);
 		}
 		return "thymeleaf/purchase/purchaseList";
 	}
@@ -84,8 +93,11 @@ public class PurchaseController {
 	}
 	
 	@PostMapping("order")
-	public String order(OrderCommand orderCommand, String[] cartQties, HttpSession session) {
-		String orderNum = orderService.execute(orderCommand, cartQties, session);
+	public String order(OrderCommand orderCommand, String[] cartQties, HttpSession session, Model model) {
+		String orderNum = orderService.execute(orderCommand, cartQties, session, model);
+		if(orderCommand.getOrderPrice() == 0) {
+			System.out.println("성공");
+		}
 		return "redirect:paymentOk?orderNum="+orderNum;
 	}
 	

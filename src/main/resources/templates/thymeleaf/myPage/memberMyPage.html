@@ -122,7 +122,7 @@
    <div class="container-fluid page-header py-5">
       <h1 class="text-center text-white display-6">마이페이지</h1>
       <ol class="breadcrumb justify-content-center mb-0">
-         <li class="breadcrumb-item"><a href="/">홈</a></li>
+         <li class="breadcrumb-item"><a class = "navbarA" href="/">홈</a></li>
          <li class="breadcrumb-item active text-white">마이페이지</li>
       </ol>
    </div>
@@ -139,6 +139,7 @@
                <a th:href="|/order/orderList?memberNum=${memberCommand.memberNum}|" style="margin: 75px 0 8px 0;" class="memInfoBtn btn border border-secondary px-3 text-primary">주문 목록</a>
                <a href="/review/reviewList" style="margin: 125px 0 8px 0;" class="memInfoBtn btn border border-secondary px-3 text-primary">리뷰 목록</a>
                <a th:href="|/inquire/inquireMine?memberNum=${memberCommand.memberNum}|" style="margin: 175px 0 8px 0;" class="memInfoBtn btn border border-secondary px-3 text-primary">문의 내역</a>
+               <a th:href="|/coupon/myCoupon?memberNum=${memberCommand.memberNum}|" style="margin: 225px 0 8px 0;" class="memInfoBtn btn border border-secondary px-3 text-primary">쿠폰함</a>
                   <div class="col-lg-6">
                      <div class="border rounded">
                         <a href="#"> <img src="/static/img/default-profile.png" class="img-fluid rounded" alt="Image">

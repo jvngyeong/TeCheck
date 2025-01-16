@@ -10,6 +10,8 @@ import lombok.Data;
 
 @Data
 public class MemberCouponCommand {
+	String issueNum;
+	
 	String couponNum;
 	
 	@NotEmpty(message = "* 쿠폰 이름을 작성해주세요.")

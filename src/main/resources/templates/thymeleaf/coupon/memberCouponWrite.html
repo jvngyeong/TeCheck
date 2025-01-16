@@ -48,6 +48,22 @@ $(function(){
 				,"width=1000,height=500,left=30, top=100");
 	});
 });
+function couponDateCheck() {
+    var couponStart = $("#couponStart").val();
+    var couponExpire = $("#couponExpire").val();
+
+    var startDate = new Date(couponStart);
+    var ExpireDate = new Date(couponExpire);
+    if (startDate > ExpireDate) {
+    	event.preventDefault();
+    	$("#couponStartErrMsg1").html("");
+    	$("#couponExpireErrMsg").html("");
+    	$("#couponStartErrMsg2").html("* 시작일은 종료일보다 빨라야 합니다.");
+        return false;
+    }
+
+    return true; // 날짜가 올바르다면 true 반환
+}
 </script>
 
 </head>
@@ -57,7 +73,7 @@ $(function(){
 		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
 		<div class="spinner-grow text-primary" role="status"></div>
 	</div>
-	<!-- Spinner End -->
+	<!-- Spinner Expire -->
 	<!-- Navbar start -->
 	<div class="container-fluid fixed-top">
 		<div class="container px-0">
@@ -107,7 +123,7 @@ $(function(){
 			</nav>
 		</div>
 	</div>
-	<!-- Navbar End -->
+	<!-- Navbar Expire -->
 
 
 	<!-- Modal Search Start -->
@@ -132,7 +148,7 @@ $(function(){
 			</div>
 		</div>
 	</div>
-	<!-- Modal Search End -->
+	<!-- Modal Search Expire -->
 
 
 	<!-- Single Page Header start -->
@@ -144,12 +160,12 @@ $(function(){
 			<li class="breadcrumb-item active text-white">쿠폰 발급</li>
 		</ol>
 	</div>
-	<!-- Single Page Header End -->
+	<!-- Single Page Header Expire -->
 	
 	<!-- Single Product Start -->
 	
 	<div class="container">
-	  <form action="/coupon/memberCouponWrite" method="post" id="frm" th:object = "${memberCouponCommand}">
+	  <form action="/coupon/memberCouponWrite" method="post" id="frm" th:object = "${memberCouponCommand}" onsubmit="couponDateCheck();">
 	  <table class="responsive-table">
 	    <thead>
 	    <tr><th colspan="3" style="text-align: center;">쿠폰 발급</th> </tr>
@@ -190,7 +206,8 @@ $(function(){
 	    <tr>
      		<td>
      			쿠폰 개시일<br />
-     			<span style = "color:red" th:if="${#fields.hasErrors('couponStart')}" th:errors="*{couponStart}"></span>
+     			<span id = "couponStartErrMsg1" style = "color:red" th:if="${#fields.hasErrors('couponStart')}" th:errors="*{couponStart}"></span>
+     			<span id = "couponStartErrMsg2" style = "color:red"></span>
      		</td>
 	        <td colspan = '2'><input th:value = "${memberCouponCommand.couponStart}" type="date" name= "couponStart" id="couponStart"/></td>
 	    </tr>
@@ -198,7 +215,7 @@ $(function(){
 	     <tr>
      		<td>
      			쿠폰 만료일<br />
-     			<span style = "color:red" th:if="${#fields.hasErrors('couponExpire')}" th:errors="*{couponExpire}"></span>
+     			<span id = "couponExpireErrMsg" style = "color:red" th:if="${#fields.hasErrors('couponExpire')}" th:errors="*{couponExpire}"></span>
      		</td>
 	        <td colspan = '2'><input th:value = "${memberCouponCommand.couponExpire}" type="date" name= "couponExpire" id="couponExpire"/></td>
 	    </tr>
@@ -209,7 +226,7 @@ $(function(){
 	  </table>
 	  </form>
 	</div>
-	<!-- Single Product End -->
+	<!-- Single Product Expire -->
 
 
 	<!-- Footer Start -->
@@ -234,7 +251,7 @@ $(function(){
 						</div>
 					</div>
 					<div class="col-lg-3">
-						<div class="d-flex justify-content-end pt-3">
+						<div class="d-flex justify-content-Expire pt-3">
 							<a
 								class="btn  btn-outline-secondary me-2 btn-md-square rounded-circle"
 								href=""><i class="fab fa-twitter"></i></a> <a
@@ -293,7 +310,7 @@ $(function(){
 			</div>
 		</div>
 	</div>
-	<!-- Footer End -->
+	<!-- Footer Expire -->
 
 	<!-- Copyright Start -->
 	<div class="container-fluid copyright bg-dark py-4">
@@ -304,7 +321,7 @@ $(function(){
 							class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All
 						right reserved.</span>
 				</div>
-				<div class="col-md-6 my-auto text-center text-md-end text-white">
+				<div class="col-md-6 my-auto text-center text-md-Expire text-white">
 					<!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
 					<!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
 					<!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
@@ -315,7 +332,7 @@ $(function(){
 			</div>
 		</div>
 	</div>
-	<!-- Copyright End -->
+	<!-- Copyright Expire -->
 
 
 

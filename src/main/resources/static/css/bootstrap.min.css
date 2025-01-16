@@ -204,6 +204,10 @@ sub {
 sup {
   top: -0.5em;
 }
+.navbarA{
+  color: deepskyblue;
+  text-decoration: none;
+}
 a {
   color: #13299f;
   text-decoration: none;

@@ -5,6 +5,24 @@
    
    
 <mapper namespace="DDL.mapper.CouponMapper">
+
+	<resultMap type="couponDetailDTO" id="couponDetailDTO">
+		<association property="couponDTO">
+			<id column="coupon_num" javaType="String" jdbcType="VARCHAR" property="couponNum"/>
+			<result column="coupon_name" javaType="String" jdbcType="VARCHAR" property="couponName"/>
+			<result column="discount" javaType="Integer" jdbcType="BIGINT" property="discount"/>
+		</association>
+		
+		<association property="memberCouponDTO">
+			<id column="issue_num" javaType="String" jdbcType="VARCHAR" property="issueNum"/>
+			<result column="coupon_num" javaType="String" jdbcType="VARCHAR" property="couponNum"/>
+			<result column="member_num" javaType="String" jdbcType="VARCHAR" property="memberNum"/>
+			<result column="coupon_start" javaType="date" jdbcType="DATE" property="couponStart"/>
+			<result column="coupon_expire" javaType="date" jdbcType="DATE" property="couponExpire"/>
+			<result column="emp_num" javaType="String" jdbcType="VARCHAR" property="empNum"/>
+		</association>
+	</resultMap>
+	
 	<insert id="couponInsert">
 		insert into coupon(coupon_num, coupon_name, discount)
 		values(#{couponNum}, #{couponName}, #{discount})
@@ -27,7 +45,38 @@
 	</delete>
 	
 	<insert id="memberCouponWrite">
-		insert into member_coupon(coupon_num, member_num, coupon_start, coupon_expire, emp_num)
-		values(#{couponNum}, #{memberNum}, #{couponStart}, #{couponExpire}, #{empNum})
+		insert into member_coupon(issue_num, coupon_num, member_num, coupon_start, coupon_expire, emp_num)
+		values(#{issueNum}, #{couponNum}, #{memberNum}, #{couponStart}, #{couponExpire}, #{empNum})
 	</insert>
+	
+	<select id="memberCouponSelectList" resultMap="couponDetailDTO">
+		select c.coupon_num, coupon_name, discount,
+		issue_num, member_num, coupon_start, coupon_expire, emp_num
+		from coupon c join member_coupon mc
+		on c.coupon_num = mc.coupon_num
+	</select>
+	
+	<select id="memberCouponSelectOne" resultMap="couponDetailDTO">
+		select c.coupon_num, coupon_name, discount,
+		issue_num, member_num, coupon_start, coupon_expire, emp_num
+		from coupon c join member_coupon mc
+		on c.coupon_num = mc.coupon_num
+		where issue_num = #{issueNum}
+	</select>
+	
+	<update id="memberCouponUpdate">
+		update member_coupon set coupon_start = #{couponStart}, coupon_expire = #{couponExpire} where issue_num = #{issueNum}
+	</update>
+	
+	<delete id="memberCouponDelete">
+		delete from member_coupon where issue_num = #{issueNum}
+	</delete>
+	
+	<select id="myCouponListSelect" resultMap="couponDetailDTO">
+		select c.coupon_num, coupon_name, discount,
+		issue_num, member_num, coupon_start, coupon_expire, emp_num
+		from coupon c join member_coupon mc
+		on c.coupon_num = mc.coupon_num
+		where member_num = #{memberNum}
+	</select>
 </mapper>

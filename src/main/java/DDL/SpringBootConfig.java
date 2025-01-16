@@ -64,6 +64,7 @@ public class SpringBootConfig implements WebMvcConfigurer {
                                "/inquire/inquireList",
                                "/book/**",
                                "/inquire/inquireExpList",
-                               "/review/reviewInfo"); // 제외 경로 수정
+                               "/review/reviewInfo",
+                               "/payment/INIstdpay_pc_return"); // 제외 경로 수정
     }
 }

@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 @Alias("memberCouponDTO")
 public class MemberCouponDTO {
+	String issueNum;
 	String couponNum;
 	String memberNum;
 	Date couponStart;

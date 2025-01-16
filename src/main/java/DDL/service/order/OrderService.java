@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import DDL.command.OrderCommand;
 import DDL.domain.AuthInfoDTO;
@@ -27,11 +28,14 @@ public class OrderService {
 	
 	@Autowired
 	GoodsMapper goodsMapper;
-	public String execute(OrderCommand orderCommand, String[] cartQties, HttpSession session) {
+	public String execute(OrderCommand orderCommand, String[] cartQties, HttpSession session, Model model) {
+		String fullGoodsNum = "";
 		String orderNum = orderMapper.getOrderNum();
 		for(String gnum : orderCommand.getGoodsNums()) {
-			System.out.println("goodsNum = " + gnum);
+			fullGoodsNum += gnum;
+			fullGoodsNum += "/";
 		}
+		System.out.println(fullGoodsNum);
 		OrderDTO dto = new OrderDTO();
 		BeanUtils.copyProperties(orderCommand, dto);
 		AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
@@ -55,6 +59,7 @@ public class OrderService {
 		session.setAttribute("buyerName", memDTO.getMemberName());
 		session.setAttribute("buyerPhone", memDTO.getMemberPhone());
 		session.setAttribute("goodsName", goodsDTO.getGoodsName() + " 외 " + (goodsNums.length - 1) + "개");
+		session.setAttribute("fullGoodsNum", fullGoodsNum);
 		return orderNum;
 	}
 }

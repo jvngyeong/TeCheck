@@ -4,28 +4,6 @@
 <meta charset="utf-8">
 <title>테크체크 - 실시간 주식 데이터 기반 제품 구매 추천 서비스</title>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-<script type="text/javascript">
-$(function(){
-	$("#goodsBtn").click(function(){
-		window.open("goodsItem","상품검색"
-				,"width=620,height=500,left=30, top=500" );
-	});
-	$("#storeBtn").click(function(){
-		window.open("storeSelect","매장검색"
-				,"width=820,height=500,left=30, top=500" );
-	});
-	// 현재 날짜를 가져오기
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
-    const dd = String(today.getDate()).padStart(2, '0');
-
-    const sysdate = `${yyyy}-${mm}-${dd}`; // yyyy-MM-dd 형식의 현재 날짜
-
-    // 방문 일자 input에 최소 날짜(min) 설정
-    document.getElementById('bookDate').setAttribute('min', sysdate);
-});
-</script>
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <meta content="" name="keywords">
 <meta content="" name="description">
@@ -46,9 +24,10 @@ $(function(){
 	rel="stylesheet">
 
 <!-- Libraries Stylesheet -->
-<link href="/static/libs/lightbox/css/lightbox.min.css" rel="stylesheet">
+<link href="/static/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
 <link href="/static/css/form.css" rel="stylesheet">
-<link href="/static/libs/owlcarousel/assets/owl.carousel.min.css"
+<link href="/static/css/table.css" rel="stylesheet">
+<link href="/static/lib/owlcarousel/assets/owl.carousel.min.css"
 	rel="stylesheet">
 
 
@@ -57,6 +36,36 @@ $(function(){
 
 <!-- Template Stylesheet -->
 <link href="/static/css/style.css" rel="stylesheet">
+<script type="text/javascript">
+$(function(){
+	$("#couponSearchBtn").click(function(){
+		window.open("/coupon/couponSearch","쿠폰검색"
+				,"width=800,height=500,left=30, top=100");
+	});
+	
+	$("#memberSearchBtn").click(function(){
+		window.open("/coupon/memberSearch","회원검색"
+				,"width=1000,height=500,left=30, top=100");
+	});
+});
+function couponDateCheck() {
+    var couponStart = $("#couponStart").val();
+    var couponExpire = $("#couponExpire").val();
+
+    var startDate = new Date(couponStart);
+    var ExpireDate = new Date(couponExpire);
+    if (startDate > ExpireDate) {
+    	event.preventDefault();
+    	$("#couponStartErrMsg1").html("");
+    	$("#couponExpireErrMsg").html("");
+    	$("#couponStartErrMsg2").html("* 시작일은 종료일보다 빨라야 합니다.");
+        return false;
+    }
+
+    return true; // 날짜가 올바르다면 true 반환
+}
+</script>
+
 </head>
 <body>
 	<!-- Spinner Start -->
@@ -64,7 +73,7 @@ $(function(){
 		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
 		<div class="spinner-grow text-primary" role="status"></div>
 	</div>
-	<!-- Spinner End -->
+	<!-- Spinner Expire -->
 	<!-- Navbar start -->
 	<div class="container-fluid fixed-top">
 		<div class="container px-0">
@@ -77,9 +86,9 @@ $(function(){
 				</button>
 				<div class="collapse navbar-collapse bg-white" id="navbarCollapse">
 					<div class="navbar-nav mx-auto">
-						<a href="/" class="nav-item nav-link active">Home</a> 
-						<a href="/store/storeList" class="nav-item nav-link">상점</a> 
-						<a href="shop-detail.html" class="nav-item nav-link">Shop Detail</a>
+						<a href="/" class="nav-item nav-link active">Home</a> <a
+							href="shop.html" class="nav-item nav-link">Shop</a> <a
+							href="shop-detail.html" class="nav-item nav-link">Shop Detail</a>
 						<div class="nav-item dropdown">
 							<a style="display: block" href="#"
 								class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
@@ -91,7 +100,7 @@ $(function(){
 							</div>
 						</div>
 						<a href="contact.html" class="nav-item nav-link">Contact</a> <a
-							href="/member/memberList" class="nav-item nav-link">회원 관리</a> <a
+							href="contact.html" class="nav-item nav-link">회원 관리</a> <a
 							href="/employee/employeeList" class="nav-item nav-link">직원 관리</a>
 						<a href="/goods/goodsList" class="nav-item nav-link">상품 관리</a> <a
 							href="/department/departmentList" class="nav-item nav-link">부서
@@ -114,93 +123,113 @@ $(function(){
 			</nav>
 		</div>
 	</div>
-	<!-- Navbar End -->
+	<!-- Navbar Expire -->
 
-	<!-- Fruits Shop Start-->
-	<div class="container-fluid fruite py-5"
-		style="padding-top: 7rem !important;">
-		<div class="container py-5">
-			<div class="tab-class text-center">
-				<div class="row g-4">
-					<div class="col-lg-4 text-start" style = "display :flex; ">
-						<h1 style="display: inline-block">체험 예약</h1>
-						<a href="/inquire/inquireExpList"
-                        class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
-                        <i class="fa-solid fa-pen" style = "margin-right : 10px;"></i>체험 문의</a>
+
+	<!-- Modal Search Start -->
+	<div class="modal fade" id="searchModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-fullscreen">
+			<div class="modal-content rounded-0">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Search by
+						keyword</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body d-flex align-items-center">
+					<div class="input-group w-75 mx-auto d-flex">
+						<input type="search" class="form-control p-3"
+							placeholder="keywords" aria-describedby="search-icon-1">
+						<span id="search-icon-1" class="input-group-text p-3"><i
+							class="fa fa-search"></i></span>
 					</div>
-					
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- Fruits Shop End-->
+	<!-- Modal Search Expire -->
 
 
-	<div class="container">
-		<form action="/book/bookWrite" method="post">
-			<div class="row">
-				<h4>체험 정보</h4>
-				<div class="input-group input-group-icon">
-					<select name="expNum">
-						<option value = "" disabled hidden selected>체험 내용을 선택해주세요.</option>
-						<th:block th:each = "experienceDTO : ${experienceList}">
-							<option th:value="${experienceDTO.expNum}">[[${experienceDTO.expName}]]</option>
-						</th:block>
-					</select>
-					<div class="input-icon icon-center">
-						<i class="fa-solid fa-building"></i>
-					</div>
-				</div>
-				<div class="input-group input-group-icon">
-					<input type="text" name= "goodsName" th:value="${goodsName}" id="goodsName" readonly="readonly" />
-					<input type="hidden" name= "goodsNum" th:value="${goodsNum}" id="goodsNum" readonly="readonly" />
-	        		<input type="button" id="goodsBtn" value="상품 검색" /></td></tr>
-					<div class="input-icon icon-center">
-						<i class="fa fa-user"></i>
-					</div>
-				</div>
-				<div class="input-group input-group-icon">
-					<input type="hidden" name= "storeNum" id="storeNum" readonly="readonly" />
-					<input type="text" name= "storeName" id="storeName" readonly="readonly" />
-	        		<input type="button" id="storeBtn" value="매장 검색" /></td></tr>
-					<div class="input-icon icon-center">
-						<i class="fa fa-user"></i>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<h4>방문 일자</h4>
-				<div class="input-group">
-					<input type="date" name="bookDate" id="bookDate"/>
-				</div>
-				<div class="row">
-			    <h4>방문 시간</h4>
-			    <div class="input-group">
-			        <select name="bookTime">
-			            <option value="" disabled selected>시간 선택</option>
-			            <option value="09:00">09시</option>
-			            <option value="10:00">10시</option>
-			            <option value="11:00">11시</option>
-			            <option value="12:00">12시</option>
-			            <option value="13:00">13시</option>
-			            <option value="14:00">14시</option>
-			            <option value="15:00">15시</option>
-			            <option value="16:00">16시</option>
-			            <option value="17:00">17시</option>
-			            <option value="18:00">18시</option>
-			            <option value="19:00">19시</option>
-			            <option value="20:00">20시</option>
-			        </select>
-			    </div>
-			</div>
-							
-			</div>
-			
-			<div class="wrap">
-				<input type="submit" value="예약하기" class="button">
-			</div>
-		</form>
+	<!-- Single Page Header start -->
+	<div class="container-fluid page-header py-5">
+		<h1 class="text-center text-white display-6">발급 정보 수정</h1>
+		<ol class="breadcrumb justify-content-center mb-0">
+			<li class="breadcrumb-item"><a href="/">홈</a></li>
+			<li class="breadcrumb-item"><a href="/coupon/memberCouponList">쿠폰 발급현황</a></li>
+			<li class="breadcrumb-item active text-white">발급 정보 수정</li>
+		</ol>
 	</div>
+	<!-- Single Page Header Expire -->
+	
+	<!-- Single Product Start -->
+	
+	<div class="container">
+	  <form action="/coupon/memberCouponUpdate" method="post" id="frm" th:object = "${memberCouponCommand}" onsubmit="couponDateCheck();">
+	  <input type = "hidden" name = "issueNum" th:value = "${memberCouponCommand.issueNum}">
+	  <table class="responsive-table">
+	    <thead>
+	    <tr><th colspan="3" style="text-align: center;">발급 정보 수정</th> </tr>
+	    </thead>
+	    <tbody>
+	    <tr>
+     		<td>
+     			쿠폰번호<br />
+     		</td>
+	        <td colspan = '2'><input th:value = "${memberCouponCommand.couponNum}" type="text" name= "couponNum" id="couponNum" readonly="readonly"/></td>
+	    </tr>
+     	<tr>
+     		<td>
+     			쿠폰이름<br />
+     			<span style = "color:red" th:if="${#fields.hasErrors('couponName')}" th:errors="*{couponName}"></span>
+     		</td>
+	        <td colspan = '2'><input th:value = "${memberCouponCommand.couponName}" type="text" name= "couponName" id="couponName" readonly="readonly"/></td>
+	    </tr>
+	    <tr>
+	    	<td>
+	    		할인율<br />
+	    		<span style = "color:red" th:if="${#fields.hasErrors('discount')}" th:errors="*{discount}"></span>	
+	    	</td>
+	        <td><input th:value = "${memberCouponCommand.discount}" min = "1" max = "100" type="number" name= "discount" id="discount" readonly="readonly"/></td>
+	        <td>%</td>
+	    </tr>
+	    
+	    <tr>
+     		<td>
+     			회원번호<br />
+     			<span style = "color:red" th:if="${#fields.hasErrors('memberNum')}" th:errors="*{memberNum}"></span>
+     		</td>
+	        <td colspan = '2'><input th:value = "${memberCouponCommand.memberNum}" type="text" name= "memberNum" id="memberNum" readonly="readonly"/></td>
+	    </tr>
+	    
+	    <tr>
+     		<td>
+     			쿠폰 개시일<br />
+     			<span id = "couponStartErrMsg1" style = "color:red" th:if="${#fields.hasErrors('couponStart')}" th:errors="*{couponStart}"></span>
+     			<span id = "couponStartErrMsg2" style = "color:red"></span>
+     		</td>
+	        <td colspan = '2'><input th:value = "${#dates.format(memberCouponCommand.couponStart, 'yyyy-MM-dd')}" type="date" name= "couponStart" id="couponStart"/></td>
+	    </tr>
+	    
+	     <tr>
+     		<td>
+     			쿠폰 만료일<br />
+     			<span id = "couponExpireErrMsg" style = "color:red" th:if="${#fields.hasErrors('couponExpire')}" th:errors="*{couponExpire}"></span>
+     		</td>
+	        <td colspan = '2'><input th:value = "${#dates.format(memberCouponCommand.couponExpire, 'yyyy-MM-dd')}" type="date" name= "couponExpire" id="couponExpire"/></td>
+	    </tr>
+	    </tbody>
+	  </table>
+	  		<div style = "display : flex; justify-content:center; gap:30px;">
+		    	<input style = "width:15%; display:inline-block; border:none;" type="submit" value="정보 수정" id="regist"/>
+		    	<button th:attr="onclick=|location.href='/coupon/memberCouponDelete?issueNum=${memberCouponCommand.issueNum}'|"style = "width:15%; display:inline-block; border:none;" type="button" id="regist">
+		    		발급 정보 삭제
+		    	</button>
+	    	</div>
+	  </form>
+	</div>
+	<!-- Single Product Expire -->
+
 
 	<!-- Footer Start -->
 	<div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
@@ -224,7 +253,7 @@ $(function(){
 						</div>
 					</div>
 					<div class="col-lg-3">
-						<div class="d-flex justify-content-end pt-3">
+						<div class="d-flex justify-content-Expire pt-3">
 							<a
 								class="btn  btn-outline-secondary me-2 btn-md-square rounded-circle"
 								href=""><i class="fab fa-twitter"></i></a> <a
@@ -283,7 +312,7 @@ $(function(){
 			</div>
 		</div>
 	</div>
-	<!-- Footer End -->
+	<!-- Footer Expire -->
 
 	<!-- Copyright Start -->
 	<div class="container-fluid copyright bg-dark py-4">
@@ -294,7 +323,7 @@ $(function(){
 							class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All
 						right reserved.</span>
 				</div>
-				<div class="col-md-6 my-auto text-center text-md-end text-white">
+				<div class="col-md-6 my-auto text-center text-md-Expire text-white">
 					<!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
 					<!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
 					<!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
@@ -305,7 +334,9 @@ $(function(){
 			</div>
 		</div>
 	</div>
-	<!-- Copyright End -->
+	<!-- Copyright Expire -->
+
+
 
 	<!-- Back to Top -->
 	<a href="#"
@@ -318,10 +349,10 @@ $(function(){
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="/static/libs/easing/easing.min.js"></script>
-	<script src="/static/libs/waypoints/waypoints.min.js"></script>
-	<script src="/static/libs/lightbox/js/lightbox.min.js"></script>
-	<script src="/static/libs/owlcarousel/owl.carousel.min.js"></script>
+	<script src="/static/lib/easing/easing.min.js"></script>
+	<script src="/static/lib/waypoints/waypoints.min.js"></script>
+	<script src="/static/lib/lightbox/js/lightbox.min.js"></script>
+	<script src="/static/lib/owlcarousel/owl.carousel.min.js"></script>
 
 	<!-- Template Javascript -->
 	<script src="/static/js/main.js"></script>

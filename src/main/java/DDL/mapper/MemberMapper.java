@@ -17,4 +17,5 @@ public interface MemberMapper {
 	public void emailConfUpdate(String memberEmail);
 	public String emailConfCheck(String userId);
 	public String getMemberId(String participantNum);
+	public MemberDTO memberSelectByOrderNum(String orderNum);
 }

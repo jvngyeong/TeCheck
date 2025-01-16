@@ -214,17 +214,28 @@
                                         </th:block>
                                         <tr>
                                             <th scope="row">
+                                            TOTAL
                                             </th>
                                             <td class="py-5">
-                                                <p class="mb-0 text-dark text-uppercase py-3">TOTAL</p>
+                                                <th:block th:if = "${couponDTO != null}">
+                                            		쿠폰 할인율 : [[${couponDTO.discount}]]%
+                                            	</th:block>
+                                            </td>
+                                            <td class="py-5">
+                                            	
                                             </td>
                                             <td class="py-5"></td>
-                                            <td class="py-5"></td>
                                             <td class="py-5">
-                                                <div class="py-3">
+                                            	<th:block th:if = "${couponDTO == null}">
                                                 	<input type = "hidden" name = "orderPrice" th:value = "${totalPrice}" />
-                                                    <p class="mb-0 text-dark">[[${#numbers.formatCurrency(totalPrice)}]]</p>
-                                                </div>
+                                                	<p class="mb-0 text-dark">[[${#numbers.formatCurrency(totalPrice)}]]</p>
+                                               	</th:block>
+                                               	<th:block th:if = "${couponDTO != null}">
+                                               		<input type="hidden" name="orderPrice" th:value="${#numbers.formatInteger(totalPrice * (1 - (couponDTO.discount * 0.01)), 0)}" />
+                                               		<p class="mb-0 text-dark">
+													    [[${#numbers.formatCurrency(totalPrice * (1 - (couponDTO.discount * 0.01)))}]]
+													</p>
+                                               	</th:block>
                                             </td>
                                         </tr>
                                     </tbody>

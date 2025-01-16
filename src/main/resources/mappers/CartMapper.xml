@@ -48,4 +48,14 @@
 	<update id="cartUpdate">
 		update cart set cart_qty = #{cartQty} where goods_num = #{goodsNum} and member_num = #{memberNum}
 	</update>
+	
+	<delete id="cartListDelete">
+		DELETE FROM cart
+		WHERE goods_num IN (
+		    SELECT goods_num
+		    FROM purchase_list
+		    WHERE order_num = #{orderNum}
+		)
+		AND member_num = #{memberNum}
+	</delete>
 </mapper>

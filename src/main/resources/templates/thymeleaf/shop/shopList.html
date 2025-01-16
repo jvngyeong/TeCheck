@@ -30,6 +30,33 @@
         <link href="/static/css/style.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
         <script type="text/javascript">
+    	function cartInsert(goodsNum) {
+    		$.ajax({
+    			url : "/cart/cartInsert",
+    			data : {
+    				"goodsNum" : goodsNum,
+    				"memberNum" : '[[${memberNum}]]',
+    				"cartQty" : 1
+    			},
+    			success : function(result) {
+    				if (result == "200") {
+    					con = confirm("상품을 담았습니다. 장바구니로 이동하시겠습니까?");
+    					if (con) {
+    						location.href = "/cart/cart";
+    					}
+    					else{
+    						window.location.reload();
+    					}
+    				} else if (result == "000") {
+    					alert("로그인이 필요한 서비스입니다.");
+    				}
+    			},
+    			error : function(result) {
+    				alert("오류가 발생했습니다.");
+    			}
+    		});
+    	}
+    	
         	$(function(){
         		var page = $("#page").val();
         		$("#page_" + page).attr("class", "active rounded");
@@ -254,7 +281,8 @@
 		                                                </p>
 		                                                <div class="d-flex justify-content-between flex-lg-wrap" style = "display: block !important;">
 		                                                    <p class="text-dark fs-5 fw-bold mb-0">[[${#numbers.formatCurrency(goodsDTO.goodsPrice)}]]</p>
-		                                                   	<a style = "margin-top: 20px;" href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+		                                                    <input type="hidden" id="memberNum" th:value="${memberNum}" />
+		                                                   	<a th:onclick="cartInsert([[${goodsDTO.goodsNum}]]);" style = "margin-top: 20px;" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> 장바구니에 담기</a>
 		                                                </div>
 		                                            </div>
 	                                        	</div>

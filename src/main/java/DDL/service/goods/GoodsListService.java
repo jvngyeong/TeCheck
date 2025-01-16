@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import DDL.domain.AuthInfoDTO;
 import DDL.domain.GoodsDTO;
 import DDL.domain.StartEndPageDTO;
 import DDL.mapper.GoodsMapper;
+import DDL.mapper.MemberMapper;
 import DDL.service.StartEndPageService;
+import jakarta.servlet.http.HttpSession;
 
 
 @Service
@@ -20,7 +23,13 @@ public class GoodsListService {
 	@Autowired
 	StartEndPageService startEndPageService;
 	
-	public void execute(String searchWord, Model model, int page) {
+	@Autowired
+	MemberMapper memberMapper;
+	
+	public void execute(String searchWord, Model model, int page, HttpSession session) {
+		AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+		String memberNum = memberMapper.getMemberNum(auth.getUserId());
+		model.addAttribute("memberNum", memberNum);
 		if(searchWord == null && page < 0) {
 			List<GoodsDTO> list = goodsMapper.goodsAllSelect();
 			model.addAttribute("list", list);
@@ -37,7 +46,10 @@ public class GoodsListService {
 		}
 	}
 	
-	public void execute(String searchWord, Model model, int page, String sortValue) {
+	public void execute(String searchWord, Model model, int page, String sortValue, HttpSession session) {
+		AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
+		String memberNum = memberMapper.getMemberNum(auth.getUserId());
+		model.addAttribute("memberNum", memberNum);
 		if(searchWord == null && page < 0) {
 			List<GoodsDTO> list = goodsMapper.goodsAllSelect();
 			model.addAttribute("list", list);

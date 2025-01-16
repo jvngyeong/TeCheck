@@ -16,7 +16,12 @@ import DDL.service.coupon.CouponDetailService;
 import DDL.service.coupon.CouponListService;
 import DDL.service.coupon.CouponUpdateService;
 import DDL.service.coupon.CouponWriteService;
+import DDL.service.coupon.MemberCouponDeleteService;
+import DDL.service.coupon.MemberCouponDetailService;
+import DDL.service.coupon.MemberCouponListService;
+import DDL.service.coupon.MemberCouponUpdateService;
 import DDL.service.coupon.MemberCouponWriteService;
+import DDL.service.coupon.MyCouponListService;
 import DDL.service.members.MemberListService;
 import jakarta.servlet.http.HttpSession;
 
@@ -43,6 +48,21 @@ public class CouponController {
 	
 	@Autowired
 	MemberCouponWriteService memberCouponWriteService;
+	
+	@Autowired
+	MemberCouponListService memberCouponListService;
+	
+	@Autowired
+	MemberCouponDetailService memberCouponDetailService;
+	
+	@Autowired
+	MemberCouponUpdateService memberCouponUpdateService;
+	
+	@Autowired
+	MemberCouponDeleteService memberCouponDeleteService;
+	
+	@Autowired
+	MyCouponListService myCouponListService;
 	
 	@GetMapping("couponList")
 	public String couponList(Model model) {
@@ -90,7 +110,8 @@ public class CouponController {
 	}
 	
 	@GetMapping("memberCouponList")
-	public String memberCouponList() {
+	public String memberCouponList(Model model) {
+		memberCouponListService.execute(model);
 		return "thymeleaf/coupon/memberCouponList";
 	}
 	
@@ -122,5 +143,39 @@ public class CouponController {
 		}
 		memberCouponWriteService.execute(memberCouponCommand, session);
 		return "redirect:/coupon/memberCouponList";
+	}
+	
+	@GetMapping("memberCouponUpdate")
+	public String memberCouponUpdate(String issueNum, Model model) {
+		memberCouponDetailService.execute(issueNum, model);
+		return "thymeleaf/coupon/memberCouponUpdate";
+	}
+	
+	@PostMapping("memberCouponUpdate")
+	public String memberCouponUpdate(@Validated MemberCouponCommand memberCouponCommand, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			model.addAttribute("memberCouponCommand", memberCouponCommand);
+			return "thymeleaf/coupon/memberCouponUpdate";
+		}
+		memberCouponUpdateService.execute(memberCouponCommand);
+		return "redirect:/coupon/memberCouponList";
+	}
+	
+	@GetMapping("memberCouponDelete")
+	public String memberCouponDelete(String issueNum) {
+		memberCouponDeleteService.execute(issueNum);
+		return "redirect:/coupon/memberCouponList";
+	}
+	
+	@GetMapping("myCoupon")
+	public String myCoupon(String memberNum, Model model, HttpSession session) {
+		myCouponListService.execute(memberNum, model, session);
+		return "thymeleaf/coupon/myCoupon";
+	}
+	
+	@GetMapping("couponPopup")
+	public String couponPopup(Model model, HttpSession session) {
+		myCouponListService.execute(null, model, session);
+		return "thymeleaf/coupon/couponPopup";
 	}
 }

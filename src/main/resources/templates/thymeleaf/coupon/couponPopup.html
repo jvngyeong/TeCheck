@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>숙소 검색</title>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+function couponSearch(element) {
+    // 데이터 속성에서 값을 가져옴
+    const couponNum = element.dataset.couponnum;
+    const couponName = element.dataset.couponname;
+    const discount = element.dataset.discount;
+    // 부모 창의 input 필드에 값 설정
+    $(opener.document).find("#couponNum").val(couponNum);
+    $(opener.document).find("#isCoupon").html("쿠폰 사용 : O");
+    $(opener.document).find("#couponName").html(couponName);
+    $(opener.document).find("#discount").html("할인율 " + discount + "%");
+    $(opener.document).find("#couponDiscount").val(discount);
+    opener.cartTotalUpdate();
+    // 팝업 창 닫기
+    window.self.close();
+}
+</script>
+<link href="/static/css/goodsSelect.css" rel="stylesheet">
+</head>
+<body>
+<table border="1" align="center">
+    <thead>
+        <tr>
+            <th>쿠폰이름</th>
+            <th>할인율</th>
+            <th>쿠폰 시작일</th>
+            <th>쿠폰 만료일</th>
+        </tr>
+    </thead>
+    <tbody>
+		<th:block th:each="couponDetailDTO : ${couponDetailList}">
+			<tr>
+				<td>
+					<a href="javascript:void(0);"
+	                   th:data-couponnum="${couponDetailDTO.couponDTO.couponNum}"
+	                   th:data-couponname="${couponDetailDTO.couponDTO.couponName}"
+	                   th:data-discount="${couponDetailDTO.couponDTO.discount}"
+	                   onclick="couponSearch(this)">
+	                   [[${couponDetailDTO.couponDTO.couponName}]]
+	                </a>
+				</td>
+				<td>
+					[[${couponDetailDTO.couponDTO.discount}]]%
+				</td>
+				<td style = "font-weight: bold; color: #28a745;">[[${#dates.format(couponDetailDTO.memberCouponDTO.couponStart, 'yyyy-MM-dd')}]]</td>
+				<td style = "font-weight: bold; color: red;">[[${#dates.format(couponDetailDTO.memberCouponDTO.couponExpire, 'yyyy-MM-dd')}]]</td>
+			</tr>
+		</th:block>
+    </tbody>
+</table>
+</body>
+</html>

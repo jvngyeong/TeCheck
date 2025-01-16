@@ -162,7 +162,11 @@ $(function(){
 	    </tr>
 	    <tr><td>상품명</td>
 	        <td><input type="text"  th:value = "${goodsOrderCommand.goodsName}" id="goodsName" name = "goodsName" readonly="readonly" /></td> </tr>
-	    <tr><td>발주 수량</td>
+	    <tr>
+	    	<td>
+	    		발주 수량<br />
+	    		<span style = "color:red" th:if="${#fields.hasErrors('goodsOrderQty')}" th:errors="*{goodsOrderQty}"></span>
+	    	</td>
 	        <td><input th:value = "${goodsOrderCommand.goodsOrderQty}" type="number" name= "goodsOrderQty" id="goodsOrderQty" min="0"/></td></tr>
 	    </tbody>
 	  </table>

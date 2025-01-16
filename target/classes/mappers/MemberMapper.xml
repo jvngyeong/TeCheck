@@ -60,4 +60,8 @@
 	<select id="getMemberId">
 		select member_id from members where member_num = #{participantNum}
 	</select>
+	
+	<select id="memberSelectByOrderNum">
+		select * from members where member_num = (select member_num from orders where order_num = #{orderNum})
+	</select>
 </mapper>

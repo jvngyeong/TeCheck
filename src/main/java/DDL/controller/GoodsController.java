@@ -40,8 +40,8 @@ public class GoodsController {
 	@GetMapping("goodsList")
 	public String List(@RequestParam(value="searchWord" , required = false) String searchWord
 			, @RequestParam(value = "page" , required = false , defaultValue = "1") int page
-			, Model model) {
-		goodsListService.execute(searchWord, model, page);
+			, Model model, HttpSession session) {
+		goodsListService.execute(searchWord, model, page, session);
 		return "thymeleaf/goods/goodsList";
 	}
 	@GetMapping("goodsWrite")

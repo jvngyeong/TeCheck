@@ -33,18 +33,18 @@ public class ShopController {
 	@GetMapping("shopList")
 	public String shopList(@RequestParam(value="searchWord" , required = false) String searchWord
 			, @RequestParam(value = "page" , required = false , defaultValue = "1") int page
-			, Model model) {
+			, Model model, HttpSession session) {
 		categoryService.execute(model);
-		goodsListService.execute(searchWord, model, page);
+		goodsListService.execute(searchWord, model, page, session);
 		return "thymeleaf/shop/shopList";
 	}
 	
 	@GetMapping("sortedList")
 	public String sortedList(@RequestParam(value="searchWord" , required = false) String searchWord
 			, @RequestParam(value = "page" , required = false , defaultValue = "1") int page
-			, Model model, String sortValue) {
+			, Model model, String sortValue, HttpSession session) {
 		categoryService.execute(model);
-		goodsListService.execute(searchWord, model, page, sortValue);
+		goodsListService.execute(searchWord, model, page, sortValue, session);
 		return "thymeleaf/shop/shopList";
 	}
 	
