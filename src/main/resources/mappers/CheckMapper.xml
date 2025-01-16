@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DDL.mapper.CheckMapper">
+	<insert id="checkWrite" parameterType="checkDTO">
+		insert into checks(CHECK_NUM, CHECK_DATE, CHECK_RESULT, GOODS_NUM, EMP_NUM, STORE_NUM)
+		values(#{checkNum}, #{checkDate}, #{checkResult}, #{goodsNum}, #{empNum}, #{storeNum})
+	</insert>
+	
+	<select id="checkSelectList" resultType="checkDTO">
+		select CHECK_NUM, CHECK_DATE, CHECK_RESULT, c.GOODS_NUM, EMP_NUM, c.STORE_NUM, store_name, goods_name
+		from checks c join store s
+		on c.store_num = s.store_num join goods g
+		on c.goods_num = g.goods_num
+	</select>
+	
+	<select id="checkSelectOne" parameterType="string" resultType="checkDTO">
+		select CHECK_NUM, CHECK_DATE, CHECK_RESULT, c.GOODS_NUM, EMP_NUM, c.STORE_NUM, store_name, goods_name
+		from checks c join store s
+		on c.store_num = s.store_num join goods g
+		on c.goods_num = g.goods_num
+		where check_num = #{checkNum}
+	</select>
+	
+	<update id="checkUpdate" parameterType="checkDTO">
+		update checks set
+		CHECK_DATE = #{checkDate}
+		, CHECK_RESULT = #{checkResult}
+		, GOODS_NUM = #{goodsNum}
+		, EMP_NUM = #{empNum}
+		, STORE_NUM = #{storeNum}
+		where check_num = #{checkNum}
+	</update>
+	
+	<delete id="checkDelete" parameterType="string">
+		delete from checks
+		where check_num = #{checkNum}
+	</delete>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DDL.mapper.ManageMapper">
+	
+	<insert id="manageInsert" parameterType="manageDTO">
+		insert into manage(MANAGE_NUM, MANAGE_DATE, MANAGE_CONTENTS, STORE_NUM, EMP_NUM)
+		values(#{manageNum}, #{manageDate}, #{manageContents}, #{storeNum}, #{empNum})
+	</insert>
+	
+	<select id="manageSelectList" resultType="manageDTO">
+		select MANAGE_NUM, MANAGE_DATE, MANAGE_CONTENTS, m.STORE_NUM, EMP_NUM, STORE_NAME
+		from manage m left outer join store s
+		on m.store_num = s.store_num
+	</select>
+	
+	<select id="manageSelectOne" resultType="ManageDTO" parameterType="string">
+		select MANAGE_NUM, MANAGE_DATE, MANAGE_CONTENTS, m.STORE_NUM, EMP_NUM, STORE_NAME
+		from manage m left outer join store s
+		on m.store_num = s.store_num
+		where manage_num = #{manageNum}
+	</select>
+	
+	<update id="manageUpdate" parameterType="manageDTO">
+		update manage set
+		manage_date = #{manageDate}
+		, manage_contents = #{manageContents}
+		, store_num = #{storeNum}
+		, emp_num = #{empNum}
+		where manage_num = #{manageNum}
+	</update>
+	
+	<delete id="manageDelete" parameterType="string">
+		delete from manage
+		where manage_num = #{manageNum}
+	</delete>
+</mapper>
