@@ -12,7 +12,7 @@ public class StartEndPageService {
 	public StartEndPageDTO execute(int page, int limit, String searchWord) {
 		int startRow = ((page - 1) * limit) + 1 ; // 11
 		int endRow = startRow + limit - 1; // 11 + 10 -1
-		StartEndPageDTO sepDTO = new StartEndPageDTO(startRow, endRow, searchWord);
+		StartEndPageDTO sepDTO = new StartEndPageDTO(startRow, endRow, searchWord, null);
 		return sepDTO;
 	}
 	public void execute(int page, int limit, int count,String searchWord

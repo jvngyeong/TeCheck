@@ -29,5 +29,7 @@ public interface GoodsMapper {
 
 	List<GoodsDTO> goodsAllSelect();
 
+	List<GoodsDTO> goodsSortedListSelect(StartEndPageDTO sepDTO);
+
 	
 }

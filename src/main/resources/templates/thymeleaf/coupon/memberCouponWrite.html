@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>테크체크 - 실시간 주식 데이터 기반 제품 구매 추천 서비스</title>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <meta content="" name="keywords">
 <meta content="" name="description">
@@ -16,13 +17,16 @@
 
 <!-- Icon Font Stylesheet -->
 <link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
 	rel="stylesheet">
 
 <!-- Libraries Stylesheet -->
 <link href="/static/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+<link href="/static/css/form.css" rel="stylesheet">
+<link href="/static/css/table.css" rel="stylesheet">
 <link href="/static/lib/owlcarousel/assets/owl.carousel.min.css"
 	rel="stylesheet">
 
@@ -32,18 +36,28 @@
 
 <!-- Template Stylesheet -->
 <link href="/static/css/style.css" rel="stylesheet">
+<script type="text/javascript">
+$(function(){
+	$("#couponSearchBtn").click(function(){
+		window.open("/coupon/couponSearch","쿠폰검색"
+				,"width=800,height=500,left=30, top=100");
+	});
+	
+	$("#memberSearchBtn").click(function(){
+		window.open("/coupon/memberSearch","회원검색"
+				,"width=1000,height=500,left=30, top=100");
+	});
+});
+</script>
+
 </head>
-
 <body>
-
 	<!-- Spinner Start -->
 	<div id="spinner"
 		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
 		<div class="spinner-grow text-primary" role="status"></div>
 	</div>
 	<!-- Spinner End -->
-
-
 	<!-- Navbar start -->
 	<div class="container-fluid fixed-top">
 		<div class="container px-0">
@@ -56,9 +70,9 @@
 				</button>
 				<div class="collapse navbar-collapse bg-white" id="navbarCollapse">
 					<div class="navbar-nav mx-auto">
-						<a href="index" class="nav-item nav-link active">Home</a> <a
-							href="shop" class="nav-item nav-link">Shop</a> <a
-							href="shop-detail" class="nav-item nav-link">Shop Detail</a>
+						<a href="/" class="nav-item nav-link active">Home</a> <a
+							href="shop.html" class="nav-item nav-link">Shop</a> <a
+							href="shop-detail.html" class="nav-item nav-link">Shop Detail</a>
 						<div class="nav-item dropdown">
 							<a style="display: block" href="#"
 								class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
@@ -70,9 +84,11 @@
 							</div>
 						</div>
 						<a href="contact.html" class="nav-item nav-link">Contact</a> <a
-							href="/member/memberList" class="nav-item nav-link">회원 관리</a> <a
-							href="contact.html" class="nav-item nav-link">직원 관리</a> <a
-							href="contact.html" class="nav-item nav-link">상품 관리</a>
+							href="contact.html" class="nav-item nav-link">회원 관리</a> <a
+							href="/employee/employeeList" class="nav-item nav-link">직원 관리</a>
+						<a href="/goods/goodsList" class="nav-item nav-link">상품 관리</a> <a
+							href="/department/departmentList" class="nav-item nav-link">부서
+							관리</a>
 					</div>
 					<div class="d-flex m-3 me-0">
 						<button
@@ -93,47 +109,108 @@
 	</div>
 	<!-- Navbar End -->
 
-	<!-- memberList Start-->
-	<div class="container-fluid fruite py-5" style="padding-top: 7rem !important;">
-		<div class="container py-5">
-			<div class="tab-class text-center">
-				<div class="row g-4">
-					<div class="col-lg-4 text-start">
-						<h1 style="display: inline-block">회원 목록</h1>
-						<a href="/member/memberWrite" style="margin: 0 0 8px 30px;"
-							class="btn border border-secondary rounded-pill px-3 text-primary">회원가입</a>
-					</div>
+
+	<!-- Modal Search Start -->
+	<div class="modal fade" id="searchModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-fullscreen">
+			<div class="modal-content rounded-0">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Search by
+						keyword</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
 				</div>
-			</div>
-			<div class="container-fluid py-5" style="padding: 1em 0 0 0 !important;">
-				<div class="container" style = "padding: 0;">
-					<div class="bg-light p-5 rounded">
-						<div class="row g-4 ">
-							<th:block th:each="dto : ${list}">
-								<div class="col-md-6 col-lg-6 col-xl-3">
-									<div class="counter bg-white rounded p-5">
-										<img src="/static/img/default-profile.png" class="img-fluid rounded" alt="Image" width="100"/><br><br>
-										<h4>[[${dto.memberName}]] 회원님</h4>
-										<p><b>회원번호</b> <br/> [[${dto.memberNum}]]</p>
-										<p><b>아이디</b> <br/> [[${dto.memberId}]]</p>
-										<p><b>연락처</b> <br/> [[${dto.memberPhone}]]</p>
-										<p><b>가입일</b> <br/> [[${#dates.format(dto.memberRegist,'yyyy-MM-dd')}]]</p>
-										<div style="margin-top: 50px; justify-self: center;"
-											class="d-flex justify-content-between flex-lg-wrap">
-											<a th:href="|/member/memberDetail?memberNum=${dto.memberNum}|"
-												class="btn border border-secondary rounded-pill px-3 text-primary">
-												<i class="fa fa-info-circle" style="font-size: 20px; margin-bottom: 0;"></i> 회원 상세보기</a>
-										</div>
-									</div>
-								</div>
-							</th:block>
-						</div>
+				<div class="modal-body d-flex align-items-center">
+					<div class="input-group w-75 mx-auto d-flex">
+						<input type="search" class="form-control p-3"
+							placeholder="keywords" aria-describedby="search-icon-1">
+						<span id="search-icon-1" class="input-group-text p-3"><i
+							class="fa fa-search"></i></span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- memberList End-->
+	<!-- Modal Search End -->
+
+
+	<!-- Single Page Header start -->
+	<div class="container-fluid page-header py-5">
+		<h1 class="text-center text-white display-6">쿠폰 등록</h1>
+		<ol class="breadcrumb justify-content-center mb-0">
+			<li class="breadcrumb-item"><a href="/">홈</a></li>
+			<li class="breadcrumb-item"><a href="/coupon/memberCouponList">쿠폰 발급현황</a></li>
+			<li class="breadcrumb-item active text-white">쿠폰 발급</li>
+		</ol>
+	</div>
+	<!-- Single Page Header End -->
+	
+	<!-- Single Product Start -->
+	
+	<div class="container">
+	  <form action="/coupon/memberCouponWrite" method="post" id="frm" th:object = "${memberCouponCommand}">
+	  <table class="responsive-table">
+	    <thead>
+	    <tr><th colspan="3" style="text-align: center;">쿠폰 발급</th> </tr>
+	    </thead>
+	    <tbody>
+	    <tr>
+     		<td>
+     			쿠폰번호<br />
+     		</td>
+	        <td><input th:value = "${memberCouponCommand.couponNum}" type="text" name= "couponNum" id="couponNum" readonly="readonly"/></td>
+	        <td><input type="button" id="couponSearchBtn" value="쿠폰 검색" /></td>
+	    </tr>
+     	<tr>
+     		<td>
+     			쿠폰이름<br />
+     			<span style = "color:red" th:if="${#fields.hasErrors('couponName')}" th:errors="*{couponName}"></span>
+     		</td>
+	        <td colspan = '2'><input th:value = "${memberCouponCommand.couponName}" type="text" name= "couponName" id="couponName" readonly="readonly"/></td>
+	    </tr>
+	    <tr>
+	    	<td>
+	    		할인율<br />
+	    		<span style = "color:red" th:if="${#fields.hasErrors('discount')}" th:errors="*{discount}"></span>	
+	    	</td>
+	        <td><input th:value = "${memberCouponCommand.discount}" min = "1" max = "100" type="number" name= "discount" id="discount" readonly="readonly"/></td>
+	        <td>%</td>
+	    </tr>
+	    
+	    <tr>
+     		<td>
+     			회원번호<br />
+     			<span style = "color:red" th:if="${#fields.hasErrors('memberNum')}" th:errors="*{memberNum}"></span>
+     		</td>
+	        <td><input th:value = "${memberCouponCommand.memberNum}" type="text" name= "memberNum" id="memberNum" readonly="readonly"/></td>
+	        <td><input type="button" id="memberSearchBtn" value="회원 검색" /></td>
+	    </tr>
+	    
+	    <tr>
+     		<td>
+     			쿠폰 개시일<br />
+     			<span style = "color:red" th:if="${#fields.hasErrors('couponStart')}" th:errors="*{couponStart}"></span>
+     		</td>
+	        <td colspan = '2'><input th:value = "${memberCouponCommand.couponStart}" type="date" name= "couponStart" id="couponStart"/></td>
+	    </tr>
+	    
+	     <tr>
+     		<td>
+     			쿠폰 만료일<br />
+     			<span style = "color:red" th:if="${#fields.hasErrors('couponExpire')}" th:errors="*{couponExpire}"></span>
+     		</td>
+	        <td colspan = '2'><input th:value = "${memberCouponCommand.couponExpire}" type="date" name= "couponExpire" id="couponExpire"/></td>
+	    </tr>
+	    </tbody>
+	    <tfoot>
+	    <tr><th colspan="3"><input type="submit" value="쿠폰 등록" id="regist"/></th></tr>
+	    </tfoot>
+	  </table>
+	  </form>
+	</div>
+	<!-- Single Product End -->
+
 
 	<!-- Footer Start -->
 	<div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
@@ -239,7 +316,6 @@
 		</div>
 	</div>
 	<!-- Copyright End -->
-
 
 
 

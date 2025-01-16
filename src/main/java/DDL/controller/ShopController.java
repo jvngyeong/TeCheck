@@ -38,6 +38,16 @@ public class ShopController {
 		goodsListService.execute(searchWord, model, page);
 		return "thymeleaf/shop/shopList";
 	}
+	
+	@GetMapping("sortedList")
+	public String sortedList(@RequestParam(value="searchWord" , required = false) String searchWord
+			, @RequestParam(value = "page" , required = false , defaultValue = "1") int page
+			, Model model, String sortValue) {
+		categoryService.execute(model);
+		goodsListService.execute(searchWord, model, page, sortValue);
+		return "thymeleaf/shop/shopList";
+	}
+	
 	@Autowired
 	GoodsMapper goodsMapper;
 	@GetMapping("shopDetail")

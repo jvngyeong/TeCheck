@@ -8,5 +8,6 @@ import lombok.Data;
 @Alias("communityReplyMemberDTO")
 public class CommunityReplyMemberDTO {
 	MemberDTO memberDTO;
+	EmployeeDTO employeeDTO;
 	CommunityReplyDTO communityReplyDTO;
 }

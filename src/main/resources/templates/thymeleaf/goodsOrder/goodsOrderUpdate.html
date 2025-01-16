@@ -3,6 +3,15 @@
 <head>
 <meta charset="utf-8">
 <title>테크체크 - 실시간 주식 데이터 기반 제품 구매 추천 서비스</title>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#supNumBtn").click(function(){
+		window.open("supSearch","업체검색"
+				,"width=620,height=500,left=30, top=500" );
+	});
+});
+</script>
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <meta content="" name="keywords">
 <meta content="" name="description">
@@ -16,13 +25,16 @@
 
 <!-- Icon Font Stylesheet -->
 <link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
 	rel="stylesheet">
 
 <!-- Libraries Stylesheet -->
 <link href="/static/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+<link href="/static/css/form.css" rel="stylesheet">
+<link href="/static/css/table.css" rel="stylesheet">
 <link href="/static/lib/owlcarousel/assets/owl.carousel.min.css"
 	rel="stylesheet">
 
@@ -33,17 +45,13 @@
 <!-- Template Stylesheet -->
 <link href="/static/css/style.css" rel="stylesheet">
 </head>
-
 <body>
-
 	<!-- Spinner Start -->
 	<div id="spinner"
 		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
 		<div class="spinner-grow text-primary" role="status"></div>
 	</div>
 	<!-- Spinner End -->
-
-
 	<!-- Navbar start -->
 	<div class="container-fluid fixed-top">
 		<div class="container px-0">
@@ -56,9 +64,9 @@
 				</button>
 				<div class="collapse navbar-collapse bg-white" id="navbarCollapse">
 					<div class="navbar-nav mx-auto">
-						<a href="index" class="nav-item nav-link active">Home</a> <a
-							href="shop" class="nav-item nav-link">Shop</a> <a
-							href="shop-detail" class="nav-item nav-link">Shop Detail</a>
+						<a href="/" class="nav-item nav-link active">Home</a> <a
+							href="shop.html" class="nav-item nav-link">Shop</a> <a
+							href="shop-detail.html" class="nav-item nav-link">Shop Detail</a>
 						<div class="nav-item dropdown">
 							<a style="display: block" href="#"
 								class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
@@ -70,9 +78,11 @@
 							</div>
 						</div>
 						<a href="contact.html" class="nav-item nav-link">Contact</a> <a
-							href="/member/memberList" class="nav-item nav-link">회원 관리</a> <a
-							href="contact.html" class="nav-item nav-link">직원 관리</a> <a
-							href="contact.html" class="nav-item nav-link">상품 관리</a>
+							href="contact.html" class="nav-item nav-link">회원 관리</a> <a
+							href="/employee/employeeList" class="nav-item nav-link">직원 관리</a>
+						<a href="/goods/goodsList" class="nav-item nav-link">상품 관리</a> <a
+							href="/department/departmentList" class="nav-item nav-link">부서
+							관리</a>
 					</div>
 					<div class="d-flex m-3 me-0">
 						<button
@@ -93,47 +103,79 @@
 	</div>
 	<!-- Navbar End -->
 
-	<!-- memberList Start-->
-	<div class="container-fluid fruite py-5" style="padding-top: 7rem !important;">
-		<div class="container py-5">
-			<div class="tab-class text-center">
-				<div class="row g-4">
-					<div class="col-lg-4 text-start">
-						<h1 style="display: inline-block">회원 목록</h1>
-						<a href="/member/memberWrite" style="margin: 0 0 8px 30px;"
-							class="btn border border-secondary rounded-pill px-3 text-primary">회원가입</a>
-					</div>
+
+	<!-- Modal Search Start -->
+	<div class="modal fade" id="searchModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-fullscreen">
+			<div class="modal-content rounded-0">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Search by
+						keyword</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
 				</div>
-			</div>
-			<div class="container-fluid py-5" style="padding: 1em 0 0 0 !important;">
-				<div class="container" style = "padding: 0;">
-					<div class="bg-light p-5 rounded">
-						<div class="row g-4 ">
-							<th:block th:each="dto : ${list}">
-								<div class="col-md-6 col-lg-6 col-xl-3">
-									<div class="counter bg-white rounded p-5">
-										<img src="/static/img/default-profile.png" class="img-fluid rounded" alt="Image" width="100"/><br><br>
-										<h4>[[${dto.memberName}]] 회원님</h4>
-										<p><b>회원번호</b> <br/> [[${dto.memberNum}]]</p>
-										<p><b>아이디</b> <br/> [[${dto.memberId}]]</p>
-										<p><b>연락처</b> <br/> [[${dto.memberPhone}]]</p>
-										<p><b>가입일</b> <br/> [[${#dates.format(dto.memberRegist,'yyyy-MM-dd')}]]</p>
-										<div style="margin-top: 50px; justify-self: center;"
-											class="d-flex justify-content-between flex-lg-wrap">
-											<a th:href="|/member/memberDetail?memberNum=${dto.memberNum}|"
-												class="btn border border-secondary rounded-pill px-3 text-primary">
-												<i class="fa fa-info-circle" style="font-size: 20px; margin-bottom: 0;"></i> 회원 상세보기</a>
-										</div>
-									</div>
-								</div>
-							</th:block>
-						</div>
+				<div class="modal-body d-flex align-items-center">
+					<div class="input-group w-75 mx-auto d-flex">
+						<input type="search" class="form-control p-3"
+							placeholder="keywords" aria-describedby="search-icon-1">
+						<span id="search-icon-1" class="input-group-text p-3"><i
+							class="fa fa-search"></i></span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- memberList End-->
+	<!-- Modal Search End -->
+
+
+	<!-- Single Page Header start -->
+	<div class="container-fluid page-header py-5">
+		<h1 class="text-center text-white display-6">상품 발주관리</h1>
+		<ol class="breadcrumb justify-content-center mb-0">
+			<li class="breadcrumb-item"><a href="/">홈</a></li>
+			<li class="breadcrumb-item"><a href="/goods/goodsList">상품 리스트</a></li>
+			<li class="breadcrumb-item"><a href="/goods/goodsOrderList">상품 발주 현황</a></li>
+			<li class="breadcrumb-item active text-white">상품 발주</li>
+		</ol>
+	</div>
+	<!-- Single Page Header End -->
+	
+	<!-- Single Product Start -->
+	
+	<div class="container">
+	  <form action="/goodsOrder/goodsOrderUpdate" method="post" id="frm" th:object="${goodsOrderCommand}">
+	  <input type = "hidden" name = "goodsOrderNum" th:value = "${goodsOrderCommand.goodsOrderNum}" />
+	  <table class="responsive-table">
+	    <thead>
+	    <tr><th colspan="2" style="text-align: center;">상품 발주 관리</th> </tr>
+	    </thead>
+	    <tbody>
+   	    <tr><td>공급업체 번호</td>
+	        <td><input th:value = "${goodsOrderCommand.supNum}" type="text" name= "supNum" id="supNum" readonly="readonly" />
+	        	<input type="button" id="supNumBtn" value="업체 검색" /></td></tr>
+     	<tr><td>계약번호</td>
+	        <td><input th:value = "${goodsOrderCommand.contractNum}" type="text" name= "contractNum" id="contractNum" readonly="readonly" />
+	    </tr>
+	    <tr><td>상품번호</td>
+	        <td><input th:value = "${goodsOrderCommand.goodsNum}" type="text" name= "goodsNum" id="goodsNum" readonly="readonly" />
+	    </tr>
+	    <tr><td>상품명</td>
+	        <td><input type="text"  th:value = "${goodsOrderCommand.goodsName}" id="goodsName" name = "goodsName" readonly="readonly" /></td> </tr>
+	    <tr><td>발주 수량</td>
+	        <td><input th:value = "${goodsOrderCommand.goodsOrderQty}" type="number" name= "goodsOrderQty" id="goodsOrderQty" min="0"/></td></tr>
+	    </tbody>
+	  </table>
+	  		<div style = "display : flex; justify-content:center; gap:30px;">
+		    	<input style = "width:15%; display:inline-block; border:none;" type="submit" value="발주 수정" id="regist"/>
+		    	<button th:attr="onclick=|location.href='/goodsOrder/goodsOrderDelete?goodsOrderNum=${goodsOrderCommand.goodsOrderNum}'|"style = "width:15%; display:inline-block; border:none;" type="button" id="regist">
+		    		발주 삭제
+		    	</button>
+	    	</div>
+	  </form>
+	</div>
+	<!-- Single Product End -->
+
 
 	<!-- Footer Start -->
 	<div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
@@ -239,7 +281,6 @@
 		</div>
 	</div>
 	<!-- Copyright End -->
-
 
 
 
