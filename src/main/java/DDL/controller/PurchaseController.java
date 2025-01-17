@@ -59,9 +59,11 @@ public class PurchaseController {
 			model.addAttribute("goodsCartDTOList", goodsCartDTOList);
 			model.addAttribute("totalPrice", goodsPrice);
 		}
-		if(!couponNum.isEmpty()) {
-			CouponDTO couponDTO = couponMapper.couponSelectOne(couponNum);
-			model.addAttribute("couponDTO", couponDTO);
+		if(couponNum != null) {
+			if(!couponNum.isEmpty()) {
+				CouponDTO couponDTO = couponMapper.couponSelectOne(couponNum);
+				model.addAttribute("couponDTO", couponDTO);
+			}
 		}
 		return "thymeleaf/purchase/purchaseList";
 	}
