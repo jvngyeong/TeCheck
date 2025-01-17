@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import DDL.domain.AuthInfoDTO;
 import DDL.domain.LoginDTO;
@@ -15,6 +16,7 @@ import DDL.mapper.LoginMapper;
 import DDL.service.EmailConfService;
 import DDL.service.EmailSendService;
 import DDL.service.cart.CartListService;
+import DDL.service.goods.GoodsListService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -32,6 +34,9 @@ public class TeCheckApplication {
 	CartListService cartListService;
 	
 	@Autowired
+	GoodsListService goodsListService;
+	
+	@Autowired
 	LoginMapper loginMapper;
 	
 	public static void main(String[] args) {
@@ -39,7 +44,9 @@ public class TeCheckApplication {
 	}
 
 	@RequestMapping("/")
-	public String index(Model model, HttpSession session, HttpServletRequest request) {
+	public String index(@RequestParam(value="searchWord" , required = false) String searchWord
+			, @RequestParam(value = "page" , required = false , defaultValue = "1") int page
+			, Model model, HttpSession session, HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		for(Cookie c : cookies) {
 			if(c.getName().equals("isAutoLogin")) {
@@ -51,6 +58,7 @@ public class TeCheckApplication {
 				session.setAttribute("auth", auth);
 			}
 		}
+		goodsListService.execute(searchWord, model, page, session);
 		cartListService.execute(model, session);
 		return "thymeleaf/index";
 	}
