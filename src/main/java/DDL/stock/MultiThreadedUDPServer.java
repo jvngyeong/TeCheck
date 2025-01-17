@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import DDL.vo.StockA3;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-
+@Service
 public class MultiThreadedUDPServer {
     private static final MultiThreadedUDPServer instance = new MultiThreadedUDPServer();
     private KafkaProducer<String, String> producer;

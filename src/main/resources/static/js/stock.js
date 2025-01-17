@@ -42,6 +42,15 @@ function getGraph(){
 				$("#todateRateOfChange").html(result.rateOfChange+'%');
 				$("#todateRateOfChange").css("color", "blue");
 			}
+			if (result.rateOfChange > 0) {
+			    $("#goodsRecommendation").html(
+			        '현재 시장 변동률은 전일 종가 대비 <span style="color: red;">+' + result.rateOfChange + '%</span>입니다. 시장 상황으로 인해 가격이 조정되고 있습니다.<br/> 조금 더 신중히 지켜보시는 건 어떨까요?'
+			    );
+			} else if (result.rateOfChange < 0) {
+			    $("#goodsRecommendation").html(
+			        '현재 시장 변동률은 전일 종가 대비 <span style="color: blue;">' + result.rateOfChange + '%</span>입니다. 지금은 가격 변동의 좋은 시점입니다.<br/> 가격이 내려갈 가능성이 있으니 합리적인 구매를 고려해보세요!'
+			    );
+			}
 			$("#todayTotalVolume").html(result.totalVolume.toLocaleString());
 			$("#todayTotalPrice").html(new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(result.totalPrice));
 		},
