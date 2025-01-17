@@ -54,82 +54,92 @@ $(function(){
 	</div>
 	<!-- Spinner End -->
 	<!-- Navbar start -->
-	<div class="container-fluid fixed-top">
-		<div class="container px-0">
-			<nav class="navbar navbar-light bg-white navbar-expand-xl">
-				<a href="/" class="navbar-brand"><h1
-						class="text-primary display-6" style="margin-top: 8px">TeCheck</h1></a>
-				<button class="navbar-toggler py-2 px-3" type="button"
-					data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-					<span class="fa fa-bars text-primary"></span>
-				</button>
-				<div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-					<div class="navbar-nav mx-auto">
-						<a href="/" class="nav-item nav-link active">홈</a> 
-						<a href="/shop/shopList" class="nav-item nav-link">상점</a>  
-						<a href="/cart/cart"  class="nav-item nav-link">장바구니</a>
-						<div class="nav-item dropdown">
-						<th:block th:if="${session.auth != null}">
-							<th:block th:if="${session.auth.grade == 'emp'}">
-							<a style="display: block" href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">관리</a>
-							<div class="dropdown-menu m-0 bg-secondary rounded-0">
-								<a href="/member/memberList" class="dropdown-item">회원 관리</a> 
-								<a href="/employee/employeeList" class="dropdown-item">직원 관리</a>
-								<a href="/goods/goodsList" class="dropdown-item">상품 관리</a> 
-								<a href="/department/departmentList" class="dropdown-item">부서 관리</a>
-								<a href="/order/empOrderList" class="dropdown-item">주문 관리</a>
-								<a href="/store/storeList" class="dropdown-item">매장 관리</a>
-							</div>
-							</th:block>
-						</th:block>
-						</div>
-						<a href="/community/communityList" class="nav-item nav-link">커뮤니티</a> 
-						<a href="contact.html" class="nav-item nav-link">Contact</a>
-
-					</div>
-					<div class="d-flex m-3 me-0">
-						<button
-							class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
-							data-bs-toggle="modal" data-bs-target="#searchModal">
-							<i class="fas fa-search text-primary"></i>
-						</button>
-						<a href="#" class="position-relative me-4 my-auto"> <i
-							class="fa fa-shopping-bag fa-2x"></i> <span
-							class="cartBtn position-absolute rounded-circle d-flex align-items-center justify-content-center text-white px-1"
-							style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span></a> 
-							<div class="nav-item dropdown">
-							<a style="display: block; padding-left: 4px;" href="#"
-								class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-								<i class="fas fa-user fa-2x"></i>
-							</a>
-							<div class="dropdown-menu m-0 bg-secondary rounded-0">
-								<th:block th:if="${session.auth == null}">
-								<a href="/login/loginForm" class="dropdown-item">로그인</a>
-								<a href="/regist/registForm" class="dropdown-item">회원가입</a>
-								</th:block>
-								<th:block th:if="${session.auth != null}">
-									<th:block th:if="${session.auth.grade == 'mem'}">
-									<a href="#" class="dropdown-item">회원 로그인 성공</a>
-									<a href="/myPage/memberMyPage" class="dropdown-item">마이페이지</a>
-									</th:block>
-									<th:block th:if="${session.auth.grade == 'emp'}">
-									<a href="#" class="dropdown-item">직원 로그인 성공</a>
-									<a href="/myPage/empMyPage" class="dropdown-item">마이페이지</a>
-									</th:block>
-									<a href="/login/logout" class="dropdown-item">로그아웃</a>
-								</th:block>
-									
-								
-							</div>
-						</div>
-
-						<a href="#" class="my-auto"> </a>
-					</div>
-				</div>
-			</nav>
-		</div>
-	</div>
-	<!-- Navbar End -->
+   <div class="container-fluid fixed-top">
+      <div class="container px-0">
+         <nav class="navbar navbar-light bg-white navbar-expand-xl">
+            <a href="/" class="navbar-brand"><h1
+                  class="text-primary display-6" style="margin-top: 8px">TeCheck</h1></a>
+            <button class="navbar-toggler py-2 px-3" type="button"
+               data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+               <span class="fa fa-bars text-primary"></span>
+            </button>
+            <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+               <div class="navbar-nav mx-auto">
+                  <a href="/" class="nav-item nav-link active">홈</a> 
+                  <a href="/shop/shopList" class="nav-item nav-link">상점</a>  
+                  <div class="nav-item dropdown">
+                  <th:block th:if="${session.auth != null}">
+                     <th:block th:if="${session.auth.grade == 'emp'}">
+                        <a style="display: block" href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">관리</a>
+                        <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                           <a href="/member/memberList" class="dropdown-item">회원 관리</a> 
+                           <a href="/employee/employeeList" class="dropdown-item">직원 관리</a>
+                           <a href="/goods/goodsList" class="dropdown-item">상품 관리</a> 
+                           <a href="/department/departmentList" class="dropdown-item">부서 관리</a>
+                           <a href="/order/empOrderList" class="dropdown-item">주문 관리</a>
+                           <a href="/store/storeList" class="dropdown-item">매장 관리</a>
+                           <a href="/experience/experienceList" class="dropdown-item">체험 관리</a>
+                           <a href="/book/empBookList" class="dropdown-item">예약 관리</a>
+                           <a href="/supply/supplyList" class="dropdown-item">업체 관리</a>
+                           <a href="/inquire/questionList" class="dropdown-item">문의 관리</a>
+                           <a href="/review/empReviewList" class="dropdown-item">리뷰 관리</a>
+                           <a href="/coupon/couponList" class="dropdown-item">쿠폰 관리</a>
+                        </div>
+                     </th:block>
+                  </th:block>
+                  </div>
+                  <a href="/community/communityList" class="nav-item nav-link">커뮤니티</a> 
+                  <th:block th:if="${session.auth != null}">
+                     <th:block th:if="${session.auth.grade == 'mem'}">
+                        <a href="/book/bookForm" class="nav-item nav-link">체험 예약</a>
+                     </th:block>
+                  </th:block>
+                  <a href="/stock/stock" class="nav-item nav-link">주식</a>
+               </div>
+               <div class="d-flex m-3 me-0" style="align-content: stretch;">
+                  <th:block th:if="${session.auth != null}">
+                     <th:block th:if="${session.auth.grade == 'mem'}">
+                        <a href="/cart/cart" class="position-relative me-4 my-auto"> 
+                           <i class="fa fa-shopping-bag fa-2x"></i> 
+                           <th:block th:if = "${goodsCartDTOList != null}">
+                              <th:block th:if = "${session.totalCartQty > 0}">
+                                 <span class="cartBtn position-absolute rounded-circle d-flex align-items-center justify-content-center text-white px-1"
+                                 style="top: -5px; left: 15px; height: 20px; min-width: 20px;">[[${session.totalCartQty}]]</span>
+                              </th:block>
+                           </th:block>                        
+                        </a>
+                     </th:block>
+                  </th:block>
+                  <div class="nav-item dropdown">
+                     <a style="display: block; padding-left: 4px;" href="#"
+                        class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fas fa-user fa-2x"></i>
+                     </a>
+                     <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                        <th:block th:if="${session.auth == null}">
+                        <a href="/login/loginForm" class="dropdown-item">로그인</a>
+                        <a href="/regist/registForm" class="dropdown-item">회원가입</a>
+                        </th:block>
+                        <th:block th:if="${session.auth != null}">
+                           <th:block th:if="${session.auth.grade == 'mem'}">
+                           <a href="#" class="dropdown-item">회원 로그인 성공</a>
+                           <a href="/myPage/memberMyPage" class="dropdown-item">마이페이지</a>
+                           </th:block>
+                           <th:block th:if="${session.auth.grade == 'emp'}">
+                           <a href="#" class="dropdown-item">직원 로그인 성공</a>
+                           <a href="/myPage/empMyPage" class="dropdown-item">마이페이지</a>
+                           </th:block>
+                           <a href="/login/logout" class="dropdown-item">로그아웃</a>
+                        </th:block>
+                     </div>
+                  </div>
+                  <a href="#" class="my-auto"> </a>
+               </div>
+            </div>
+         </nav>
+      </div>
+   </div>
+   <!-- Navbar End -->
 
 	<!-- Single Page Header start -->
 	<div class="container-fluid page-header py-5">
