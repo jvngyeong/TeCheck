@@ -35,7 +35,7 @@
     			url : "/cart/cartInsert",
     			data : {
     				"goodsNum" : goodsNum,
-    				"memberNum" : '[[${memberNum}]]',
+    				"memberNum" : $("#userGrade").val(),
     				"cartQty" : 1
     			},
     			success : function(result) {
@@ -47,8 +47,12 @@
     					else{
     						window.location.reload();
     					}
-    				} else if (result == "000") {
+    				} 
+    				else if (result == "000") {
     					alert("로그인이 필요한 서비스입니다.");
+    				}
+    				else if (result == "900"){
+    					alert("직원은 이용할 수 없는 서비스입니다.");
     				}
     			},
     			error : function(result) {
@@ -91,6 +95,7 @@
     </head>
     <body>
     <div id = "wholeContent">
+    <input type = "hidden" th:value = "${session.auth.grade}" id = "userGrade"/>
     <!-- Spinner Start -->
 	<div id="spinner"
 		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">

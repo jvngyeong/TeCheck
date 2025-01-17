@@ -17,6 +17,8 @@
 		<association property="goodsDTO" javaType="goodsDTO">
 	        <id column="goods_num" property="goodsNum" javaType="String" jdbcType="VARCHAR"/>
 	        <result column="goods_name" property="goodsName" javaType="String" jdbcType="VARCHAR"/>
+	        <result column="goods_price" property="goodsPrice" javaType="Integer" jdbcType="BIGINT"/>
+	        <result column="goods_regist" property="goodsRegist" javaType="date" jdbcType="DATE"/>
 	    </association>
 	    		
 		<association property="contractDTO" javaType="contractDTO">
@@ -32,7 +34,7 @@
 	
 	<select id="goodsOrderSelectList" resultMap="goodsOrderDetailDTO">
 		select goods_order_num, goods_order_date, emp_num, go.sup_num, goods_order_qty,
-        g.goods_num, goods_name
+        g.goods_num, goods_name, goods_price, goods_regist
 		from goods_order go join contract c
 		on go.contract_num = c.contract_num
 		join goods g
@@ -41,7 +43,7 @@
 	
 	<select id="goodsOrderSelectOne" resultMap="goodsOrderDetailDTO">
 		select goods_order_num, goods_order_date, emp_num, c.contract_num, go.sup_num, goods_order_qty,
-        g.goods_num, goods_name
+        g.goods_num, goods_name, goods_price, goods_regist
 		from goods_order go join contract c
 		on go.contract_num = c.contract_num
 		join goods g

@@ -18,6 +18,7 @@ import DDL.service.goodsIpgo.GoodsIpgoService;
 import DDL.service.goodsIpgo.IpgoDeleteService;
 import DDL.service.goodsIpgo.IpgoDetailService;
 import DDL.service.goodsIpgo.IpgoUpdateService;
+import DDL.service.goodsOrder.GoodsOrderListService;
 import jakarta.servlet.http.HttpSession;
 
 
@@ -37,6 +38,8 @@ public class GoodsIpgoController {
 	IpgoUpdateService ipgoUpdateService;
 	@Autowired
 	IpgoDeleteService ipgoDeleteService;
+	@Autowired
+	GoodsOrderListService goodsOrderListService;
 	@GetMapping("goodsIpgoList")
 	public String goodsIpgoList(Model model) {
 		goodsIpgoListService.execute(model);
@@ -65,6 +68,7 @@ public class GoodsIpgoController {
 	public String goodsItem(@RequestParam(value="searchWord" , required = false) String searchWord
 			, @RequestParam(value = "page" , required = false , defaultValue = "1") int page
 			, Model model, HttpSession session) {
+		goodsOrderListService.execute(model);
 		goodsListService.execute(null, model, -1, session);
 		return "thymeleaf/goodsIpgo/goodsItem";
 	}
