@@ -23,10 +23,16 @@
 	</insert>
 	
 	<select id="goodsListSelect" parameterType="string">
-		select * from (
-			select ROW_NUMBER() over (order by goods_num desc) as rn,
-					<include refid="goodsColumns" />
-			from goods
+		select GOODS_NUM, GOODS_NAME, GOODS_PRICE, GOODS_CONTENTS, VISIT_COUNT
+		, GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE, GOODS_DETAIL_IMAGE
+		, GOODS_DETAIL_STORE_IMAGE, GOODS_REGIST, GOODS_UPDATE_DATE, GOODS_KIND, ipgo_qty 
+		from (
+			select ROW_NUMBER() over (order by g.goods_num desc) as rn,
+					g.GOODS_NUM, GOODS_NAME, GOODS_PRICE, GOODS_CONTENTS, VISIT_COUNT
+					, GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE, GOODS_DETAIL_IMAGE
+					, GOODS_DETAIL_STORE_IMAGE, GOODS_REGIST, GOODS_UPDATE_DATE, GOODS_KIND, ipgo_qty
+			from goods g left outer join goods_ipgo gi
+			on g.goods_num = gi.goods_num
 			<where>
 				<if test="searchWord != null">
 					goods_name like '%' || #{searchWord} || '%'
@@ -38,10 +44,16 @@
 	</select>
 	
 	<select id="goodsSortedListSelect" parameterType="string">
-		select * from (
-			select ROW_NUMBER() over (order by goods_num desc) as rn,
-					<include refid="goodsColumns" />
-			from goods
+		select GOODS_NUM, GOODS_NAME, GOODS_PRICE, GOODS_CONTENTS, VISIT_COUNT
+		, GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE, GOODS_DETAIL_IMAGE
+		, GOODS_DETAIL_STORE_IMAGE, GOODS_REGIST, GOODS_UPDATE_DATE, GOODS_KIND, ipgo_qty 
+		from (
+			select ROW_NUMBER() over (order by g.goods_num desc) as rn,
+					g.GOODS_NUM, GOODS_NAME, GOODS_PRICE, GOODS_CONTENTS, VISIT_COUNT
+					, GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE, GOODS_DETAIL_IMAGE
+					, GOODS_DETAIL_STORE_IMAGE, GOODS_REGIST, GOODS_UPDATE_DATE, GOODS_KIND, ipgo_qty
+			from goods g left outer join goods_ipgo gi
+			on g.goods_num = gi.goods_num
 			<where>
 				<if test="searchWord != null">
 					goods_name like '%' || #{searchWord} || '%'
@@ -49,7 +61,7 @@
 				</if>
 			</where>
 		)
-		where rn between #{startRow} and #{endRow} 
+		where rn between #{startRow} and #{endRow}
 		<if test="sortValue != null">
         	${sortValue}
     	</if>
@@ -66,7 +78,12 @@
 	</select>
 	
 	<select id = "goodsSelectOne">
-		select <include refid="goodsColumns" /> from goods where goods_num = #{goodsNum}
+		select g.GOODS_NUM, GOODS_NAME, GOODS_PRICE, GOODS_CONTENTS, VISIT_COUNT
+					, GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE, GOODS_DETAIL_IMAGE
+					, GOODS_DETAIL_STORE_IMAGE, GOODS_REGIST, GOODS_UPDATE_DATE, GOODS_KIND, ipgo_qty
+		from goods g left outer join goods_ipgo gi
+		on g.goods_num = gi.goods_num
+		where g.goods_num = #{goodsNum}
 	</select>
 	<update id= "goodsUpdate" parameterType="goodsDTO">
 		update goods
@@ -101,6 +118,11 @@
 	</select>
 	
 	<select id="goodsAllSelect" resultType="goodsDTO">
-		select <include refid="goodsColumns"/> from goods
+		select ROW_NUMBER() over (order by g.goods_num desc) as rn,
+					g.GOODS_NUM, GOODS_NAME, GOODS_PRICE, GOODS_CONTENTS, VISIT_COUNT
+					, GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE, GOODS_DETAIL_IMAGE
+					, GOODS_DETAIL_STORE_IMAGE, GOODS_REGIST, GOODS_UPDATE_DATE, GOODS_KIND, ipgo_qty
+			from goods g left outer join goods_ipgo gi
+			on g.goods_num = gi.goods_num
 	</select>
 </mapper>

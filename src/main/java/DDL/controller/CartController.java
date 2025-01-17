@@ -36,11 +36,11 @@ public class CartController {
 	
 	@GetMapping("cartInsert")
 	public @ResponseBody String cartInsert(String goodsNum, String memberNum, String cartQty) {
-		if(memberNum != null && !memberNum.equals("") && !memberNum.trim().equals("emp")) {
+		if(memberNum != null && !memberNum.equals("") && !memberNum.equals("emp")) {
 			cartMergeService.execute(goodsNum, memberNum, cartQty);
 			return "200";
 		}
-		else if(memberNum.trim().equals("emp")) {
+		else if(memberNum != null && memberNum.equals("emp")) {
 			return "900";
 		}
 		else {
