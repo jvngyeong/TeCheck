@@ -70,4 +70,5 @@ TeCheck1-0.0.1-SNAPSHOT.war.original
 ### End ###
 src/main/resources/application.properties
 src/main/resources/static/upload
+src/main/java/DDL/service/SMSMessageService.java
 .classpath

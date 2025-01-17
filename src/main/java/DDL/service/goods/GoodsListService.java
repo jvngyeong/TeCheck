@@ -28,8 +28,10 @@ public class GoodsListService {
 	
 	public void execute(String searchWord, Model model, int page, HttpSession session) {
 		AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
-		String memberNum = memberMapper.getMemberNum(auth.getUserId());
-		model.addAttribute("memberNum", memberNum);
+		if(auth != null) {
+			String memberNum = memberMapper.getMemberNum(auth.getUserId());
+			model.addAttribute("memberNum", memberNum);
+		}
 		if(searchWord == null && page < 0) {
 			List<GoodsDTO> list = goodsMapper.goodsAllSelect();
 			model.addAttribute("list", list);
@@ -40,6 +42,7 @@ public class GoodsListService {
 			
 			
 			List<GoodsDTO> list = goodsMapper.goodsListSelect(sepDTO);
+			
 			int count = goodsMapper.goodsCount(searchWord);
 			// 페이징
 			startEndPageService.execute(page, limit, count, searchWord, list, model);

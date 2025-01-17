@@ -35,7 +35,7 @@
     			url : "/cart/cartInsert",
     			data : {
     				"goodsNum" : goodsNum,
-    				"memberNum" : '[[${memberNum}]]',
+    				"memberNum" : $("#userGrade").val(),
     				"cartQty" : 1
     			},
     			success : function(result) {
@@ -47,8 +47,12 @@
     					else{
     						window.location.reload();
     					}
-    				} else if (result == "000") {
+    				} 
+    				else if (result == "000") {
     					alert("로그인이 필요한 서비스입니다.");
+    				}
+    				else if (result == "900"){
+    					alert("직원은 이용할 수 없는 서비스입니다.");
     				}
     			},
     			error : function(result) {
@@ -91,6 +95,9 @@
     </head>
     <body>
     <div id = "wholeContent">
+    <th:block th:if = "${session.auth != null}">
+    <input type = "hidden" th:value = "${session.auth.grade}" id = "userGrade"/>
+    </th:block>
     <!-- Spinner Start -->
 	<div id="spinner"
 		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
@@ -265,30 +272,88 @@
                             </div>
                             <div class="col-lg-9">
                                 <div class="row g-4 justify-content-center">
+                                	
                                 	<th:block th:each="goodsDTO , idx : ${list}">
-                                    	<a style = "padding:0px;width:0px;display:inline;" th:href = "|/shop/shopDetail?goodsNum=${goodsDTO.goodsNum}|">
-                                    		<div class="col-md-6 col-lg-6 col-xl-4">
-	                                        	<div style = "border:1px solid lightgray" class="rounded position-relative fruite-item">
-		                                            <div class="fruite-img">
-		                                                <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|" style = "height:300px; object-fit:cover;"
-		                                                class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />
-		                                            </div>
-		                                            <div class="bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">[[${goodsDTO.goodsKind}]]</div>
-		                                            <div style = "border-top: 1px solid lightgray;" class="p-4 border-secondary rounded-bottom">
-		                                                <h4>[[${goodsDTO.goodsName}]]</h4>
-		                                                <p class = "ellipsis-container" style = "color:black">
-		                                               	 [[${goodsDTO.goodsContents}]]
-		                                                </p>
-		                                                <div class="d-flex justify-content-between flex-lg-wrap" style = "display: block !important;">
-		                                                    <p class="text-dark fs-5 fw-bold mb-0">[[${#numbers.formatCurrency(goodsDTO.goodsPrice)}]]</p>
-		                                                    <input type="hidden" id="memberNum" th:value="${memberNum}" />
-		                                                   	<a th:onclick="cartInsert([[${goodsDTO.goodsNum}]]);" style = "margin-top: 20px;" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> 장바구니에 담기</a>
-		                                                </div>
-		                                            </div>
-	                                        	</div>
-                                   			</div>
-                                    	</a>
+                                    	<th:block th:if = "${goodsDTO.ipgoQty != null}">
+                                    		<th:block th:if = "${goodsDTO.ipgoQty > 0}">
+                                    			<a style = "padding:0px;width:0px;display:inline;" th:href = "|/shop/shopDetail?goodsNum=${goodsDTO.goodsNum}|">
+		                                    		<div class="col-md-6 col-lg-6 col-xl-4">
+			                                        	<div style = "border:1px solid lightgray" class="rounded position-relative fruite-item">
+				                                            <div class="fruite-img">
+				                                                <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|" style = "height:300px; object-fit:cover;"
+				                                                class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />
+				                                            </div>
+				                                            <div class="bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">[[${goodsDTO.goodsKind}]]</div>
+				                                            <div style = "border-top: 1px solid lightgray;" class="p-4 border-secondary rounded-bottom">
+				                                                <h4>[[${goodsDTO.goodsName}]]</h4>
+				                                                <p class = "ellipsis-container" style = "color:black">
+				                                               	 [[${goodsDTO.goodsContents}]]
+				                                                </p>
+				                                                <div class="d-flex justify-content-between flex-lg-wrap" style = "display: block !important;">
+				                                                    <p class="text-dark fs-5 fw-bold mb-0">[[${#numbers.formatCurrency(goodsDTO.goodsPrice)}]]</p>
+				                                                    <input type="hidden" id="memberNum" th:value="${memberNum}" />
+				                                                   	<a th:onclick="cartInsert([[${goodsDTO.goodsNum}]]);" style = "margin-top: 20px;" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> 장바구니에 담기</a>
+				                                                </div>
+				                                            </div>
+			                                        	</div>
+		                                   			</div>
+		                                    	</a>
+                                    		</th:block>
+                                    		
+                                    		<th:block th:if = "${goodsDTO.ipgoQty <= 0}">
+                                    			<a style = "padding:0px;width:0px;display:inline;" th:href = "|/shop/shopDetail?goodsNum=${goodsDTO.goodsNum}|">
+		                                    		<div class="col-md-6 col-lg-6 col-xl-4">
+			                                        	<div style = "border:1px solid lightgray" class="rounded position-relative fruite-item">
+				                                            <div class="fruite-img">
+				                                                <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|" style = "height:300px; object-fit:cover; opacity:30%;"
+				                                                class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />
+				                                            </div>
+				                                            <div class="bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">[[${goodsDTO.goodsKind}]]</div>
+				                                            <div style = "border-top: 1px solid lightgray;" class="p-4 border-secondary rounded-bottom">
+				                                            	<h1 style="font-size:4rem;position : absolute;top: 120px;left: 90px;color: black;">품절</h1>
+				                                                <h4>[[${goodsDTO.goodsName}]]</h4>
+				                                                <p class = "ellipsis-container" style = "color:black">
+				                                               	 [[${goodsDTO.goodsContents}]]
+				                                                </p>
+				                                                <div class="d-flex justify-content-between flex-lg-wrap" style = "display: block !important;">
+				                                                    <p class="text-dark fs-5 fw-bold mb-0">[[${#numbers.formatCurrency(goodsDTO.goodsPrice)}]]</p>
+				                                                    <input type="hidden" id="memberNum" th:value="${memberNum}" />
+				                                                   	<a></a>
+				                                                </div>
+				                                            </div>
+			                                        	</div>
+		                                   			</div>
+		                                    	</a>
+                                    		</th:block>
+                                    	</th:block>
+                                    	
+                                    	<th:block th:if = "${goodsDTO.ipgoQty == null}">
+                                    		<a style = "padding:0px;width:0px;display:inline;" th:href = "|/shop/shopDetail?goodsNum=${goodsDTO.goodsNum}|">
+	                                    		<div class="col-md-6 col-lg-6 col-xl-4">
+		                                        	<div style = "border:1px solid lightgray" class="rounded position-relative fruite-item">
+			                                            <div class="fruite-img">
+			                                                <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|" style = "height:300px; object-fit:cover; opacity:30%;"
+			                                                class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />
+			                                            </div>
+			                                            <div class="bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">[[${goodsDTO.goodsKind}]]</div>
+			                                            <div style = "border-top: 1px solid lightgray;" class="p-4 border-secondary rounded-bottom">
+			                                            	<h1 style="font-size:4rem;position : absolute;top: 120px;left: 90px;color: black;">품절</h1>
+			                                                <h4>[[${goodsDTO.goodsName}]]</h4>
+			                                                <p class = "ellipsis-container" style = "color:black">
+			                                               	 [[${goodsDTO.goodsContents}]]
+			                                                </p>
+			                                                <div class="d-flex justify-content-between flex-lg-wrap" style = "display: block !important;">
+			                                                    <p class="text-dark fs-5 fw-bold mb-0">[[${#numbers.formatCurrency(goodsDTO.goodsPrice)}]]</p>
+			                                                    <input type="hidden" id="memberNum" th:value="${memberNum}" />
+			                                                   	<a></a>
+			                                                </div>
+			                                            </div>
+		                                        	</div>
+	                                   			</div>
+	                                    	</a>
+                                    	</th:block>
                                     </th:block>
+                                	
                                     <div class="col-12">
                                     	<input type="hidden" id = "page" th:value = ${page}>
                                         <div class="pagination d-flex justify-content-center mt-5">

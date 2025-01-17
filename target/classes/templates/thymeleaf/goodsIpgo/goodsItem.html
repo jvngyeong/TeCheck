@@ -31,19 +31,21 @@ function goodsItem(element) {
         </tr>
     </thead>
     <tbody>
-        <tr th:each="dto : ${list}">
+    	
+    	<tr th:each="dto : ${goodsOrderDetailList}">
             <td>
                 <a href="javascript:void(0);"
-                   th:data-goodsnum="${dto.goodsNum}"
-                   th:data-goodsname="${dto.goodsName}"
+                   th:data-goodsnum="${dto.goodsDTO.goodsNum}"
+                   th:data-goodsname="${dto.goodsDTO.goodsName}"
                    onclick="goodsItem(this)">
-                   [[${dto.goodsNum}]]
+                   [[${dto.goodsDTO.goodsNum}]]
                 </a>
             </td>
-            <td>[[${dto.goodsName}]]</td>
-            <td>[[${dto.goodsPrice}]]</td>
-            <td>[[${#dates.format(dto.goodsRegist, 'yyyy-MM-dd')}]]</td>
+            <td>[[${dto.goodsDTO.goodsName}]]</td>
+            <td>[[${dto.goodsDTO.goodsPrice}]]</td>
+            <td>[[${#dates.format(dto.goodsDTO.goodsRegist, 'yyyy-MM-dd')}]]</td>
         </tr>
+
     </tbody>
 </table>
 </body>

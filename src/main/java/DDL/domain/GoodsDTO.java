@@ -31,4 +31,6 @@ public class GoodsDTO {
 	String goodsDetailStoreImage;
 	String goodsKind;
 	int goodsQty;
+	
+	Integer ipgoQty;
 }

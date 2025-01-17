@@ -84,6 +84,9 @@
 				} else if (result == "000") {
 					alert("로그인이 필요한 서비스입니다.");
 				}
+				else if (result == "900"){
+					alert("직원은 이용할 수 없는 서비스입니다.");
+				}
 			},
 			error : function(result) {
 				alert("오류가 발생했습니다.");
@@ -351,23 +354,27 @@
 							<p class="mb-4">조회수 : [[${goodsDTO.visitCount}]]</p>
 							<p class="mb-4">상품종류 : [[${goodsDTO.goodsKind}]]</p>
 							<p class="mb-4">[[${goodsDTO.goodsContents}]]</p>
-							<div class="input-group quantity mb-5" style="width: 100px;">
-								<div class="input-group-btn">
-									<button
-										class="btn btn-sm btn-minus rounded-circle bg-light border">
-										<i class="fa fa-minus"></i>
-									</button>
-								</div>
-								<input type="text" id="cartQty"
-									class="form-control form-control-sm text-center border-0"
-									value="1">
-								<div class="input-group-btn">
-									<button
-										class="btn btn-sm btn-plus rounded-circle bg-light border">
-										<i class="fa fa-plus"></i>
-									</button>
-								</div>
-							</div>
+							<th:block th:if = "${goodsDTO.ipgoQty != null}">
+								<th:block th:if = "${goodsDTO.ipgoQty >= 0}">
+									<div class="input-group quantity mb-5" style="width: 100px;">
+										<div class="input-group-btn">
+											<button
+												class="btn btn-sm btn-minus rounded-circle bg-light border">
+												<i class="fa fa-minus"></i>
+											</button>
+										</div>
+										<input type="text" id="cartQty"
+											class="form-control form-control-sm text-center border-0"
+											value="1">
+										<div class="input-group-btn">
+											<button
+												class="btn btn-sm btn-plus rounded-circle bg-light border">
+												<i class="fa fa-plus"></i>
+											</button>
+										</div>
+									</div>
+								</th:block>
+							</th:block>
 
 							<a id="wishBtn" style="padding: 0.5rem !important"
 								class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
@@ -377,12 +384,16 @@
 									</i>
 								</div>
 							</a> 
-							<a onclick="cartInsert();"
-								class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
-								class="fa fa-shopping-bag me-2 text-primary"></i> 장바구니</a> 
-							<a onclick="directPurchase();"
-								class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
-								class="fa fa-solid fa-cart-shopping me-2 text-primary"></i> 구매하기</a>
+							<th:block th:if = "${goodsDTO.ipgoQty != null}">
+								<th:block th:if = "${goodsDTO.ipgoQty >= 0}">
+								<a onclick="cartInsert();"
+									class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
+									class="fa fa-shopping-bag me-2 text-primary"></i> 장바구니</a> 
+								<a onclick="directPurchase();"
+									class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
+									class="fa fa-solid fa-cart-shopping me-2 text-primary"></i> 구매하기</a>
+								</th:block>
+							</th:block>
 							<a onclick="directBook();"
 								class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
 								<i class="fa-solid fa-check me-2 text-primary"></i> 체험 예약하기</a>
