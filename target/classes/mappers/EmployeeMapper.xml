@@ -10,7 +10,7 @@
 	<insert id="employeeWrite" parameterType="employeeDTO">
 		insert into employees(<include refid="employeeColumns"></include>)
 		values(#{empNum}, #{empId}, #{empPw}, #{empName}, #{empAddr}, #{empAddrDetail},
-				#{empPost}, #{empPhone}, #{empImage}, #{empStoreImage}, sysdate, 1, #{empEmail}) 
+				#{empPost}, #{empPhone}, #{empImage}, #{empStoreImage}, sysdate, #{departmentNum}, #{empEmail}) 
 	</insert>
 	
 	<select id="employeeListSelect">

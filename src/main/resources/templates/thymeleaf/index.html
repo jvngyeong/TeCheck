@@ -167,32 +167,30 @@ function chattingListPopup(){
                   <div class="row g-4">
                      <div class="col-lg-9" style="width:100%;">
                         <div class="row g-4">
-                           <th:block th:each="goodsDTO , idx : ${list}">
-                           		<th:block th:if="${goodsDTO.goodsKind == '모니터'}">
-	                              	<a style = "padding:0px;width:0px;display:inline;" th:href = "|/shop/shopDetail?goodsNum=${goodsDTO.goodsNum}|">
-	                                	<div class="col-md-6 col-lg-6 col-xl-4" style="width: 25%;">
-	                                     	<div style = "border:1px solid lightgray" class="rounded position-relative fruite-item">
-	                                          <div class="fruite-img">
-	                                              <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|" style = "height:300px; object-fit:cover;"
-	                                              class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />
-	                                          </div>
-	                                          <div class="bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">[[${goodsDTO.goodsKind}]]</div>
-	                                          <div style = "border-top: 1px solid lightgray;" class="p-4 border-secondary rounded-bottom">
-	                                              <h4>[[${goodsDTO.goodsName}]]</h4>
-	                                              <p class = "ellipsis-container" style = "color:black">
-	                                             	 [[${goodsDTO.goodsContents}]]
-	                                              </p>
-	                                              <div class="d-flex justify-content-between flex-lg-wrap" style = "display: block !important;">
-	                                                  <p class="text-dark fs-5 fw-bold mb-0">[[${#numbers.formatCurrency(goodsDTO.goodsPrice)}]]</p>
-	                                                  <input type="hidden" id="memberNum" th:value="${memberNum}" />
-	                                                 	<a></a>
-	                                              </div>
-	                                          </div>
-	                                     	</div>
-	                               		</div>
-	                                </a>
-                                </th:block>
-                            </th:block>
+                           <th:block th:each="goodsDTO , idx1 : ${list}" th:if="${goodsDTO.goodsKind == '모니터' && idx1.index < 4}" >
+                              	<a style = "padding:0px;width:0px;display:inline;" th:href = "|/shop/shopDetail?goodsNum=${goodsDTO.goodsNum}|">
+                                	<div class="col-md-6 col-lg-6 col-xl-4" style="width: 25%;">
+                                     	<div style = "border:1px solid lightgray" class="rounded position-relative fruite-item">
+                                          <div class="fruite-img">
+                                              <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|" style = "height:300px; object-fit:cover;"
+                                              class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />
+                                          </div>
+                                          <div class="bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">[[${goodsDTO.goodsKind}]]</div>
+                                          <div style = "border-top: 1px solid lightgray;" class="p-4 border-secondary rounded-bottom">
+                                              <h4>[[${goodsDTO.goodsName}]]</h4>
+                                              <p class = "ellipsis-container" style = "color:black">
+                                             	 [[${goodsDTO.goodsContents}]]
+                                              </p>
+                                              <div class="d-flex justify-content-between flex-lg-wrap" style = "display: block !important;">
+                                                  <p class="text-dark fs-5 fw-bold mb-0">[[${#numbers.formatCurrency(goodsDTO.goodsPrice)}]]</p>
+                                                  <input type="hidden" id="memberNum" th:value="${memberNum}" />
+                                                 	<a></a>
+                                              </div>
+                                          </div>
+                                     	</div>
+                               		</div>
+                                </a>
+                           </th:block>
                         </div>
                      </div>
                   </div>
@@ -210,32 +208,30 @@ function chattingListPopup(){
                   <div class="row g-4">
                      <div class="col-lg-9" style="width:100%;">
                         <div class="row g-4">
-                           <th:block th:each="goodsDTO , idx : ${list}">
-                           		<th:block th:if="${goodsDTO.goodsKind == '키보드'}">
-	                              	<a style = "padding:0px;width:0px;display:inline;" th:href = "|/shop/shopDetail?goodsNum=${goodsDTO.goodsNum}|">
-	                                	<div class="col-md-6 col-lg-6 col-xl-4" style="width: 25%;">
-	                                     	<div style = "border:1px solid lightgray" class="rounded position-relative fruite-item">
-	                                          <div class="fruite-img">
-	                                              <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|" style = "height:300px; object-fit:cover;"
-	                                              class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />
-	                                          </div>
-	                                          <div class="bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">[[${goodsDTO.goodsKind}]]</div>
-	                                          <div style = "border-top: 1px solid lightgray;" class="p-4 border-secondary rounded-bottom">
-	                                              <h4>[[${goodsDTO.goodsName}]]</h4>
-	                                              <p class = "ellipsis-container" style = "color:black">
-	                                             	 [[${goodsDTO.goodsContents}]]
-	                                              </p>
-	                                              <div class="d-flex justify-content-between flex-lg-wrap" style = "display: block !important;">
-	                                                  <p class="text-dark fs-5 fw-bold mb-0">[[${#numbers.formatCurrency(goodsDTO.goodsPrice)}]]</p>
-	                                                  <input type="hidden" id="memberNum" th:value="${memberNum}" />
-	                                                 	<a></a>
-	                                              </div>
-	                                          </div>
-	                                     	</div>
-	                               		</div>
-	                                </a>
-                                </th:block>
-                            </th:block>
+                           <th:block th:each="goodsDTO , idx2 : ${list}" th:if="${goodsDTO.goodsKind == '키보드' && idx2.index < 4}" >
+                              	<a style = "padding:0px;width:0px;display:inline;" th:href = "|/shop/shopDetail?goodsNum=${goodsDTO.goodsNum}|">
+                                	<div class="col-md-6 col-lg-6 col-xl-4" style="width: 25%;">
+                                     	<div style = "border:1px solid lightgray" class="rounded position-relative fruite-item">
+                                          <div class="fruite-img">
+                                              <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|" style = "height:300px; object-fit:cover;"
+                                              class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />
+                                          </div>
+                                          <div class="bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">[[${goodsDTO.goodsKind}]]</div>
+                                          <div style = "border-top: 1px solid lightgray;" class="p-4 border-secondary rounded-bottom">
+                                              <h4>[[${goodsDTO.goodsName}]]</h4>
+                                              <p class = "ellipsis-container" style = "color:black">
+                                             	 [[${goodsDTO.goodsContents}]]
+                                              </p>
+                                              <div class="d-flex justify-content-between flex-lg-wrap" style = "display: block !important;">
+                                                  <p class="text-dark fs-5 fw-bold mb-0">[[${#numbers.formatCurrency(goodsDTO.goodsPrice)}]]</p>
+                                                  <input type="hidden" id="memberNum" th:value="${memberNum}" />
+                                                 	<a></a>
+                                              </div>
+                                          </div>
+                                     	</div>
+                               		</div>
+                                </a>
+                           </th:block>
                         </div>
                      </div>
                   </div>
@@ -253,31 +249,29 @@ function chattingListPopup(){
                   <div class="row g-4">
                      <div class="col-lg-9" style="width:100%;">
                         <div class="row g-4">
-                           <th:block th:each="goodsDTO , idx : ${list}">
-                           		<th:block th:if="${goodsDTO.goodsKind == '마우스'}">
-	                              	<a style = "padding:0px;width:0px;display:inline;" th:href = "|/shop/shopDetail?goodsNum=${goodsDTO.goodsNum}|">
-	                                	<div class="col-md-6 col-lg-6 col-xl-4" style="width: 25%;">
-	                                     	<div style = "border:1px solid lightgray" class="rounded position-relative fruite-item">
-	                                          <div class="fruite-img">
-	                                              <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|" style = "height:300px; object-fit:cover;"
-	                                              class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />
-	                                          </div>
-	                                          <div class="bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">[[${goodsDTO.goodsKind}]]</div>
-	                                          <div style = "border-top: 1px solid lightgray;" class="p-4 border-secondary rounded-bottom">
-	                                              <h4>[[${goodsDTO.goodsName}]]</h4>
-	                                              <p class = "ellipsis-container" style = "color:black">
-	                                             	 [[${goodsDTO.goodsContents}]]
-	                                              </p>
-	                                              <div class="d-flex justify-content-between flex-lg-wrap" style = "display: block !important;">
-	                                                  <p class="text-dark fs-5 fw-bold mb-0">[[${#numbers.formatCurrency(goodsDTO.goodsPrice)}]]</p>
-	                                                  <input type="hidden" id="memberNum" th:value="${memberNum}" />
-	                                                 	<a></a>
-	                                              </div>
-	                                          </div>
-	                                     	</div>
-	                               		</div>
-	                                </a>
-                                </th:block>
+                           <th:block th:each="goodsDTO , idx3 : ${list}" th:if="${goodsDTO.goodsKind == '마우스' && idx3.index < 4}" >
+                              	<a style = "padding:0px;width:0px;display:inline;" th:href = "|/shop/shopDetail?goodsNum=${goodsDTO.goodsNum}|">
+                                	<div class="col-md-6 col-lg-6 col-xl-4" style="width: 25%;">
+                                     	<div style = "border:1px solid lightgray" class="rounded position-relative fruite-item">
+                                          <div class="fruite-img">
+                                              <img th:src="|/static/upload/${goodsDTO.goodsMainStoreImage}|" style = "height:300px; object-fit:cover;"
+                                              class="img-fluid w-100 rounded-top" alt="" onerror="this.src='/static/img/goods-default-img.png';" />
+                                          </div>
+                                          <div class="bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">[[${goodsDTO.goodsKind}]]</div>
+                                          <div style = "border-top: 1px solid lightgray;" class="p-4 border-secondary rounded-bottom">
+                                              <h4>[[${goodsDTO.goodsName}]]</h4>
+                                              <p class = "ellipsis-container" style = "color:black">
+                                             	 [[${goodsDTO.goodsContents}]]
+                                              </p>
+                                              <div class="d-flex justify-content-between flex-lg-wrap" style = "display: block !important;">
+                                                  <p class="text-dark fs-5 fw-bold mb-0">[[${#numbers.formatCurrency(goodsDTO.goodsPrice)}]]</p>
+                                                  <input type="hidden" id="memberNum" th:value="${memberNum}" />
+                                                 	<a></a>
+                                              </div>
+                                          </div>
+                                     	</div>
+                               		</div>
+                                </a>
                             </th:block>
                         </div>
                      </div>
