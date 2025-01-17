@@ -69,8 +69,8 @@ public class CheckController {
 	@GetMapping("goodsItem")
 	public String goodsItem(@RequestParam(value="searchWord" , required = false) String searchWord
 			, @RequestParam(value = "page" , required = false , defaultValue = "1") int page
-			, Model model) {
-		goodsListService.execute(null, model, -1);
+			, Model model, HttpSession session) {
+		goodsListService.execute(null, model, -1, session);
 		return "thymeleaf/goodsIpgo/goodsItem";
 	}
 	@Autowired

@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import DDL.domain.ManageDTO;
-import DDL.domain.StoreManageDTO;
 
 @Mapper
 public interface ManageMapper {
