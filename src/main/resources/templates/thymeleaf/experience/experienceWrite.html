@@ -143,14 +143,14 @@
 					<input name="expName" type="text" placeholder="체험 이름" th:value="${experienceCommand.expName}"/>
 					<span style="color:red" th:if="${#fields.hasErrors('expName')}" th:errors="*{expName}"></span>
 					<div class="input-icon icon-center">
-						<i class="fa-solid fa-location-dot"></i>
+						<i class="fa-solid fa-signature"></i>
 					</div>
 				</div>
 				<div class="input-group input-group-icon">
 					<input name="expContents" type="text" placeholder="체험 내용" th:value="${experienceCommand.expContents}"/>
 					<span style="color:red" th:if="${#fields.hasErrors('expContents')}" th:errors="*{expContents}"></span>
 					<div class="input-icon icon-center">
-						<i class="fa-solid fa-location-dot"></i>
+						<i class="fa-solid fa-file-pen"></i>
 					</div>
 				</div>
 			</div>

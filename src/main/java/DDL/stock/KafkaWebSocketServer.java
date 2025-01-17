@@ -23,7 +23,6 @@ import DDL.stock.dao.StockDAO;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 
-@Service
 public class KafkaWebSocketServer extends WebSocketServer {
     private final Set<WebSocket> connections = ConcurrentHashMap.newKeySet();
 
