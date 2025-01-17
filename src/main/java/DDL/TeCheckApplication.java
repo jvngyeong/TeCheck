@@ -16,7 +16,7 @@ import DDL.mapper.LoginMapper;
 import DDL.service.EmailConfService;
 import DDL.service.EmailSendService;
 import DDL.service.cart.CartListService;
-import DDL.service.goods.GoodsListService;
+import DDL.service.goods.IndexListService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -34,7 +34,7 @@ public class TeCheckApplication {
 	CartListService cartListService;
 	
 	@Autowired
-	GoodsListService goodsListService;
+	IndexListService indexListService;
 	
 	@Autowired
 	LoginMapper loginMapper;
@@ -44,9 +44,7 @@ public class TeCheckApplication {
 	}
 
 	@RequestMapping("/")
-	public String index(@RequestParam(value="searchWord" , required = false) String searchWord
-			, @RequestParam(value = "page" , required = false , defaultValue = "1") int page
-			, Model model, HttpSession session, HttpServletRequest request) {
+	public String index(Model model, HttpSession session, HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		for(Cookie c : cookies) {
 			if(c.getName().equals("isAutoLogin")) {
@@ -58,7 +56,7 @@ public class TeCheckApplication {
 				session.setAttribute("auth", auth);
 			}
 		}
-		goodsListService.execute(searchWord, model, page, session);
+		indexListService.execute(model);
 		cartListService.execute(model, session);
 		return "thymeleaf/index";
 	}

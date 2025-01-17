@@ -31,5 +31,7 @@ public interface GoodsMapper {
 
 	List<GoodsDTO> goodsSortedListSelect(StartEndPageDTO sepDTO);
 
+	List<GoodsDTO> indexSelect();
+
 	
 }

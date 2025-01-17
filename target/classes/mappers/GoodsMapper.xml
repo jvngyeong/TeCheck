@@ -125,4 +125,9 @@
 			from goods g left outer join goods_ipgo gi
 			on g.goods_num = gi.goods_num
 	</select>
+	
+	<select id="indexSelect" resultType="goodsDTO">
+		select * from goods
+		order by visit_count desc
+	</select>
 </mapper>
