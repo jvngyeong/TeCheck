@@ -61,7 +61,7 @@ public class BookController {
 			, @RequestParam(value = "page" , required = false , defaultValue = "1") int page
 			, Model model, HttpSession session) {
 		goodsListService.execute(null, model, -1, session);
-		return "thymeleaf/goodsIpgo/goodsItem";
+		return "thymeleaf/book/goodsItem";
 	}
 	@Autowired
 	StoreListService storeListService;
